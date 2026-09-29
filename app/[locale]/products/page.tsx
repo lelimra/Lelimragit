@@ -1,0 +1,1 @@
+import Products from "@/components/products/Products";import {getManagedProducts} from "@/lib/productCatalog";export const dynamic="force-dynamic";export default async function ProductsPage(){return <Products products={await getManagedProducts()}/>;}
