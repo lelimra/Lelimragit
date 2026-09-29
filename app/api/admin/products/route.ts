@@ -3,6 +3,7 @@ import { isAdmin } from "@/lib/admin-auth";
 import db from "@/lib/db";
 import { products as defaults, type Product } from "@/data/products";
 import { z } from "zod";
+import type { RowDataPacket } from "mysql2";
 
 const schema = z.object({
   id: z.string().min(1).max(80).regex(/^[a-zA-Z0-9_-]+$/),
@@ -25,7 +26,7 @@ const schema = z.object({
 export async function GET() {
   if (!(await isAdmin())) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   try {
-    const [rows] = await db.query<{slug:string; product_json: Product | string}[]>("SELECT slug, product_json FROM product_overrides ORDER BY updated_at DESC");
+    const [rows] = await db.query<(RowDataPacket & { slug: string; product_json: Product | string })[]>("SELECT slug, product_json FROM product_overrides ORDER BY updated_at DESC");
     const overrides = new Map(rows.map(r => [r.slug, typeof r.product_json === "string" ? JSON.parse(r.product_json) as Product : r.product_json]));
     const merged = defaults.map(p => overrides.get(p.slug) || p);
     for (const [slug, product] of overrides) if (!defaults.some(p => p.slug === slug)) merged.push(product);

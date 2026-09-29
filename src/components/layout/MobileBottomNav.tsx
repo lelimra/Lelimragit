@@ -1,7 +1,7 @@
 "use client";
 import { Home, Fan, ClipboardList, Truck, MessageCircle } from "lucide-react";
 import { useLocale } from "next-intl";
-import { usePathname } from "next/navigation";
+import { usePathname } from "@/lib/navigation";
 import { Link } from "@/lib/navigation";
 import { siteConfig } from "@/data/site";
 export default function MobileBottomNav(){

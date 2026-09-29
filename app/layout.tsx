@@ -1,4 +1,3 @@
-import MobileBottomNav from "@/components/layout/MobileBottomNav";
 import ScrollToTop from "@/components/layout/ScrollToTop";
 import Footer from "@/components/layout/Footer";
 import Marquee from "@/components/layout/Marquee";
@@ -27,7 +26,6 @@ export default function RootLayout({
 
           <FloatingActions />
           <ScrollToTop />
-          <MobileBottomNav />
 
           <Marquee />
 
