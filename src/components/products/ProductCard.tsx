@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import { Link } from "@/lib/navigation";
 import { useTranslations } from "next-intl";
 import WhatsAppIcon from '@mui/icons-material/WhatsApp';
 import {

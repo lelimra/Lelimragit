@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { Link } from "@/lib/navigation";
 import { ArrowRight, Factory, ShieldCheck } from "lucide-react";
 import Image from "next/image";
 

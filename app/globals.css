@@ -133,3 +133,4 @@ a {
     animation-play-state: paused;
   }
 }
+@media (max-width: 1023px) { body { padding-bottom: calc(4rem + env(safe-area-inset-bottom, 0px)); } }

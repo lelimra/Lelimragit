@@ -12,11 +12,11 @@ import {
 } from "lucide-react";
 import { useTranslations } from "next-intl";
 
-import { products, ProductCategory } from "@/data/products";
+import { products as defaultProducts, ProductCategory, type Product } from "@/data/products";
 import ProductCard from "@/components/products/ProductCard";
 import DownloadCatalogue from "../common/DownloadCatalogue";
 
-export default function Products() {
+export default function Products({products=defaultProducts}:{products?:Product[]}) {
   const t = useTranslations();
 
   // =====================================================
@@ -69,7 +69,7 @@ export default function Products() {
     });
 
     return Array.from(sizes).sort();
-  }, []);
+  }, [products]);
 
   // =====================================================
   // FILTER PRODUCTS
@@ -179,6 +179,7 @@ export default function Products() {
     priceSort,
     featuredOnly,
     inStockOnly,
+    products,
   ]);
 
   // =====================================================

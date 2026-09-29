@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import Link from "next/link";
+import { Link } from "@/lib/navigation";
 import {
   Sparkles,
   Bot,

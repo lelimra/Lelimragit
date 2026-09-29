@@ -42,7 +42,7 @@ export const siteConfig = {
    * IMPORTANT:
    * Replace this with your actual official business email.
    */
-  email: "YOUR_OFFICIAL_EMAIL",
+  email: "",
 
   /**
    * =========================================================
@@ -84,7 +84,7 @@ export const siteConfig = {
       "LIMRA INDUSTRY",
     ],
 
-    ogImage: "/images/seo/limra-og.jpg",
+    ogImage: "/images/hero/hero-desktop.png",
   },
 
   /**

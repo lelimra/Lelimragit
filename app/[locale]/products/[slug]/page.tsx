@@ -3,10 +3,8 @@ import { notFound } from "next/navigation";
 
 import ProductDetails from "@/components/products/ProductDetails";
 
-import {
-  getAllProducts,
-  getProductBySlug,
-} from "@/data/products";
+import { getAllProducts } from "@/data/products";
+import { getManagedProducts, getManagedProduct } from "@/lib/productCatalog";
 
 import {
   generateSEO,
@@ -24,6 +22,8 @@ type ProductPageProps = {
   }>;
 };
 
+export const dynamicParams = true;
+
 export async function generateStaticParams() {
   return LOCALES.flatMap((locale) =>
     getAllProducts().map((product) => ({
@@ -38,7 +38,7 @@ export async function generateMetadata({
 }: ProductPageProps): Promise<Metadata> {
   const { locale, slug } = await params;
 
-  const product = getProductBySlug(slug);
+  const product = await getManagedProduct(slug);
 
   if (!product) {
     return {
@@ -80,7 +80,7 @@ export default async function ProductPage({
 }: ProductPageProps) {
   const { locale, slug } = await params;
 
-  const product = getProductBySlug(slug);
+  const product = await getManagedProduct(slug);
 
   if (!product) {
     notFound();

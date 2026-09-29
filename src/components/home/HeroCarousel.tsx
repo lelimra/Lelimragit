@@ -4,7 +4,7 @@ import React, { useState, useEffect, useCallback, useRef } from "react";
 import { Link } from "@/lib/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { useTranslations } from "next-intl";
-import { getAllProducts } from "@/data/products";
+import type { Product } from "@/data/products";
 import { getProductEnquiryWhatsAppUrl } from "@/utils/whatsapp";
 import {
   ChevronLeft,
@@ -59,9 +59,9 @@ export interface HeroSlide {
   };
 }
 
-export const HeroCarousel: React.FC = () => {
+export const HeroCarousel: React.FC<{ products: Product[] }> = ({ products }) => {
   const t  = useTranslations();
-const products = getAllProducts();
+
   const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
   const [touchStart, setTouchStart] = useState<number | null>(null);
@@ -147,7 +147,7 @@ const products = getAllProducts();
         { name: "Baker's Brown", hex: "#78350f" },
         { name: "Pearl Ivory", hex: "#fef3c7" },
       ],
-      image: avencerProd?.images?.[0] || "/images/products/avencer-prime-viola-blue.jpg",
+      image: avencerProd?.images?.[0] || "/images/products/violablue.jpeg",
       secondaryImage: "/src/assets/images/hero_decorative_fan_1789988751718.jpg",
       ctaPrimary: {
         label: "Explore Avencer Prime",
@@ -247,7 +247,7 @@ const products = getAllProducts();
         { label: "Support", value: "Dedicated Trade Desk", icon: Star },
       ],
       image: "/src/assets/images/hero_ceiling_fan_1789886901252.jpg",
-      secondaryImage: "/images/products/hero-fan.jpg",
+      secondaryImage: "/images/products/hero.png",
       ctaPrimary: {
         label: "Submit Bulk Inquiry",
         link: "/wholesale",

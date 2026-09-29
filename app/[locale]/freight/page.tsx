@@ -1,0 +1,1 @@
+import FreightCalculator from "@/components/freight/FreightCalculator";export const metadata={title:"Freight Estimator | LE LIMRA",description:"Estimate fan shipment packing and indicative freight."};export default function FreightPage(){return <FreightCalculator/>}

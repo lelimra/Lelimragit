@@ -1,21 +1,17 @@
-"use client";
-
 import { HeroCarousel } from "./HeroCarousel";
 import { TrustStrip } from "../common/TrustStrip";
-import { getAllProducts } from "@/data/products";
-
 import FeaturedFansSection from "./FeaturedFansSection";
 import ProductCategoriesSection from "./ProductCategoriesSection";
 import WhyLimraSection from "./WhyLimraSection";
 import DistributionNetworkSection from "./DistributionNetworkSection";
 import DistributionCalloutBar from "./DistributionCalloutBar";
+import { getManagedProducts } from "@/lib/productCatalog";
 
-export default function HomePageClient() {
-  const products = getAllProducts();
-
+export default async function HomePageClient() {
+  const products = await getManagedProducts();
   return (
     <>
-      <HeroCarousel />
+      <HeroCarousel products={products} />
       <TrustStrip />
       <FeaturedFansSection products={products} />
       <ProductCategoriesSection />

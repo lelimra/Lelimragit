@@ -200,7 +200,7 @@ export default async function AboutPage() {
               <div className="relative aspect-[4/3] overflow-hidden rounded-3xl border border-border bg-secondary shadow-2xl lg:aspect-[4/5]">
 
                 <img
-                  src="/images/about/about-factory.png"
+                  src="/images/company/factory.png"
                   alt={t("company.imageAlt")}
                   className="h-full w-full object-cover transition-transform duration-700 hover:scale-105"
                 />

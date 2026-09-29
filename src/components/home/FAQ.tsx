@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import { Link } from "@/lib/navigation";
 import { useState } from "react";
 import { ArrowRight, ChevronDown } from "lucide-react";
 
