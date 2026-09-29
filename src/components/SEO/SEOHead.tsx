@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { siteConfig } from "@/data/site";
-import type { Product } from "../../../data/products";
+import type { Product } from "@/types/product";
 
 interface SEOHeadProps {
   title?: string;
