@@ -1,0 +1,92 @@
+{
+  "Home": {
+    "hero": {
+      "badge": "ڈیلرز اور ہول سیل کے لیے",
+      "title": "پریمیم پنکھے۔",
+      "titleHighlight": "ہول سیل سپلائی۔",
+      "description": "ڈیلرز، ڈسٹری بیوٹرز اور بلک خریداروں کے لیے سیلنگ، ٹیبل اور پیڈسٹل فینز۔",
+      "viewProducts": "مصنوعات دیکھیں",
+      "wholesalePrice": "ہول سیل قیمت",
+      "factoryDirect": "فیکٹری ڈائریکٹ",
+      "bulkOrders": "بلک آرڈرز",
+      "dealerSupply": "ڈیلر سپلائی",
+      "imageAlt": "LIMRA Auro سیلنگ فین"
+    },
+    "featuredModel": "نمایاں ماڈل",
+    "view": "دیکھیں",
+    "highlights": {
+      "title": "بہتر کارکردگی کے لیے تیار",
+      "description": "مضبوط ہوا کے بہاؤ، قابل اعتماد کارکردگی اور روزمرہ استعمال کے لیے ڈیزائن کیا گیا پریمیم 1200 mm ڈیکوریٹو سیلنگ فین۔"
+    },
+    "specs": {
+      "airflow": "ہوا کا بہاؤ",
+      "airflowDesc": "طاقتور ہوا کی ترسیل",
+      "motorSpeed": "موٹر اسپیڈ",
+      "motorSpeedDesc": "ہائی اسپیڈ کارکردگی",
+      "powerUsage": "بجلی کا استعمال",
+      "powerUsageDesc": "موثر آپریشن",
+      "warranty": "وارنٹی",
+      "twoYears": "2 سال",
+      "warrantyDesc": "وارنٹی کوریج",
+      "size": "سائز",
+      "body": "باڈی",
+      "motorWinding": "موٹر وائنڈنگ"
+    },
+    "featuredProduct": {
+      "name": "Avencer Prime",
+      "viewAll": "تمام مصنوعات دیکھیں",
+      "colour": "رنگ",
+      "colours": "رنگ",
+      "category": "ڈیکوریٹو سیلنگ فین",
+      "size": "1200 mm / 48 انچ",
+      "blades": "بلیڈز",
+      "threeBlades": "3 بلیڈز",
+      "bodyMaterial": "باڈی میٹریل",
+      "aluminiumWinding": "ایلومینیم وائنڈنگ",
+      "twoYearWarranty": "2 سال کی وارنٹی",
+      "viewProduct": "پروڈکٹ دیکھیں",
+      "getWholesalePrice": "ہول سیل قیمت حاصل کریں",
+      "selectColor": "{color} منتخب کریں",
+      "colors": {
+        "violaBlue": "وایولا بلیو",
+        "pearlIvory": "پرل آئیوری",
+        "bakersBrown": "بیکرز براؤن",
+        "satinGold": "سیٹن گولڈ"
+      }
+    },
+    "business": {
+      "eyebrow": "LIMRA کیوں",
+      "title": "کاروبار کے لیے تیار",
+      "description": "ڈیلرز، ہول سیلرز، ڈسٹری بیوٹرز اور بلک خریداروں کے لیے قابل اعتماد سپورٹ اور سپلائی سلوشنز۔",
+      "forBusiness": "کاروبار کے لیے",
+      "benefits": {
+        "factoryDirect": "فیکٹری ڈائریکٹ",
+        "bulkSupply": "بلک سپلائی",
+        "dealerPricing": "ڈیلر قیمت",
+        "panIndiaSupply": "پین انڈیا سپلائی"
+      }
+    },
+    "wholesaleCta": {
+      "eyebrow": "ڈیلرز • ڈسٹری بیوٹرز • ہول سیلرز",
+      "title": "ہول سیل قیمت حاصل کریں",
+      "description": "اپنی ضرورت بتائیں اور ہماری ٹیم آپ سے رابطہ کرے گی۔",
+      "button": "ہول سیل انکوائری بھیجیں"
+    },
+    "dealerCta": {
+      "eyebrow": "ڈیلر نیٹ ورک",
+      "title": "اپنا کاروبار بڑھائیں",
+      "description": "LIMRA ڈیلر بنیں اور ہمارے بڑھتے ہوئے فین ڈسٹری بیوشن نیٹ ورک سے اپنے کاروبار کو جوڑیں۔",
+      "dealerSupport": "ڈیلر سپورٹ",
+      "businessOpportunities": "کاروباری مواقع",
+      "directEnquiry": "براہ راست انکوائری",
+      "button": "ڈیلر بنیں",
+      "note": "اپنی ڈیلرشپ انکوائری شروع کریں"
+    },
+    "categories": {
+      "ceilingFans": "سیلنگ فینز",
+      "tableFans": "ٹیبل فینز",
+      "pedestalFans": "پیڈسٹل فینز"
+    },
+    "whatsappMessage": "السلام علیکم LIMRA INDUSTRY، مجھے ہول سیل فین کی قیمتوں میں دلچسپی ہے۔"
+  }
+}

@@ -1,0 +1,135 @@
+@import "tailwindcss";
+
+/* =========================================================
+   LIGHT THEME (Default)
+   ========================================================= */
+
+:root {
+  --background: 210 20% 98%;
+  --foreground: 222 47% 11%;
+
+  --primary: 221 83% 25%;
+  --primary-foreground: 0 0% 100%;
+
+  --secondary: 210 40% 96%;
+  --secondary-foreground: 222 47% 11%;
+
+  --accent: 37 92% 50%;
+  --accent-foreground: 222 47% 11%;
+
+  --muted: 210 40% 96%;
+  --muted-foreground: 215 16% 47%;
+
+  --card: 0 0% 100%;
+  --card-foreground: 222 47% 11%;
+
+  --border: 214 32% 91%;
+}
+
+/* =========================================================
+   DARK THEME
+   ========================================================= */
+
+.dark {
+  --background: 222 30% 7%;
+  --foreground: 210 40% 96%;
+
+  --primary: 213 90% 60%;
+  --primary-foreground: 222 30% 7%;
+
+  --secondary: 222 24% 12%;
+  --secondary-foreground: 210 40% 96%;
+
+  --accent: 37 92% 55%;
+  --accent-foreground: 222 30% 7%;
+
+  --muted: 222 24% 14%;
+  --muted-foreground: 215 20% 65%;
+
+  --card: 222 26% NNN%; /* Keep values clean */
+  --card: 222 26% 10%;
+  --card-foreground: 210 40% 96%;
+
+  --border: 222 20% 21%;
+}
+
+/* =========================================================
+   TAILWIND v4 THEME MAPPINGS
+   ========================================================= */
+
+@theme {
+  --color-background: hsl(var(--background));
+  --color-foreground: hsl(var(--foreground));
+
+  --color-primary: hsl(var(--primary));
+  --color-primary-foreground: hsl(var(--primary-foreground));
+
+  --color-secondary: hsl(var(--secondary));
+  --color-secondary-foreground: hsl(var(--secondary-foreground));
+
+  --color-accent: hsl(var(--accent));
+  --color-accent-foreground: hsl(var(--accent-foreground));
+
+  --color-muted: hsl(var(--muted));
+  --color-muted-foreground: hsl(var(--muted-foreground));
+
+  --color-card: hsl(var(--card));
+  --color-card-foreground: hsl(var(--card-foreground));
+
+  --color-border: hsl(var(--border));
+}
+
+/* =========================================================
+   GLOBAL STYLES
+   ========================================================= */
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background-color: var(--color-background);
+  color: var(--color-foreground);
+}
+
+/* =========================================================
+   INTERACTIONS & SELECTION
+   ========================================================= */
+
+button,
+a {
+  transition: color 0.2s ease, background-color 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+}
+
+::selection {
+  background-color: var(--color-primary);
+  color: var(--color-primary-foreground);
+}
+
+/* =========================================================
+   MARQUEE ANIMATION
+   ========================================================= */
+
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-marquee {
+  animation: marquee 30s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-marquee {
+    animation-play-state: paused;
+  }
+}

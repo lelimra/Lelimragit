@@ -1,0 +1,511 @@
+{
+   "Home": {
+    "hero": {
+      "badge": "ڈیلرز اور ہول سیل کے لیے",
+      "title": "پریمیم پنکھے۔",
+      "titleHighlight": "ہول سیل سپلائی۔",
+      "description": "ڈیلرز، ڈسٹری بیوٹرز اور بلک خریداروں کے لیے سیلنگ، ٹیبل اور پیڈسٹل فینز۔",
+      "viewProducts": "مصنوعات دیکھیں",
+      "wholesalePrice": "ہول سیل قیمت",
+      "factoryDirect": "فیکٹری ڈائریکٹ",
+      "bulkOrders": "بلک آرڈرز",
+      "dealerSupply": "ڈیلر سپلائی",
+      "imageAlt": "LIMRA Auro سیلنگ فین"
+    },
+    "featuredModel": "نمایاں ماڈل",
+    "view": "دیکھیں",
+    "highlights": {
+      "title": "بہتر کارکردگی کے لیے تیار",
+      "description": "مضبوط ہوا کے بہاؤ، قابل اعتماد کارکردگی اور روزمرہ استعمال کے لیے ڈیزائن کیا گیا پریمیم 1200 mm ڈیکوریٹو سیلنگ فین۔"
+    },
+    "specs": {
+      "airflow": "ہوا کا بہاؤ",
+      "airflowDesc": "طاقتور ہوا کی ترسیل",
+      "motorSpeed": "موٹر اسپیڈ",
+      "motorSpeedDesc": "ہائی اسپیڈ کارکردگی",
+      "powerUsage": "بجلی کا استعمال",
+      "powerUsageDesc": "موثر آپریشن",
+      "warranty": "وارنٹی",
+      "twoYears": "2 سال",
+      "warrantyDesc": "وارنٹی کوریج",
+      "size": "سائز",
+      "body": "باڈی",
+      "motorWinding": "موٹر وائنڈنگ"
+    },
+    "featuredProduct": {
+      "name": "Avencer Prime",
+      "viewAll": "تمام مصنوعات دیکھیں",
+      "colour": "رنگ",
+      "colours": "رنگ",
+      "category": "ڈیکوریٹو سیلنگ فین",
+      "size": "1200 mm / 48 انچ",
+      "blades": "بلیڈز",
+      "threeBlades": "3 بلیڈز",
+      "bodyMaterial": "باڈی میٹریل",
+      "aluminiumWinding": "ایلومینیم وائنڈنگ",
+      "twoYearWarranty": "2 سال کی وارنٹی",
+      "viewProduct": "پروڈکٹ دیکھیں",
+      "getWholesalePrice": "ہول سیل قیمت حاصل کریں",
+      "selectColor": "{color} منتخب کریں",
+      "colors": {
+        "violaBlue": "وایولا بلیو",
+        "pearlIvory": "پرل آئیوری",
+        "bakersBrown": "بیکرز براؤن",
+        "satinGold": "سیٹن گولڈ"
+      }
+    },
+    "business": {
+      "eyebrow": "LIMRA کیوں",
+      "title": "کاروبار کے لیے تیار",
+      "description": "ڈیلرز، ہول سیلرز، ڈسٹری بیوٹرز اور بلک خریداروں کے لیے قابل اعتماد سپورٹ اور سپلائی سلوشنز۔",
+      "forBusiness": "کاروبار کے لیے",
+      "benefits": {
+        "factoryDirect": "فیکٹری ڈائریکٹ",
+        "bulkSupply": "بلک سپلائی",
+        "dealerPricing": "ڈیلر قیمت",
+        "panIndiaSupply": "پین انڈیا سپلائی"
+      }
+    },
+    "wholesaleCta": {
+      "eyebrow": "ڈیلرز • ڈسٹری بیوٹرز • ہول سیلرز",
+      "title": "ہول سیل قیمت حاصل کریں",
+      "description": "اپنی ضرورت بتائیں اور ہماری ٹیم آپ سے رابطہ کرے گی۔",
+      "button": "ہول سیل انکوائری بھیجیں"
+    },
+    "dealerCta": {
+      "eyebrow": "ڈیلر نیٹ ورک",
+      "title": "اپنا کاروبار بڑھائیں",
+      "description": "LIMRA ڈیلر بنیں اور ہمارے بڑھتے ہوئے فین ڈسٹری بیوشن نیٹ ورک سے اپنے کاروبار کو جوڑیں۔",
+      "dealerSupport": "ڈیلر سپورٹ",
+      "businessOpportunities": "کاروباری مواقع",
+      "directEnquiry": "براہ راست انکوائری",
+      "button": "ڈیلر بنیں",
+      "note": "اپنی ڈیلرشپ انکوائری شروع کریں"
+    },
+    "categories": {
+      "ceilingFans": "سیلنگ فینز",
+      "tableFans": "ٹیبل فینز",
+      "pedestalFans": "پیڈسٹل فینز"
+    },
+    "whatsappMessage": "السلام علیکم LIMRA INDUSTRY، مجھے ہول سیل فین کی قیمتوں میں دلچسپی ہے۔"
+  },
+
+  
+  "Navbar": {
+    "home": "ہوم",
+    "products": "مصنوعات",
+    "about": "ہمارے بارے میں",
+    "business": "کاروبار",
+    "wholesale": "ہول سیل",
+    "dealer": "ڈیلر بنیں",
+    "contact": "رابطہ کریں",
+    "quote": "قیمت حاصل کریں"
+  },
+
+  "Hero": {
+    "badge": "ڈیلرز اور ہول سیل کے لیے",
+    "title": "پریمیم پنکھے۔",
+    "titleHighlight": "ہول سیل سپلائی۔",
+    "description": "ڈیلرز، ڈسٹری بیوٹرز اور بلک خریداروں کے لیے سیلنگ، ٹیبل اور پیڈسٹل فینز۔",
+    "viewProducts": "مصنوعات دیکھیں",
+    "wholesalePrice": "ہول سیل قیمت",
+    "factoryDirect": "براہِ راست فیکٹری سے",
+    "bulkOrders": "بلک آرڈرز",
+    "dealerSupply": "ڈیلر سپلائی",
+    "featuredModel": "نمایاں ماڈل",
+    "view": "دیکھیں"
+  },
+
+  "ProductHighlights": {
+    "model": "Avencer Prime",
+    "title": "کارکردگی کے لیے تیار کردہ",
+    "description": "ایک پریمیم 1200 ملی میٹر ڈیکوریٹو سیلنگ فین، جو مضبوط ہوا کے بہاؤ، قابلِ اعتماد کارکردگی اور روزمرہ استعمال کے لیے ڈیزائن کیا گیا ہے۔",
+    "airflow": "ہوا کا بہاؤ",
+    "motorSpeed": "موٹر کی رفتار",
+    "powerUsage": "بجلی کا استعمال",
+    "warranty": "وارنٹی",
+    "size": "سائز",
+    "body": "باڈی",
+    "motorWinding": "موٹر وائنڈنگ"
+  },
+
+  "FeaturedProduct": {
+    "featuredModel": "نمایاں ماڈل",
+    "viewAllProducts": "تمام مصنوعات دیکھیں",
+    "colour": "رنگ",
+    "colours": "رنگ",
+    "decorativeCeilingFan": "ڈیکوریٹو سیلنگ فین",
+    "size": "1200 ملی میٹر / 48 انچ",
+    "airflow": "ہوا کا بہاؤ",
+    "motorSpeed": "موٹر کی رفتار",
+    "powerUsage": "بجلی کا استعمال",
+    "blades": "بلیڈز",
+    "bodyMaterial": "باڈی میٹریل",
+    "motor": "موٹر",
+    "warranty": "2 سال کی وارنٹی",
+    "viewProduct": "پروڈکٹ دیکھیں",
+    "wholesalePrice": "ہول سیل قیمت حاصل کریں"
+  },
+
+  "Business": {
+    "whyLimra": "LIMRA کیوں؟",
+    "builtForBusiness": "کاروبار کے لیے تیار",
+    "description": "ڈیلرز، ہول سیلرز، ڈسٹری بیوٹرز اور بلک خریداروں کے لیے قابلِ اعتماد سپورٹ اور سپلائی سلوشنز۔",
+    "factoryDirect": "براہِ راست فیکٹری سے",
+    "bulkSupply": "بلک سپلائی",
+    "dealerPricing": "ڈیلر قیمتیں",
+    "panIndiaSupply": "پورے ہندوستان میں سپلائی"
+  },
+
+  "WholesaleCTA": {
+    "audience": "ڈیلرز • ڈسٹری بیوٹرز • ہول سیلرز",
+    "title": "ہول سیل قیمت حاصل کریں",
+    "description": "ہمیں اپنی ضرورت بتائیں اور ہماری ٹیم آپ سے رابطہ کرے گی۔",
+    "button": "ہول سیل انکوائری بھیجیں"
+  },
+
+  "DealerCTA": {
+    "network": "ڈیلر نیٹ ورک",
+    "title": "LIMRA کے ساتھ اپنا کاروبار بڑھائیں",
+    "description": "LIMRA ڈیلر بنیں اور اپنے کاروبار کو ہمارے بڑھتے ہوئے فین ڈسٹری بیوشن نیٹ ورک سے جوڑیں۔",
+    "dealerSupport": "ڈیلر سپورٹ",
+    "businessOpportunities": "کاروباری مواقع",
+    "directEnquiry": "براہِ راست انکوائری",
+    "button": "ڈیلر بنیں",
+    "subtext": "اپنی ڈیلرشپ انکوائری شروع کریں"
+  },
+
+  "About": {
+    "hero": {
+      "badge": "LIMRA انڈسٹری کے بارے میں",
+      "title": "بہتر ہوا کے بہاؤ کے لیے",
+      "titleHighlight": "انجینئرڈ۔",
+      "description": "ہم کارکردگی، قابلِ اعتماد معیار، ڈیزائن اور روزمرہ آرام کو مدِنظر رکھتے ہوئے سیلنگ فین تیار اور انجینئر کرتے ہیں۔",
+      "approach": "ہمارا طریقۂ کار",
+      "precision": "درستگی اور مقصد",
+      "approachDescription": "LIMRA کا ہر پنکھا ہوا کے بہاؤ، موٹر کی کارکردگی، میٹریل، فنش اور طویل مدتی قابلِ اعتماد کارکردگی کو مدِنظر رکھتے ہوئے تیار کیا جاتا ہے۔"
+    },
+
+    "metrics": {
+      "fullSize": "48\" پریمیم",
+      "compact": "24\" کومپیکٹ",
+      "models": "پروڈکٹ ماڈلز"
+    },
+
+    "company": {
+      "imageAlt": "LIMRA Industry کی مینوفیکچرنگ سہولت",
+      "excellence": "حرکت میں بہترین کارکردگی",
+      "imageCaption": "بہتر ہوا کے بہاؤ کے لیے انجینئرڈ",
+      "label": "ہم کون ہیں",
+      "title": "بہتر ہوا کے بہاؤ کے گرد تعمیر کردہ۔",
+      "paragraph1": "LIMRA Industry ایسے سیلنگ فین تیار کرتی ہے جو قابلِ اعتماد ہوا کا بہاؤ، مؤثر کارکردگی اور جدید جگہوں کے لیے خوبصورت ڈیزائن فراہم کرتے ہیں۔",
+      "paragraph2": "ہمارا طریقۂ کار پروڈکٹ ڈویلپمنٹ، کارکردگی پر مبنی انجینئرنگ، معیاری میٹریل اور فنش پر توجہ کو یکجا کرتا ہے تاکہ روزمرہ استعمال کے لیے موزوں پنکھے تیار کیے جا سکیں۔",
+      "exploreProducts": "ہماری مصنوعات دیکھیں"
+    },
+
+    "mission": {
+      "label": "ہمارا مشن",
+      "title": "بہتر مصنوعات۔ بہتر ہوا کا بہاؤ۔ بہتر روزمرہ آرام۔",
+      "description": "ہمارا مشن ایسے قابلِ اعتماد اور سوچ سمجھ کر ڈیزائن کیے گئے سیلنگ فین تیار کرنا ہے جو کارکردگی، پائیداری اور جدید ڈیزائن کو یکجا کریں۔"
+    },
+
+    "vision": {
+      "label": "ہمارا وژن",
+      "title": "ایک قابلِ اعتماد فین برانڈ کی تعمیر۔",
+      "description": "ہم مسلسل مصنوعات کے معیار، عملی جدت اور صارفین پر مرکوز حل کے ذریعے فین انڈسٹری میں ایک قابلِ اعتماد مقام بنانا چاہتے ہیں۔"
+    },
+
+    "values": {
+      "label": "ہماری بنیادی اقدار",
+      "title": "ہماری رہنمائی کیا کرتی ہے",
+
+      "items": {
+        "productFocus": "مصنوعات پر توجہ",
+        "productFocusDescription": "ہم پروڈکٹ کی کارکردگی اور استعمال میں آسانی کو اپنے ڈویلپمنٹ کے عمل کا مرکز رکھتے ہیں۔",
+
+        "qualityMindset": "معیار کی سوچ",
+        "qualityMindsetDescription": "ہم اپنی مصنوعات میں میٹریل، تعمیر، فنش اور قابلِ اعتماد کارکردگی پر توجہ دیتے ہیں۔",
+
+        "customerFirst": "صارفین کو ترجیح",
+        "customerFirstDescription": "ہم مصنوعات اور حل تیار کرتے وقت صارفین کی ضروریات اور روزمرہ استعمال کو مدِنظر رکھتے ہیں۔",
+
+        "responsibleApproach": "ذمہ دارانہ طریقۂ کار",
+        "responsibleApproachDescription": "ہم طویل مدتی فائدے کے لیے عملی اور ذمہ دارانہ پروڈکٹ ڈویلپمنٹ کی جانب کام کرتے ہیں۔"
+      }
+    },
+
+    "capabilities": {
+      "label": "تکنیکی صلاحیتیں",
+      "title": "ہر تفصیل میں کارکردگی شامل ہے۔",
+      "description": "ہماری پروڈکٹ ڈویلپمنٹ میں انجینئرنگ، ہوا کے بہاؤ کی کارکردگی، قابلِ اعتماد تعمیر اور تفصیلات پر خصوصی توجہ شامل ہے۔",
+      "catalogue": "مکمل کیٹلاگ دیکھیں",
+
+      "items": {
+        "productDevelopment": "پروڈکٹ ڈویلپمنٹ",
+        "productDevelopmentDescription": "مختلف جگہوں اور ضروریات کے لیے سیلنگ فین ماڈلز کی ترقی پر توجہ۔",
+
+        "airflowPerformance": "ہوا کا بہاؤ اور کارکردگی",
+        "airflowPerformanceDescription": "ہوا کے بہاؤ، موٹر کی کارکردگی، رفتار اور مجموعی فین ایفیشنسی پر توجہ۔",
+
+        "performanceFocus": "کارکردگی پر توجہ",
+        "performanceFocusDescription": "مصنوعات کو قابلِ اعتماد روزمرہ کارکردگی کو اہم ترجیح بناتے ہوئے تیار کیا جاتا ہے۔",
+
+        "finishDetail": "فنش اور تفصیل",
+        "finishDetailDescription": "مصنوعات کی ظاہری شکل، میٹریل، رنگوں اور فنشنگ پر محتاط توجہ۔"
+      }
+    },
+
+    "ranges": {
+      "label": "ہماری مصنوعات کی رینجز",
+      "title": "مختلف جگہوں کے لیے ڈیزائن کردہ۔",
+      "exploreAll": "تمام مصنوعات دیکھیں",
+      "catalogTier": "پریمیم رینج",
+      "featuredModels": "نمایاں ماڈلز",
+      "exploreRange": "رینج دیکھیں",
+
+      "items": {
+        "fullSize": "48\" پریمیم رینج",
+        "compactSize": "24\" پریمیم رینج"
+      }
+    },
+
+    "applications": {
+      "label": "استعمال کی جگہیں",
+      "title": "روزمرہ کی جگہوں کے لیے تیار کردہ۔",
+
+      "items": {
+        "homes": "گھریلو جگہیں",
+        "commercial": "کمرشل جگہیں",
+        "workspaces": "کام کی جگہیں",
+        "largeSpaces": "بڑی جگہیں"
+      }
+    },
+
+    "cta": {
+      "label": "LIMRA کے ساتھ کام کریں",
+      "title": "صحیح فین سلوشن تلاش کر رہے ہیں؟",
+      "description": "ہماری مصنوعات دیکھیں یا پروڈکٹ اور کاروباری معلومات کے لیے ہماری ٹیم سے رابطہ کریں۔",
+      "exploreProducts": "مصنوعات دیکھیں",
+      "contact": "رابطہ کریں"
+    }
+  },
+  "Contact": {
+  "hero": {
+    "badge": "انٹرپرائز سپورٹ اور براہِ راست انکوائریز",
+    "title": "آئیے بات کرتے ہیں",
+    "titleHighlight": "ہوا کے بہاؤ کے بارے میں۔",
+    "description": "کیا آپ کو پریمیم سیلنگ فینز، بلک کیٹلاگ یا ڈیلر کے طور پر شراکت داری کی ضرورت ہے؟ ہماری خصوصی ٹیم آپ کی مدد کے لیے تیار ہے۔",
+    "quickAssistance": {
+      "title": "فوری مدد",
+      "description": "فوری آرڈر سپورٹ، ڈیلرشپ کی شرائط یا ڈسپیچ سے متعلق سوالات کے لیے ہمارے ترجیحی رابطہ ذرائع کے ذریعے براہِ راست رابطہ کریں۔",
+      "supportTeam": "مخصوص سپورٹ ٹیم دستیاب ہے",
+      "manufacturerResponse": "مصدقہ مینوفیکچرر کی جانب سے براہِ راست جواب"
+    }
+  },
+
+  "contactInfo": {
+    "channels": "رابطے کے ذرائع",
+    "title": "ہم سے رابطہ کریں",
+    "officeAddress": "دفتر کا پتہ",
+    "phoneEnquiries": "فون انکوائریز",
+    "phoneText": "درخواست پر رابطہ نمبر دستیاب ہے",
+    "emailAddress": "ای میل پتہ",
+    "emailText": "سرکاری کاروباری ای میل دفتر کے ذریعے دستیاب ہے",
+    "dealerNetwork": "ڈیلر نیٹ ورک",
+    "dealerNetworkText": "مختلف علاقوں میں ڈسٹری بیوٹر شراکت داری اور بلک آرڈرز کا خیرمقدم ہے۔",
+    "responseTime": "ہماری ٹیم معمول کے دفتری اوقات میں تمام ضروریات کا فوری جائزہ لیتی ہے۔"
+  },
+
+  "form": {
+    "secureDispatch": "محفوظ جمع کرانا",
+    "title": "اپنی ضرورت بھیجیں",
+    "fullName": "پورا نام",
+    "fullNamePlaceholder": "مثلاً راجیش کمار",
+    "companyName": "کمپنی / فرم کا نام",
+    "companyNamePlaceholder": "مثلاً کمار ایجنسیز",
+    "email": "ای میل پتہ",
+    "phone": "فون نمبر",
+    "enquiryType": "انکوائری کی قسم",
+    "selectEnquiry": "انکوائری کی قسم منتخب کریں",
+    "targetProduct": "مطلوبہ پروڈکٹ / ماڈل",
+    "selectModel": "ماڈل منتخب کریں",
+    "message": "تفصیلی پیغام / ضروریات",
+    "messagePlaceholder": "مقدار، مقام یا مخصوص کنفیگریشن کی ضروریات درج کریں...",
+    "submitting": "تفصیلات بھیجی جا رہی ہیں...",
+    "send": "انکوائری بھیجیں",
+    "authorization": "یہ فارم جمع کرانے کے ذریعے آپ LIMRA INDUSTRY کو اپنی کاروباری ضروریات کے سلسلے میں آپ سے رابطہ کرنے کی اجازت دیتے ہیں۔"
+  },
+
+  "enquiryTypes": {
+    "productEnquiry": "پروڈکٹ انکوائری",
+    "catalogueRequest": "کیٹلاگ کی درخواست",
+    "dealerDistributorEnquiry": "ڈیلر / ڈسٹری بیوٹر انکوائری",
+    "businessPartnership": "کاروباری شراکت داری",
+    "generalEnquiry": "عمومی انکوائری"
+  },
+
+  "products": {
+    "auro": "Auro",
+    "highBreeze": "High Breeze",
+    "avencer": "Avencer",
+    "enticer": "Enticer",
+    "jazz": "Jazz",
+    "fantasy": "Fantasy",
+    "v130": "V130",
+    "notSureGeneral": "یقینی نہیں / عمومی"
+  },
+
+  "success": {
+    "badge": "کامیابی سے بھیج دیا گیا",
+    "title": "ہم سے رابطہ کرنے کا شکریہ۔",
+    "description": "آپ کی انکوائری ہمارے دفتر کو محفوظ طریقے سے موصول ہو گئی ہے۔ LIMRA INDUSTRY کا نمائندہ آپ کی ضروریات کا جائزہ لے گا اور جلد آپ سے رابطہ کرے گا۔",
+    "products": "پروڈکٹ کیٹلاگ دیکھیں"
+  },
+
+  "location": {
+    "label": "جغرافیائی رسائی",
+    "title": "ہم سے ملیں یا رابطہ کریں",
+    "description": "ہمارا مرکزی دفتر اور مینوفیکچرنگ کوآرڈینیشن مرکز بالانگر، حیدرآباد میں واقع ہے، جہاں سے لاجسٹکس اور ٹرانسپورٹ کی سہولیات آسانی سے دستیاب ہیں۔",
+    "registeredOffice": "رجسٹرڈ آفس",
+    "mapTitle": "LIMRA INDUSTRY کا مقام"
+  },
+
+  "network": {
+    "label": "نیٹ ورک کی توسیع",
+    "title": "کیا آپ LIMRA کے ساتھ کام کرنے میں دلچسپی رکھتے ہیں؟",
+    "description": "ہمارے بڑھتے ہوئے مجاز ڈسٹری بیوٹرز، ہول سیلرز اور ریٹیل ڈیلرز کے نیٹ ورک میں شامل ہوں۔ بہترین قیمتوں اور قابلِ اعتماد مصنوعات سے فائدہ اٹھائیں۔",
+    "button": "کاروباری انکوائری شروع کریں"
+  }
+},
+
+
+  "aboutLeadershipEyebrow": "ہماری قیادت",
+  "aboutLeadershipTitle": "LIMRA کے پیچھے قیادت",
+  "aboutLeadershipDescription": "تجربہ، کاروباری علم اور مشترکہ وژن LIMRA کو آگے بڑھانے میں اہم کردار ادا کرتے ہیں۔",
+
+  "aboutFounderRole": "بانی اور مینوفیکچرنگ ماہر",
+  "aboutFounderDescription": "شیخ اسلم ایک تجربہ کار صنعت کار ہیں جنہیں سیلنگ فین، ٹیبل فین، پنکھوں کے پرزہ جات اور وائنڈنگ مشینوں کی تیاری میں مہارت حاصل ہے۔ مینوفیکچرنگ اور اسمبلی کی گہری سمجھ کے ساتھ انہوں نے معیار، قابلِ اعتماد مصنوعات اور صارفین کے اطمینان پر توجہ دیتے ہوئے کاروبار کو ترقی دی ہے۔",
+
+  "aboutFutureLeadershipRole": "کاروباری انتظام اور مستقبل کی قیادت",
+  "aboutFutureLeadershipDescription": "شیخ سلمان اپنے والد شیخ اسلم کے ساتھ کام کرتے ہوئے کاروبار کے مختلف امور کو سنبھالنے اور منظم کرنے میں تعاون کرتے ہیں۔ BBA کی ڈگری کے ساتھ وہ اس وقت MBA کی تعلیم حاصل کر رہے ہیں۔ وہ کاروباری تعلیم کو عملی صنعتی تجربے کے ساتھ جوڑ رہے ہیں اور ایک جدید اور ترقی پر مبنی انداز کے ساتھ کاروبار کو آگے بڑھانے کی تیاری کر رہے ہیں۔"
+,
+  "wholesaleTitle": "ہول سیل اور بڑی مقدار میں سپلائی",
+  "wholesaleSubtitle": "مینوفیکچرر سے براہ راست قابل اعتماد پنکھوں کی سپلائی",
+  "wholesaleDescription": "پورے ہندوستان میں سیلنگ فین، ٹیبل فین اور پیڈسٹل فین کی قابل اعتماد ہول سیل سپلائی کے لیے LIMRA INDUSTRIES کے ساتھ شراکت کریں۔",
+  "wholesaleBadge": "B2B تجارتی سپلائی",
+
+  "wholesaleHeroTitle": "فیکٹری سے براہ راست بلک فین سپلائی",
+  "wholesaleHeroDescription": "ریٹیلرز، ہول سیلرز، ڈیلرز، بلڈرز اور اداروں کے لیے قابل اعتماد فین سپلائی، مسابقتی تجارتی قیمتیں اور قابل اعتماد آفٹر سیلز سپورٹ۔",
+  "wholesaleEnquiry": "بلک انکوائری بھیجیں",
+  "wholesaleWhatsApp": "WhatsApp پر انکوائری کریں",
+  "wholesaleViewProducts": "مصنوعات دیکھیں",
+
+  "wholesaleProductTitle": "ہول سیل مصنوعات کی اقسام",
+  "wholesaleProductDescription": "ریٹیل، تجارتی اور ادارہ جاتی ضروریات کے لیے موزوں ہماری مصنوعات کی رینج منتخب کریں۔",
+
+  "wholesaleCeilingFans": "سیلنگ فین",
+  "wholesaleCeilingFansDesc": "گھروں، کاروباروں اور ریٹیل ضروریات کے لیے قابل اعتماد سیلنگ فین۔",
+
+  "wholesaleTableFans": "ٹیبل فین",
+  "wholesaleTableFansDesc": "گھروں، دفاتر اور اداروں کے لیے کمپیکٹ اور قابل اعتماد ٹیبل فین۔",
+
+  "wholesalePedestalFans": "پیڈسٹل فین",
+  "wholesalePedestalFansDesc": "تجارتی اور ادارہ جاتی استعمال کے لیے زیادہ ہوا دینے والے پیڈسٹل فین۔",
+
+  "wholesaleWhoWeSupply": "ہم کس کو سپلائی کرتے ہیں",
+  "wholesaleWhoWeSupplyDescription": "ہمارا ہول سیل سپلائی پروگرام ان کاروباروں اور اداروں کے لیے بنایا گیا ہے جو بڑی مقدار میں پنکھے خریدتے ہیں۔",
+
+  "wholesaleRetailers": "الیکٹریکل ریٹیلرز اور دکانیں",
+  "wholesaleRetailersDesc": "کارٹن مقدار میں سپلائی، اچھے تجارتی مارجن اور قابل اعتماد وارنٹی سپورٹ کے ساتھ۔",
+
+  "wholesaleDistributors": "علاقائی ہول سیلرز اور اسٹاکسٹ",
+  "wholesaleDistributorsDesc": "علاقائی ڈسٹری بیوٹرز، ہول سیلرز اور الیکٹریکل اسٹاکسٹ کے لیے بلک سپلائی۔",
+
+  "wholesaleInstitutions": "ہاسٹلز اور تعلیمی ادارے",
+  "wholesaleInstitutionsDesc": "ہاسٹل، کلاس رومز، دفاتر اور ادارہ جاتی سہولیات کے لیے قابل اعتماد پنکھے۔",
+
+  "wholesaleBuilders": "بلڈرز اور الیکٹریکل کنٹریکٹرز",
+  "wholesaleBuildersDesc": "رہائشی اور تجارتی منصوبوں کے لیے یکساں بیچ سپلائی اور مربوط ڈیلیوری۔",
+
+  "wholesaleBenefitsTitle": "LIMRA INDUSTRIES سے براہ راست کیوں خریدیں؟",
+  "wholesaleBenefitsDescription": "مینوفیکچرنگ صلاحیت اور خصوصی سپورٹ کے ساتھ آسان اور قابل اعتماد ہول سیل سپلائی کا عمل۔",
+
+  "wholesaleBenefit1": "براہ راست مینوفیکچرر",
+  "wholesaleBenefit1Desc": "ہماری مینوفیکچرنگ سہولت سے براہ راست مصنوعات حاصل کریں۔",
+
+  "wholesaleBenefit2": "بلک سپلائی",
+  "wholesaleBenefit2Desc": "ڈیلرز، ریٹیلرز اور ادارہ جاتی خریداروں کے لیے لچکدار مقدار۔",
+
+  "wholesaleBenefit3": "قابل اعتماد معیار",
+  "wholesaleBenefit3Desc": "بار بار ہونے والے بلک آرڈرز کے لیے مستقل مصنوعات کا معیار۔",
+
+  "wholesaleBenefit4": "وارنٹی سپورٹ",
+  "wholesaleBenefit4Desc": "منتخب ماڈلز کے لیے وارنٹی کوریج دستیاب ہے۔",
+
+  "wholesaleBenefit5": "پورے ہندوستان میں ڈیلیوری",
+  "wholesaleBenefit5Desc": "رجسٹرڈ ٹرانسپورٹ سروسز کے ذریعے پورے ہندوستان میں ڈسپیچ سپورٹ۔",
+
+  "wholesaleBenefit6": "ڈیلر سپورٹ",
+  "wholesaleBenefit6Desc": "ہول سیل اور ڈیلر ضروریات کے لیے خصوصی مدد۔",
+
+  "wholesaleFormTitle": "ہول سیل اور بلک انکوائری",
+  "wholesaleFormDescription": "اپنی بلک ضرورت کے بارے میں بتائیں اور ہماری سیلز ٹیم آپ سے رابطہ کرے گی۔",
+
+  "wholesaleName": "پورا نام",
+  "wholesaleBusinessName": "کاروبار کا نام",
+  "wholesaleCity": "شہر",
+  "wholesaleState": "ریاست",
+  "wholesalePhone": "موبائل نمبر",
+  "wholesaleEmail": "ای میل پتہ",
+  "wholesaleProduct": "مطلوبہ مصنوعات",
+  "wholesaleQuantity": "مطلوبہ مقدار",
+  "wholesaleMessage": "اضافی ضروریات",
+
+  "wholesaleNamePlaceholder": "مثلاً رمیش کمار",
+  "wholesaleBusinessPlaceholder": "مثلاً سری بالاجی الیکٹریکلز",
+  "wholesaleCityPlaceholder": "مثلاً حیدرآباد / پونے",
+  "wholesalePhonePlaceholder": "مثلاً +91 89198 54467",
+  "wholesaleEmailPlaceholder": "مثلاً contact@business.com",
+  "wholesaleQuantityPlaceholder": "مثلاً 25 پنکھے، 50 پنکھے، 100+ پنکھے",
+  "wholesaleMessagePlaceholder": "ماڈلز، ڈیلیوری کا وقت یا کوئی خاص درخواست درج کریں...",
+
+  "wholesaleSelectState": "ریاست منتخب کریں",
+
+  "wholesaleSubmit": "انکوائری بھیجیں",
+  "wholesaleSubmitting": "بھیجا جا رہا ہے...",
+  "wholesaleWhatsAppButton": "WhatsApp پر انکوائری کریں",
+
+  "wholesaleSuccessTitle": "ہول سیل انکوائری موصول ہوگئی",
+  "wholesaleSuccessDescription": "شکریہ۔ LIMRA INDUSTRIES کی سیلز ٹیم آپ کی ضرورت کا جائزہ لے گی اور جلد آپ سے رابطہ کرے گی۔",
+  "wholesaleSendWhatsApp": "WhatsApp پر تفصیلات بھیجیں",
+  "wholesaleSubmitAnother": "ایک اور انکوائری بھیجیں",
+
+  "wholesaleProductLabel": "مصنوعات",
+  "wholesaleQuantityLabel": "مقدار",
+  "wholesaleContactLabel": "رابطہ",
+
+  "wholesaleDirectFactory": "براہ راست فیکٹری سے",
+  "wholesalePanIndiaDispatch": "رجسٹرڈ ٹرانسپورٹ سروسز کے ذریعے پورے ہندوستان میں ڈسپیچ دستیاب ہے۔",
+
+  "wholesaleTrustManufacturer": "براہ راست مینوفیکچرر",
+  "wholesaleTrustManufacturerDesc": "ہماری مینوفیکچرنگ سہولت سے براہ راست معیاری پنکھے۔",
+
+  "wholesaleTrustWholesale": "ہول سیل سپلائی",
+  "wholesaleTrustWholesaleDesc": "ڈیلرز اور ریٹیلرز کے لیے قابل اعتماد بلک سپلائی۔",
+
+  "wholesaleTrustWarranty": "وارنٹی سپورٹ",
+  "wholesaleTrustWarrantyDesc": "وارنٹی سپورٹ کے ساتھ قابل اعتماد مصنوعات۔",
+
+  "wholesaleTrustDelivery": "پورے ہندوستان میں ڈیلیوری",
+  "wholesaleTrustDeliveryDesc": "پورے ہندوستان میں محفوظ اور قابل اعتماد ڈیلیوری۔",
+
+  "wholesaleTrustTitle": "قابل اعتماد ہول سیل سپلائی کے لیے تیار",
+
+  "wholesaleProductCeilingBulk": "سیلنگ فین (بلک)",
+  "wholesaleProductTableBulk": "ٹیبل فین (بلک)",
+  "wholesaleProductPedestalBulk": "پیڈسٹل فین (بلک)",
+  "wholesaleProductMixed": "مکسڈ کنٹینر / مختلف مصنوعات کا آرڈر",
+  "wholesaleProductInstitutional": "ادارہ جاتی سپلائی (ہاسٹل / کالج / دفاتر)",
+  "wholesaleProductDealer": "ڈیلر ڈسٹری بیوشن انکوائری"
+
+}

@@ -1,0 +1,430 @@
+{
+  "Navbar": {
+    "home": "मुख्यपृष्ठ",
+    "products": "उत्पादने",
+    "about": "आमच्याबद्दल",
+    "business": "व्यवसाय",
+    "wholesale": "घाऊक",
+    "dealer": "डीलर बना",
+    "contact": "संपर्क करा",
+    "quote": "कोटेशन मिळवा"
+  },
+  "Home": {
+    "hero": {
+      "badge": "डीलर्स आणि होलसेलसाठी",
+      "title": "प्रीमियम फॅन्स.",
+      "titleHighlight": "होलसेल सप्लाय.",
+      "description": "डीलर्स, वितरक आणि मोठ्या प्रमाणात खरेदीदारांसाठी सीलिंग, टेबल आणि पेडेस्टल फॅन्स.",
+      "viewProducts": "उत्पादने पहा",
+      "wholesalePrice": "होलसेल किंमत",
+      "factoryDirect": "फॅक्टरी डायरेक्ट",
+      "bulkOrders": "बल्क ऑर्डर्स",
+      "dealerSupply": "डीलर सप्लाय",
+      "imageAlt": "LIMRA Auro सीलिंग फॅन"
+    },
+    "featuredModel": "फीचर्ड मॉडेल",
+    "view": "पहा",
+    "highlights": {
+      "title": "उत्तम कामगिरीसाठी तयार",
+      "description": "मजबूत एअरफ्लो, विश्वासार्ह कामगिरी आणि रोजच्या वापरासाठी डिझाइन केलेला प्रीमियम 1200 mm डेकोरेटिव्ह सीलिंग फॅन."
+    },
+    "specs": {
+      "airflow": "एअरफ्लो",
+      "airflowDesc": "शक्तिशाली हवा प्रवाह",
+      "motorSpeed": "मोटर स्पीड",
+      "motorSpeedDesc": "हाय-स्पीड कामगिरी",
+      "powerUsage": "वीज वापर",
+      "powerUsageDesc": "कार्यक्षम ऑपरेशन",
+      "warranty": "वॉरंटी",
+      "twoYears": "2 वर्षे",
+      "warrantyDesc": "वॉरंटी कव्हरेज",
+      "size": "आकार",
+      "body": "बॉडी",
+      "motorWinding": "मोटर वाइंडिंग"
+    },
+    "featuredProduct": {
+      "name": "Avencer Prime",
+      "viewAll": "सर्व उत्पादने पहा",
+      "colour": "रंग",
+      "colours": "रंग",
+      "category": "डेकोरेटिव्ह सीलिंग फॅन",
+      "size": "1200 mm / 48 इंच",
+      "blades": "ब्लेड्स",
+      "threeBlades": "3 ब्लेड्स",
+      "bodyMaterial": "बॉडी मटेरियल",
+      "aluminiumWinding": "अॅल्युमिनियम वाइंडिंग",
+      "twoYearWarranty": "2 वर्षांची वॉरंटी",
+      "viewProduct": "उत्पादन पहा",
+      "getWholesalePrice": "होलसेल किंमत मिळवा",
+      "selectColor": "{color} निवडा",
+      "colors": {
+        "violaBlue": "व्हायोला ब्लू",
+        "pearlIvory": "पर्ल आयव्हरी",
+        "bakersBrown": "बेकर ब्राउन",
+        "satinGold": "सॅटिन गोल्ड"
+      }
+    },
+    "business": {
+      "eyebrow": "LIMRA का",
+      "title": "व्यवसायासाठी तयार",
+      "description": "डीलर्स, होलसेलर्स, वितरक आणि बल्क खरेदीदारांसाठी विश्वासार्ह सपोर्ट आणि सप्लाय सोल्युशन्स.",
+      "forBusiness": "व्यवसायासाठी",
+      "benefits": {
+        "factoryDirect": "फॅक्टरी डायरेक्ट",
+        "bulkSupply": "बल्क सप्लाय",
+        "dealerPricing": "डीलर किंमत",
+        "panIndiaSupply": "पॅन-इंडिया सप्लाय"
+      }
+    },
+    "wholesaleCta": {
+      "eyebrow": "डीलर्स • वितरक • होलसेलर्स",
+      "title": "होलसेल किंमत मिळवा",
+      "description": "तुमची गरज सांगा आणि आमची टीम तुमच्याशी संपर्क करेल.",
+      "button": "होलसेल चौकशी पाठवा"
+    },
+    "dealerCta": {
+      "eyebrow": "डीलर नेटवर्क",
+      "title": "तुमचा व्यवसाय वाढवा",
+      "description": "LIMRA डीलर बना आणि आमच्या वाढत्या फॅन वितरण नेटवर्कशी तुमचा व्यवसाय जोडा.",
+      "dealerSupport": "डीलर सपोर्ट",
+      "businessOpportunities": "व्यावसायिक संधी",
+      "directEnquiry": "थेट चौकशी",
+      "button": "डीलर बना",
+      "note": "डीलरशिप चौकशी सुरू करा"
+    },
+    "categories": {
+      "ceilingFans": "सीलिंग फॅन्स",
+      "tableFans": "टेबल फॅन्स",
+      "pedestalFans": "पेडेस्टल फॅन्स"
+    },
+    "whatsappMessage": "नमस्कार LIMRA INDUSTRY, मला होलसेल फॅनच्या किमतीमध्ये रस आहे."
+  },
+  "ProductHighlights": {
+    "model": "Avencer Prime",
+    "title": "उत्कृष्ट कामगिरीसाठी तयार",
+    "description": "मजबूत हवेचा प्रवाह, विश्वासार्ह कामगिरी आणि दैनंदिन वापरासाठी डिझाइन केलेला प्रीमियम 1200 मिमी डेकोरेटिव्ह सीलिंग फॅन.",
+    "airflow": "हवेचा प्रवाह",
+    "motorSpeed": "मोटरचा वेग",
+    "powerUsage": "वीज वापर",
+    "warranty": "वॉरंटी",
+    "size": "आकार",
+    "body": "बॉडी",
+    "motorWinding": "मोटर वाइंडिंग"
+  },
+  "FeaturedProduct": {
+    "featuredModel": "वैशिष्ट्यपूर्ण मॉडेल",
+    "viewAllProducts": "सर्व उत्पादने पहा",
+    "colour": "रंग",
+    "colours": "रंग",
+    "decorativeCeilingFan": "डेकोरेटिव्ह सीलिंग फॅन",
+    "size": "1200 मिमी / 48 इंच",
+    "airflow": "हवेचा प्रवाह",
+    "motorSpeed": "मोटरचा वेग",
+    "powerUsage": "वीज वापर",
+    "blades": "ब्लेड्स",
+    "bodyMaterial": "बॉडी मटेरियल",
+    "motor": "मोटर",
+    "warranty": "2 वर्षांची वॉरंटी",
+    "viewProduct": "उत्पादन पहा",
+    "wholesalePrice": "घाऊक किंमत मिळवा"
+  },
+  "Business": {
+    "whyLimra": "LIMRA का?",
+    "builtForBusiness": "व्यवसायासाठी तयार",
+    "description": "डीलर्स, घाऊक विक्रेते, वितरक आणि मोठ्या प्रमाणात खरेदी करणाऱ्यांसाठी विश्वासार्ह सपोर्ट आणि पुरवठा उपाय.",
+    "factoryDirect": "थेट कारखान्यातून",
+    "bulkSupply": "मोठ्या प्रमाणात पुरवठा",
+    "dealerPricing": "डीलर किंमती",
+    "panIndiaSupply": "संपूर्ण भारतात पुरवठा"
+  },
+  "WholesaleCTA": {
+    "audience": "डीलर्स • वितरक • घाऊक विक्रेते",
+    "title": "घाऊक किंमत मिळवा",
+    "description": "आपली गरज आम्हाला सांगा आणि आमची टीम आपल्याशी संपर्क साधेल.",
+    "button": "घाऊक चौकशी पाठवा"
+  },
+  "DealerCTA": {
+    "network": "डीलर नेटवर्क",
+    "title": "LIMRA सोबत आपला व्यवसाय वाढवा",
+    "description": "LIMRA डीलर बना आणि आपल्या व्यवसायाला आमच्या वाढत्या फॅन वितरण नेटवर्कशी जोडा.",
+    "dealerSupport": "डीलर सपोर्ट",
+    "businessOpportunities": "व्यवसायाच्या संधी",
+    "directEnquiry": "थेट चौकशी",
+    "button": "डीलर बना",
+    "subtext": "आपली डीलरशिप चौकशी सुरू करा"
+  },
+  "About": {
+    "hero": {
+      "badge": "LIMRA Industry बद्दल",
+      "title": "उत्तम हवेच्या प्रवाहासाठी",
+      "titleHighlight": "अभियांत्रिकी केलेले.",
+      "description": "कामगिरी, विश्वासार्हता, डिझाइन आणि दैनंदिन आरामावर लक्ष केंद्रित करून आम्ही सीलिंग फॅन्स विकसित आणि इंजिनिअर करतो.",
+      "approach": "आमचा दृष्टिकोन",
+      "precision": "अचूकता आणि उद्देश",
+      "approachDescription": "प्रत्येक LIMRA फॅन हवेचा प्रवाह, मोटरची कामगिरी, मटेरियल, फिनिश आणि दीर्घकालीन विश्वासार्हता लक्षात घेऊन विकसित केला जातो."
+    },
+    "metrics": {
+      "fullSize": "48\" प्रीमियम",
+      "compact": "24\" कॉम्पॅक्ट",
+      "models": "उत्पादन मॉडेल्स"
+    },
+    "company": {
+      "imageAlt": "LIMRA Industry उत्पादन सुविधा",
+      "excellence": "हालचालीतील उत्कृष्टता",
+      "imageCaption": "उत्तम हवेच्या प्रवाहासाठी अभियांत्रिकी केलेले",
+      "label": "आम्ही कोण आहोत",
+      "title": "उत्तम हवेच्या प्रवाहाभोवती उभारलेले.",
+      "paragraph1": "LIMRA Industry विश्वासार्ह हवेचा प्रवाह, कार्यक्षम कामगिरी आणि आधुनिक जागांसाठी आकर्षक डिझाइन देणारे सीलिंग फॅन्स विकसित करते.",
+      "paragraph2": "आमचा दृष्टिकोन उत्पादन विकास, कामगिरीवर आधारित अभियांत्रिकी, दर्जेदार मटेरियल आणि फिनिशकडे लक्ष यांचा संगम करून दैनंदिन वापरासाठी योग्य फॅन्स तयार करतो.",
+      "exploreProducts": "आमची उत्पादने पहा"
+    },
+    "mission": {
+      "label": "आमचे ध्येय",
+      "title": "उत्तम उत्पादने. उत्तम हवेचा प्रवाह. उत्तम दैनंदिन आराम.",
+      "description": "कामगिरी, टिकाऊपणा आणि आधुनिक डिझाइन यांचा संगम असलेले विश्वासार्ह आणि विचारपूर्वक डिझाइन केलेले सीलिंग फॅन्स विकसित करणे हे आमचे ध्येय आहे."
+    },
+    "vision": {
+      "label": "आमचे ध्येयदर्शन",
+      "title": "विश्वासार्ह फॅन ब्रँड उभारणे.",
+      "description": "सातत्यपूर्ण उत्पादन गुणवत्ता, व्यावहारिक नवकल्पना आणि ग्राहक-केंद्रित उपायांच्या माध्यमातून फॅन उद्योगात विश्वासार्ह स्थान निर्माण करण्याचे आमचे उद्दिष्ट आहे."
+    },
+    "values": {
+      "label": "आमची मूलभूत मूल्ये",
+      "title": "आम्हाला मार्गदर्शन करणारी तत्त्वे",
+      "items": {
+        "productFocus": "उत्पादनावर लक्ष",
+        "productFocusDescription": "आमच्या विकास प्रक्रियेत उत्पादनाची कामगिरी आणि वापरण्याची सोय यांना केंद्रस्थानी ठेवतो.",
+        "qualityMindset": "गुणवत्तेचा दृष्टिकोन",
+        "qualityMindsetDescription": "आमच्या उत्पादनांमध्ये मटेरियल, बांधणी, फिनिश आणि विश्वासार्हतेवर लक्ष केंद्रित करतो.",
+        "customerFirst": "ग्राहक प्रथम",
+        "customerFirstDescription": "उत्पादने आणि उपाय तयार करताना ग्राहकांच्या गरजा आणि दैनंदिन वापर लक्षात घेतो.",
+        "responsibleApproach": "जबाबदार दृष्टिकोन",
+        "responsibleApproachDescription": "दीर्घकालीन मूल्य निर्माण करण्यासाठी व्यावहारिक आणि जबाबदार उत्पादन विकासासाठी काम करतो."
+      }
+    },
+    "capabilities": {
+      "label": "तांत्रिक क्षमता",
+      "title": "प्रत्येक तपशीलात कामगिरी.",
+      "description": "आमच्या उत्पादन विकासाच्या दृष्टिकोनात अभियांत्रिकी, हवेच्या प्रवाहाची कामगिरी, विश्वासार्ह बांधणी आणि तपशीलांकडे लक्ष यांचा समावेश आहे.",
+      "catalogue": "संपूर्ण कॅटलॉग पहा",
+      "items": {
+        "productDevelopment": "उत्पादन विकास",
+        "productDevelopmentDescription": "विविध जागा आणि गरजांसाठी सीलिंग फॅन मॉडेल्स विकसित करण्यावर लक्ष.",
+        "airflowPerformance": "हवेचा प्रवाह आणि कामगिरी",
+        "airflowPerformanceDescription": "हवेचा प्रवाह, मोटरची कामगिरी, वेग आणि एकूण फॅन कार्यक्षमतेवर लक्ष.",
+        "performanceFocus": "कामगिरीवर लक्ष",
+        "performanceFocusDescription": "विश्वासार्ह दैनंदिन कामगिरीला महत्त्वाचे प्राधान्य देऊन उत्पादने विकसित केली जातात.",
+        "finishDetail": "फिनिश आणि तपशील",
+        "finishDetailDescription": "उत्पादनाचे स्वरूप, मटेरियल, रंग आणि फिनिशिंगकडे काळजीपूर्वक लक्ष."
+      }
+    },
+    "ranges": {
+      "label": "आमच्या उत्पादन श्रेणी",
+      "title": "वेगवेगळ्या जागांसाठी डिझाइन केलेले.",
+      "exploreAll": "सर्व उत्पादने पहा",
+      "catalogTier": "प्रीमियम रेंज",
+      "featuredModels": "वैशिष्ट्यपूर्ण मॉडेल्स",
+      "exploreRange": "रेंज पहा",
+      "items": {
+        "fullSize": "48\" प्रीमियम रेंज",
+        "compactSize": "24\" प्रीमियम रेंज"
+      }
+    },
+    "applications": {
+      "label": "वापराची ठिकाणे",
+      "title": "दैनंदिन वापराच्या जागांसाठी तयार केलेले.",
+      "items": {
+        "homes": "घरे",
+        "commercial": "व्यावसायिक जागा",
+        "workspaces": "कामाच्या जागा",
+        "largeSpaces": "मोठ्या जागा"
+      }
+    },
+    "cta": {
+      "label": "LIMRA सोबत काम करा",
+      "title": "योग्य फॅन सोल्यूशन शोधत आहात?",
+      "description": "आमची उत्पादने पहा किंवा उत्पादन आणि व्यवसायाशी संबंधित माहितीसाठी आमच्या टीमशी संपर्क साधा.",
+      "exploreProducts": "उत्पादने पहा",
+      "contact": "संपर्क करा"
+    }
+  },
+  "Contact": {
+    "hero": {
+      "badge": "एंटरप्राइझ सपोर्ट आणि थेट चौकशी",
+      "title": "चला चर्चा करूया",
+      "titleHighlight": "हवेच्या प्रवाहाबद्दल.",
+      "description": "प्रीमियम सीलिंग फॅन्सची माहिती हवी आहे, मोठ्या प्रमाणात कॅटलॉग हवा आहे किंवा डीलर म्हणून भागीदारी करू इच्छिता? आमची विशेष टीम आपल्याला योग्य मार्गदर्शन करण्यासाठी उपलब्ध आहे.",
+      "quickAssistance": {
+        "title": "त्वरित सहाय्य",
+        "description": "तातडीच्या ऑर्डर सपोर्ट, डीलरशिपच्या अटी किंवा डिस्पॅचशी संबंधित प्रश्नांसाठी आमच्या थेट संपर्क माध्यमांद्वारे संपर्क साधा.",
+        "supportTeam": "समर्पित सपोर्ट टीम उपलब्ध",
+        "manufacturerResponse": "अधिकृत उत्पादकाकडून थेट प्रतिसाद"
+      }
+    },
+    "contactInfo": {
+      "channels": "संपर्क माध्यमे",
+      "title": "आमच्याशी संपर्क साधा",
+      "officeAddress": "कार्यालयाचा पत्ता",
+      "phoneEnquiries": "फोन चौकशी",
+      "phoneText": "संपर्क क्रमांक विनंतीवर उपलब्ध",
+      "emailAddress": "ईमेल पत्ता",
+      "emailText": "अधिकृत व्यावसायिक ईमेल कार्यालयामार्फत उपलब्ध",
+      "dealerNetwork": "डीलर नेटवर्क",
+      "dealerNetworkText": "वितरक भागीदारी आणि मोठ्या प्रमाणातील ऑर्डर्सचे सर्व प्रदेशांमध्ये स्वागत आहे.",
+      "responseTime": "आमची टीम नियमित कार्यालयीन वेळेत सर्व आवश्यकतांचे त्वरित परीक्षण करते."
+    },
+    "form": {
+      "secureDispatch": "सुरक्षित संपर्क",
+      "title": "आपली आवश्यकता पाठवा",
+      "fullName": "पूर्ण नाव",
+      "fullNamePlaceholder": "उदा. राजेश कुमार",
+      "companyName": "कंपनी / फर्मचे नाव",
+      "companyNamePlaceholder": "उदा. कुमार एजन्सीज",
+      "email": "ईमेल पत्ता",
+      "phone": "फोन नंबर",
+      "enquiryType": "चौकशीचा प्रकार",
+      "selectEnquiry": "चौकशीचा प्रकार निवडा",
+      "targetProduct": "लक्ष्य उत्पादन / मॉडेल",
+      "selectModel": "मॉडेल निवडा",
+      "message": "सविस्तर संदेश / आवश्यकता",
+      "messagePlaceholder": "प्रमाण, ठिकाण किंवा विशिष्ट कॉन्फिगरेशनची आवश्यकता नमूद करा...",
+      "submitting": "माहिती पाठवत आहे...",
+      "send": "चौकशी पाठवा",
+      "authorization": "हा फॉर्म सबमिट करून, आपण आपल्या व्यावसायिक आवश्यकतांबाबत LIMRA INDUSTRY कडून संपर्क साधण्यास अधिकृत करता."
+    },
+    "enquiryTypes": {
+      "productEnquiry": "उत्पादन चौकशी",
+      "catalogueRequest": "कॅटलॉगची विनंती",
+      "dealerDistributorEnquiry": "डीलर / वितरक चौकशी",
+      "businessPartnership": "व्यावसायिक भागीदारी",
+      "generalEnquiry": "सामान्य चौकशी"
+    },
+    "products": {
+      "auro": "Auro",
+      "highBreeze": "High Breeze",
+      "avencer": "Avencer",
+      "enticer": "Enticer",
+      "jazz": "Jazz",
+      "fantasy": "Fantasy",
+      "v130": "V130",
+      "notSureGeneral": "निश्चित नाही / सामान्य"
+    },
+    "success": {
+      "badge": "यशस्वीरित्या पाठवले",
+      "title": "संपर्क साधल्याबद्दल धन्यवाद.",
+      "description": "आपली चौकशी आमच्या कार्यालयाकडे सुरक्षितपणे प्राप्त झाली आहे. LIMRA INDUSTRY चे प्रतिनिधी आपल्या आवश्यकतांचा आढावा घेऊन लवकरच आपल्याशी संपर्क साधतील.",
+      "products": "उत्पादन कॅटलॉग पहा"
+    },
+    "location": {
+      "label": "भौगोलिक पोहोच",
+      "title": "आम्हाला भेट द्या किंवा संपर्क साधा",
+      "description": "आमचे मुख्य कार्यालय आणि उत्पादन समन्वय केंद्र बालानगर, हैदराबाद येथे स्थित आहे. येथून लॉजिस्टिक्स आणि वाहतूक सुविधा सहज उपलब्ध आहेत.",
+      "registeredOffice": "नोंदणीकृत कार्यालय",
+      "mapTitle": "LIMRA INDUSTRY चे स्थान"
+    },
+    "network": {
+      "label": "नेटवर्क वाढ",
+      "title": "LIMRA सोबत काम करण्यास इच्छुक आहात?",
+      "description": "आमच्या वाढत्या अधिकृत वितरक, घाऊक विक्रेते आणि रिटेल डीलर्सच्या नेटवर्कमध्ये सहभागी व्हा. आकर्षक किंमती आणि विश्वासार्ह उत्पादनांचा लाभ घ्या.",
+      "button": "व्यावसायिक चौकशी सुरू करा"
+    }
+  },
+  
+  "aboutLeadershipEyebrow": "आमचे नेतृत्व",
+  "aboutLeadershipTitle": "LIMRA च्या मागची नेतृत्व टीम",
+  "aboutLeadershipDescription": "अनुभव, व्यावसायिक ज्ञान आणि सामायिक दृष्टिकोन LIMRA ला पुढे नेण्यात महत्त्वाची भूमिका बजावतात.",
+
+  "aboutFounderRole": "संस्थापक आणि उत्पादन तज्ज्ञ",
+  "aboutFounderDescription": "शेख असलम हे सीलिंग फॅन, टेबल फॅन, फॅनचे घटक आणि वाइंडिंग मशीनच्या निर्मितीतील अनुभवी उत्पादक आहेत. उत्पादन आणि असेंब्लीचे सखोल ज्ञान वापरून त्यांनी गुणवत्ता, विश्वासार्हता आणि ग्राहकांच्या समाधानावर लक्ष केंद्रित करून व्यवसाय उभारला आहे.",
+
+  "aboutFutureLeadershipRole": "व्यवसाय व्यवस्थापन आणि भावी नेतृत्व",
+  "aboutFutureLeadershipDescription": "शेख सलमान हे त्यांचे वडील शेख असलम यांच्यासोबत काम करून व्यवसायाच्या विविध बाबींचे व्यवस्थापन आणि विकास करण्यास सहकार्य करतात. BBA पदवीसह ते सध्या MBA चे शिक्षण घेत आहेत. ते व्यावसायिक शिक्षणासोबत प्रत्यक्ष उद्योग अनुभवाची सांगड घालत असून आधुनिक आणि विकासाभिमुख दृष्टिकोनातून व्यवसाय पुढे नेण्यासाठी तयारी करत आहेत.",
+
+  "wholesaleTitle": "घाऊक आणि मोठ्या प्रमाणात पुरवठा",
+  "wholesaleSubtitle": "उत्पादकाकडून थेट विश्वासार्ह पंख्यांचा पुरवठा",
+  "wholesaleDescription": "संपूर्ण भारतात सीलिंग फॅन, टेबल फॅन आणि पेडेस्टल फॅनच्या विश्वासार्ह घाऊक पुरवठ्यासाठी LIMRA INDUSTRIES सोबत भागीदारी करा.",
+  "wholesaleBadge": "B2B व्यापार पुरवठा",
+  "wholesaleHeroTitle": "फॅक्टरीमधून थेट घाऊक पंख्यांचा पुरवठा",
+  "wholesaleHeroDescription": "रिटेलर्स, घाऊक विक्रेते, डीलर्स, बिल्डर्स आणि संस्थांसाठी विश्वासार्ह पंख्यांचा पुरवठा, स्पर्धात्मक व्यापार दर आणि विश्वासार्ह विक्रीनंतरची सेवा.",
+  "wholesaleEnquiry": "घाऊक चौकशी पाठवा",
+  "wholesaleWhatsApp": "WhatsApp वर चौकशी करा",
+  "wholesaleViewProducts": "उत्पादने पहा",
+  "wholesaleProductTitle": "घाऊक उत्पादन श्रेणी",
+  "wholesaleProductDescription": "रिटेल, व्यावसायिक आणि संस्थात्मक गरजांसाठी योग्य आमच्या उत्पादनांची श्रेणी निवडा.",
+  "wholesaleCeilingFans": "सीलिंग फॅन",
+  "wholesaleCeilingFansDesc": "घर, व्यवसाय आणि रिटेल गरजांसाठी विश्वासार्ह सीलिंग फॅन.",
+  "wholesaleTableFans": "टेबल फॅन",
+  "wholesaleTableFansDesc": "घर, कार्यालये आणि संस्थांसाठी कॉम्पॅक्ट आणि विश्वासार्ह टेबल फॅन.",
+  "wholesalePedestalFans": "पेडेस्टल फॅन",
+  "wholesalePedestalFansDesc": "व्यावसायिक आणि संस्थात्मक वापरासाठी उच्च हवेचा प्रवाह देणारे पेडेस्टल फॅन.",
+  "wholesaleWhoWeSupply": "आम्ही कोणाला पुरवठा करतो",
+  "wholesaleWhoWeSupplyDescription": "आमचा घाऊक पुरवठा कार्यक्रम मोठ्या प्रमाणात पंखे खरेदी करणाऱ्या व्यवसाय आणि संस्थांसाठी तयार केला आहे.",
+  "wholesaleRetailers": "इलेक्ट्रिकल रिटेलर्स आणि दुकाने",
+  "wholesaleRetailersDesc": "कार्टन प्रमाणात पुरवठा, चांगले व्यापार मार्जिन आणि विश्वासार्ह वॉरंटी सपोर्टसह.",
+  "wholesaleDistributors": "प्रादेशिक घाऊक विक्रेते आणि स्टॉकिस्ट",
+  "wholesaleDistributorsDesc": "प्रादेशिक वितरक, घाऊक विक्रेते आणि इलेक्ट्रिकल स्टॉकिस्टसाठी मोठ्या प्रमाणात पुरवठा.",
+  "wholesaleInstitutions": "वसतिगृहे आणि शैक्षणिक संस्था",
+  "wholesaleInstitutionsDesc": "वसतिगृहे, वर्गखोल्या, कार्यालये आणि संस्थात्मक सुविधांसाठी विश्वासार्ह पंखे.",
+  "wholesaleBuilders": "बिल्डर्स आणि इलेक्ट्रिकल कॉन्ट्रॅक्टर्स",
+  "wholesaleBuildersDesc": "निवासी आणि व्यावसायिक प्रकल्पांसाठी समान बॅचमध्ये पुरवठा आणि समन्वयित डिलिव्हरी.",
+  "wholesaleBenefitsTitle": "LIMRA INDUSTRIES कडून थेट का खरेदी करावी?",
+  "wholesaleBenefitsDescription": "उत्पादन क्षमता आणि समर्पित सपोर्टसह सोपी आणि विश्वासार्ह घाऊक पुरवठा प्रक्रिया.",
+  "wholesaleBenefit1": "थेट उत्पादक",
+  "wholesaleBenefit1Desc": "आमच्या उत्पादन सुविधेतून थेट उत्पादने मिळवा.",
+  "wholesaleBenefit2": "घाऊक पुरवठा",
+  "wholesaleBenefit2Desc": "डीलर्स, रिटेलर्स आणि संस्थात्मक खरेदीदारांसाठी लवचिक प्रमाण.",
+  "wholesaleBenefit3": "विश्वासार्ह गुणवत्ता",
+  "wholesaleBenefit3Desc": "पुन्हा होणाऱ्या मोठ्या ऑर्डरसाठी सातत्यपूर्ण उत्पादन गुणवत्ता.",
+  "wholesaleBenefit4": "वॉरंटी सपोर्ट",
+  "wholesaleBenefit4Desc": "निवडक मॉडेल्सवर वॉरंटी कव्हरेज उपलब्ध आहे.",
+  "wholesaleBenefit5": "संपूर्ण भारतात डिलिव्हरी",
+  "wholesaleBenefit5Desc": "नोंदणीकृत वाहतूक सेवांद्वारे संपूर्ण भारतात डिस्पॅच सपोर्ट.",
+  "wholesaleBenefit6": "डीलर सपोर्ट",
+  "wholesaleBenefit6Desc": "घाऊक आणि डीलर गरजांसाठी समर्पित मदत.",
+  "wholesaleFormTitle": "घाऊक आणि मोठ्या प्रमाणातील चौकशी",
+  "wholesaleFormDescription": "तुमची घाऊक आवश्यकता सांगा आणि आमची विक्री टीम तुमच्याशी संपर्क साधेल.",
+  "wholesaleName": "पूर्ण नाव",
+  "wholesaleBusinessName": "व्यवसायाचे नाव",
+  "wholesaleCity": "शहर",
+  "wholesaleState": "राज्य",
+  "wholesalePhone": "मोबाइल नंबर",
+  "wholesaleEmail": "ईमेल पत्ता",
+  "wholesaleProduct": "स्वारस्य असलेले उत्पादन",
+  "wholesaleQuantity": "आवश्यक प्रमाण",
+  "wholesaleMessage": "अतिरिक्त आवश्यकता",
+  "wholesaleNamePlaceholder": "उदा. रमेश कुमार",
+  "wholesaleBusinessPlaceholder": "उदा. श्री बालाजी इलेक्ट्रिकल्स",
+  "wholesaleCityPlaceholder": "उदा. हैदराबाद / पुणे",
+  "wholesalePhonePlaceholder": "उदा. +91 89198 54467",
+  "wholesaleEmailPlaceholder": "उदा. contact@business.com",
+  "wholesaleQuantityPlaceholder": "उदा. 25 पंखे, 50 पंखे, 100+ पंखे",
+  "wholesaleMessagePlaceholder": "मॉडेल, डिलिव्हरी वेळ किंवा कोणतीही विशेष आवश्यकता लिहा...",
+  "wholesaleSelectState": "राज्य निवडा",
+  "wholesaleSubmit": "चौकशी पाठवा",
+  "wholesaleSubmitting": "पाठवत आहे...",
+  "wholesaleWhatsAppButton": "WhatsApp वर चौकशी करा",
+  "wholesaleSuccessTitle": "घाऊक चौकशी प्राप्त झाली",
+  "wholesaleSuccessDescription": "धन्यवाद. LIMRA INDUSTRIES ची विक्री टीम तुमच्या आवश्यकतेचा आढावा घेऊन लवकरच तुमच्याशी संपर्क साधेल.",
+  "wholesaleSendWhatsApp": "WhatsApp वर तपशील पाठवा",
+  "wholesaleSubmitAnother": "दुसरी चौकशी पाठवा",
+  "wholesaleProductLabel": "उत्पादन",
+  "wholesaleQuantityLabel": "प्रमाण",
+  "wholesaleContactLabel": "संपर्क",
+  "wholesaleDirectFactory": "थेट कारखान्यातून",
+  "wholesalePanIndiaDispatch": "नोंदणीकृत वाहतूक सेवांद्वारे संपूर्ण भारतात डिस्पॅच उपलब्ध आहे.",
+  "wholesaleTrustManufacturer": "थेट उत्पादक",
+  "wholesaleTrustManufacturerDesc": "आमच्या उत्पादन सुविधेतून थेट गुणवत्तापूर्ण पंखे.",
+  "wholesaleTrustWholesale": "घाऊक पुरवठा",
+  "wholesaleTrustWholesaleDesc": "डीलर्स आणि रिटेलर्ससाठी विश्वासार्ह मोठ्या प्रमाणातील पुरवठा.",
+  "wholesaleTrustWarranty": "वॉरंटी सपोर्ट",
+  "wholesaleTrustWarrantyDesc": "वॉरंटी सपोर्टसह विश्वासार्ह उत्पादने.",
+  "wholesaleTrustDelivery": "संपूर्ण भारतात डिलिव्हरी",
+  "wholesaleTrustDeliveryDesc": "संपूर्ण भारतात सुरक्षित आणि विश्वासार्ह डिलिव्हरी.",
+  "wholesaleTrustTitle": "विश्वासार्ह घाऊक पुरवठ्यासाठी तयार",
+  "wholesaleProductCeilingBulk": "सीलिंग फॅन (घाऊक)",
+  "wholesaleProductTableBulk": "टेबल फॅन (घाऊक)",
+  "wholesaleProductPedestalBulk": "पेडेस्टल फॅन (घाऊक)",
+  "wholesaleProductMixed": "मिश्र कंटेनर / मिश्र ऑर्डर",
+  "wholesaleProductInstitutional": "संस्थात्मक पुरवठा (वसतिगृह / कॉलेज / कार्यालय)",
+  "wholesaleProductDealer": "डीलर वितरण चौकशी"
+}
