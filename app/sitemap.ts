@@ -1,6 +1,5 @@
 import type { MetadataRoute } from "next";
 
-import { getManagedProducts } from "@/lib/productCatalog";
 import { LOCALES, SITE_URL } from "@/lib/seo";
 
 const staticPages = [
@@ -13,10 +12,9 @@ const staticPages = [
   "/wholesale",
 ] as const;
 
-export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+export default function sitemap(): MetadataRoute.Sitemap {
   const entries: MetadataRoute.Sitemap = [];
 
-  // Localized static pages
   for (const locale of LOCALES) {
     for (const page of staticPages) {
       const url = `${SITE_URL}/${locale}${page}`;
@@ -38,29 +36,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
             LOCALES.map((altLocale) => [
               altLocale,
               `${SITE_URL}/${altLocale}${page}`,
-            ])
-          ),
-        },
-      });
-    }
-  }
-
-  // Localized product detail pages
-  const products = await getManagedProducts();
-
-  for (const locale of LOCALES) {
-    for (const product of products) {
-      const path = `/products/${product.slug}`;
-
-      entries.push({
-        url: `${SITE_URL}/${locale}${path}`,
-        changeFrequency: "monthly",
-        priority: product.featured ? 0.8 : 0.7,
-        alternates: {
-          languages: Object.fromEntries(
-            LOCALES.map((altLocale) => [
-              altLocale,
-              `${SITE_URL}/${altLocale}${path}`,
             ])
           ),
         },

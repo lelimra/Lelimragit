@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import type { Product } from "@/data/products";
+import type { Product } from "@/types/product";
 import { siteConfig } from "@/data/site";
 
 export const SITE_URL = siteConfig.siteUrl;
