@@ -550,7 +550,7 @@ export default function NavSearchBar({
                   </div>
 
                   <div className="mt-1 text-xs text-slate-400">
-                    Try a product name, model, category or specification.
+                    Try a product name, model, category or specification..
                   </div>
 
                   <Link
