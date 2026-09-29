@@ -18,6 +18,7 @@ import {
 } from "lucide-react";
 import { useAIAssistant } from "@/context/AiAssistantContext";
 import { products } from "@/data/products";
+
 import { getGeneralWhatsAppUrl } from "@/utils/whatsapp";
 
 interface Message {

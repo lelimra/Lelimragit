@@ -23,7 +23,7 @@ export default function RootLayout({
 
           {children}
 
-          <FloatingActions />
+          {/* <FloatingActions /> */}
           <ScrollToTop />
 
           <Marquee />

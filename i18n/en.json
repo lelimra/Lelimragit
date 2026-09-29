@@ -105,7 +105,7 @@
       "threeBlades": "3 Blades",
       "bodyMaterial": "Body Material",
       "aluminiumWinding": "Aluminium Winding",
-      "twoYearWarranty": "2 Year Warranty",
+      "twoYearWarranty": "2 Years",
       "viewProduct": "View Product",
       "getWholesalePrice": "Get Wholesale Price",
       "selectColor": "Select {color}",
@@ -189,7 +189,7 @@
     "blades": "Blades",
     "bodyMaterial": "Body Material",
     "motor": "Motor",
-    "warranty": "2 Year Warranty",
+    "warranty": "2 Years",
     "viewProduct": "View Product",
     "wholesalePrice": "Get Wholesale Price"
   },

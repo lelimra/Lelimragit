@@ -1,39 +1,43 @@
-export type ProductRange = "48-inch Premium" | "24-inch Premium";
+export type ProductCategory =
+  | "ceiling-fan"
+  | "table-fan"
+  | "pedestal-fan";
 
-export type FanFinish =
-  | "Pearl White"
-  | "Pearl Ivory"
-  | "Satin Gold"
-  | "Baker's Brown"
-  | "Viola Blue"
-  | "Matt Black"
-  | "Rose Gold";
-
-export interface ProductVariant {
-  finish: FanFinish;
-  image: string;
-}
-
-export interface ProductSpecifications {
-  sweep?: string;
-  power?: string;
-  airDelivery?: string;
-  speed?: string;
-}
-
-export interface Product {
+export type Product = {
   id: string;
   slug: string;
-  model: string;
-  range: ProductRange;
-
+  company: string;
+  name: string;
+  category: ProductCategory;
+  model?: string;
+  shortDescription: string;
   description: string;
+  images: string[];
 
-  image: string;
+  price?: number;
+  mrp?: number;
 
-  variants: ProductVariant[];
+  specifications: {
+    size?: string;
+    sweep?: string;
+    rpm?: string;
+    wattage?: string;
+    voltage?: string;
+    frequency?: string;
+    motorType?: string;
+    winding?: string;
+    blades?: string;
+    airDelivery?: string;
+    noise?: string;
+    bodyMaterial?: string;
+    bladeMaterial?: string;
+    colors?: string[];
+  };
 
-  specifications: ProductSpecifications;
+  features: string[];
 
+  warranty?: string;
+
+  available: boolean;
   featured: boolean;
-}
+};

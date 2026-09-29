@@ -1,8 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
-import { Link } from "@/lib/navigation";
-import { useTranslations } from "next-intl";
+import { useEffect, useMemo, useState } from "react";
 import {
   Search,
   SlidersHorizontal,
@@ -11,27 +9,53 @@ import {
   Wind,
   ShieldCheck,
   RotateCcw,
-  Sparkles,
+  Loader2,
 } from "lucide-react";
+import { useTranslations } from "next-intl";
 
-import { products, ProductCategory } from "@/data/products";
+import {
+  products as defaultProducts,
+  type ProductCategory,
+} from "@/data/products";
+
+import type { Product } from "@/types/product";
+
 import ProductCard from "@/components/products/ProductCard";
 import DownloadCatalogue from "../common/DownloadCatalogue";
 
-interface ProductsPageProps {
-  initialCategory?: ProductCategory;
-}
+type ProductsProps = {
+  products?: Product[];
+};
 
-export default function ProductsPage({
-  initialCategory,
-}: ProductsPageProps) {
+const CATEGORY_MAP: Record<
+  ProductCategory | "all",
+  ProductCategory | "all"
+> = {
+  all: "all",
+  "ceiling-fan": "ceiling-fan",
+  "table-fan": "table-fan",
+  "pedestal-fan": "pedestal-fan",
+};
+
+export default function Products({
+  products = defaultProducts,
+}: ProductsProps) {
   const t = useTranslations();
+
+  // =====================================================
+  // FILTER STATE
+  // =====================================================
 
   const [selectedCategory, setSelectedCategory] = useState<
     ProductCategory | "all"
-  >(initialCategory ?? "all");
+  >("all");
 
   const [searchQuery, setSearchQuery] = useState("");
+
+  const [searchResults, setSearchResults] = useState<Product[]>(products);
+
+  const [isSearching, setIsSearching] = useState(false);
+
   const [selectedSize, setSelectedSize] = useState("all");
 
   const [priceSort, setPriceSort] = useState<
@@ -39,15 +63,29 @@ export default function ProductsPage({
   >("default");
 
   const [featuredOnly, setFeaturedOnly] = useState(false);
+
   const [inStockOnly, setInStockOnly] = useState(false);
 
   const [isFilterOpen, setIsFilterOpen] = useState(false);
 
   // =====================================================
+  // SYNC PRODUCTS FROM SERVER
+  // =====================================================
+
+  useEffect(() => {
+    if (!searchQuery.trim()) {
+      setSearchResults(products);
+    }
+  }, [products, searchQuery]);
+
+  // =====================================================
   // CATEGORY LABELS
   // =====================================================
 
-  const categoryTitles = {
+  const categoryTitles: Record<
+    ProductCategory | "all",
+    string
+  > = {
     all: t("navAllProducts"),
     "ceiling-fan": t("navCeilingFans"),
     "table-fan": t("navTableFans"),
@@ -55,28 +93,143 @@ export default function ProductsPage({
   };
 
   // =====================================================
-  // AVAILABLE PRODUCT SIZES
+  // DATABASE SEARCH
+  // =====================================================
+
+  const handleDatabaseSearch = async (value: string) => {
+    setSearchQuery(value);
+
+    const trimmedValue = value.trim();
+
+    // Empty search -> restore server products
+    if (!trimmedValue) {
+      setSearchResults(products);
+      setIsSearching(false);
+      return;
+    }
+
+    try {
+      setIsSearching(true);
+
+      const params = new URLSearchParams();
+
+      params.set("search", trimmedValue);
+
+      if (selectedCategory !== "all") {
+        params.set("category", selectedCategory);
+      }
+
+      const response = await fetch(
+        `/api/products?${params.toString()}`,
+        {
+          method: "GET",
+          cache: "no-store",
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error(
+          `Product search failed: ${response.status}`
+        );
+      }
+
+      const data = await response.json();
+
+      setSearchResults(
+        Array.isArray(data.products) ? data.products : []
+      );
+    } catch (error) {
+      console.error("Product search error:", error);
+
+      setSearchResults([]);
+    } finally {
+      setIsSearching(false);
+    }
+  };
+
+  // =====================================================
+  // CATEGORY CHANGE
+  // =====================================================
+
+  const handleCategoryChange = async (
+    category: ProductCategory | "all"
+  ) => {
+    setSelectedCategory(category);
+
+    // No active search.
+    // The page already received category-filtered products
+    // from the server.
+    if (!searchQuery.trim()) {
+      setSearchResults(products);
+      return;
+    }
+
+    // Active search -> query API again with new category.
+    try {
+      setIsSearching(true);
+
+      const params = new URLSearchParams();
+
+      params.set("search", searchQuery.trim());
+
+      if (category !== "all") {
+        params.set("category", category);
+      }
+
+      const response = await fetch(
+        `/api/products?${params.toString()}`,
+        {
+          method: "GET",
+          cache: "no-store",
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error(
+          `Category search failed: ${response.status}`
+        );
+      }
+
+      const data = await response.json();
+
+      setSearchResults(
+        Array.isArray(data.products) ? data.products : []
+      );
+    } catch (error) {
+      console.error("Category search error:", error);
+
+      setSearchResults([]);
+    } finally {
+      setIsSearching(false);
+    }
+  };
+
+  // =====================================================
+  // AVAILABLE SIZES
   // =====================================================
 
   const availableSizes = useMemo(() => {
     const sizes = new Set<string>();
 
-    products.forEach((product) => {
-      if (product.specifications.size) {
+    searchResults.forEach((product) => {
+      if (product.specifications?.size) {
         sizes.add(product.specifications.size);
       }
     });
 
     return Array.from(sizes).sort();
-  }, []);
+  }, [searchResults]);
 
   // =====================================================
   // FILTER PRODUCTS
   // =====================================================
 
   const filteredProducts = useMemo(() => {
-    const result = products.filter((product) => {
-      // Category
+    const result = searchResults.filter((product) => {
+      // -------------------------------------------------
+      // CATEGORY
+      // -------------------------------------------------
+
       if (
         selectedCategory !== "all" &&
         product.category !== selectedCategory
@@ -84,65 +237,53 @@ export default function ProductsPage({
         return false;
       }
 
-      // Size
+      // -------------------------------------------------
+      // SIZE
+      // -------------------------------------------------
+
       if (
         selectedSize !== "all" &&
-        product.specifications.size !== selectedSize
+        product.specifications?.size !== selectedSize
       ) {
         return false;
       }
 
-      // Featured
+      // -------------------------------------------------
+      // FEATURED
+      // -------------------------------------------------
+
       if (featuredOnly && !product.featured) {
         return false;
       }
 
-      // Availability
+      // -------------------------------------------------
+      // AVAILABILITY
+      // -------------------------------------------------
+
       if (inStockOnly && !product.available) {
         return false;
-      }
-
-      // Search
-      if (searchQuery.trim()) {
-        const query = searchQuery.toLowerCase().trim();
-
-        const matchesName = product.name.toLowerCase().includes(query);
-        const matchesModel = product.model?.toLowerCase().includes(query);
-        const matchesCategory = product.category.toLowerCase().includes(query);
-        const matchesDescription = product.shortDescription
-          .toLowerCase()
-          .includes(query);
-        const matchesFeatures = product.features.some((feature) =>
-          feature.toLowerCase().includes(query)
-        );
-
-        if (
-          !matchesName &&
-          !matchesModel &&
-          !matchesCategory &&
-          !matchesDescription &&
-          !matchesFeatures
-        ) {
-          return false;
-        }
       }
 
       return true;
     });
 
-    // =====================================================
+    // -----------------------------------------------------
     // PRICE SORTING
-    // =====================================================
+    // -----------------------------------------------------
 
     if (priceSort === "low-high") {
-      return result.sort(
-        (a, b) => (a.price ?? 999999) - (b.price ?? 999999)
+      return [...result].sort(
+        (a, b) =>
+          (a.price ?? 999999) -
+          (b.price ?? 999999)
       );
     }
 
     if (priceSort === "high-low") {
-      return result.sort(
-        (a, b) => (b.price ?? 0) - (a.price ?? 0)
+      return [...result].sort(
+        (a, b) =>
+          (b.price ?? 0) -
+          (a.price ?? 0)
       );
     }
 
@@ -150,275 +291,401 @@ export default function ProductsPage({
   }, [
     selectedCategory,
     selectedSize,
-    searchQuery,
     priceSort,
     featuredOnly,
     inStockOnly,
+    searchResults,
   ]);
 
   // =====================================================
   // RESET FILTERS
   // =====================================================
 
-  const resetFilters = () => {
-    setSelectedCategory(initialCategory ?? "all");
-    setSelectedSize("all");
+const resetFilters = () => {
+  setSelectedCategory("all");
+  setSelectedSize("all");
+  setSearchQuery("");
+  setPriceSort("default");
+  setFeaturedOnly(false);
+  setInStockOnly(false);
+  setIsFilterOpen(false);
+};
+
+  // =====================================================
+  // CLEAR SEARCH
+  // =====================================================
+
+  const clearSearch = () => {
     setSearchQuery("");
-    setPriceSort("default");
-    setFeaturedOnly(false);
-    setInStockOnly(false);
+    setSearchResults(products);
+    setIsSearching(false);
   };
 
-  const hasActiveFilters =
-    selectedCategory !== (initialCategory ?? "all") ||
-    selectedSize !== "all" ||
-    searchQuery !== "" ||
-    priceSort !== "default" ||
-    featuredOnly ||
-    inStockOnly;
+  // =====================================================
+  // ACTIVE FILTER CHECK
+  // =====================================================
 
-  const pageTitle = categoryTitles[selectedCategory];
+ const hasActiveFilters =
+  selectedCategory !== "all" ||
+  selectedSize !== "all" ||
+  searchQuery.trim() !== "" ||
+  priceSort !== "default" ||
+  featuredOnly ||
+  inStockOnly;
+
+  // =====================================================
+  // PAGE TITLE
+  // =====================================================
+
+  const pageTitle =
+    categoryTitles[selectedCategory];
+
+  // =====================================================
+  // RENDER
+  // =====================================================
 
   return (
-    <main className="min-h-screen bg-slate-50/70 pb-24">
+    <main className="min-h-screen bg-slate-50 pb-20">
+      {/* =================================================
+          PAGE HEADER
+      ================================================= */}
 
-   {/* =====================================================
-          PAGE HEADER / HERO SECTION
-      ===================================================== */}
-      <section className="relative overflow-hidden border-b border-slate-200/80 bg-white shadow-2xs">
-        <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 sm:py-10 lg:px-8">
-
+      <section className="border-b border-slate-200 bg-white">
+        <div className="mx-auto max-w-7xl px-4 pb-8 pt-5 sm:px-6 lg:px-8">
           {/* Breadcrumb */}
-          <nav aria-label="Breadcrumb" className="mb-6 flex items-center gap-1.5 text-xs font-medium text-slate-500">
-            <Link
+
+          <div className="text-xs text-slate-500">
+            <a
               href="/"
-              className="inline-flex items-center gap-1 rounded-md px-2 py-1 transition-colors hover:bg-slate-100 hover:text-slate-900"
+              className="transition-colors hover:text-[#174e8c]"
             >
-              <svg
-                className="h-3.5 w-3.5"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
-                />
-              </svg>
-              <span>{t("Navbar.home")}</span>
-            </Link>
+              {t("Navbar.home")}
+            </a>
 
-            <span className="text-slate-300" aria-hidden="true">/</span>
+            <span className="mx-2">/</span>
 
-            <span className="rounded-md bg-slate-100/60 px-2 py-1 font-semibold text-slate-800" aria-current="page">
+            <span className="font-medium text-slate-700">
               {pageTitle}
             </span>
-          </nav>
 
-          {/* 2-Column Main Row */}
-          <div className="grid grid-cols-1 items-start gap-6 lg:grid-cols-12">
-            
-            {/* Left Column: Title, Description, Search, & Category Tabs (Span 8) */}
-            <div className="lg:col-span-8 space-y-6">
-              <div>
-                <h1 className="text-3xl font-black tracking-tight text-slate-900 sm:text-4xl">
-                  {pageTitle}
-                </h1>
-                <p className="mt-2 text-sm text-slate-500 leading-relaxed">
-                  {t("productsPageDescription")}
-                </p>
-              </div>
-
-              {/* Search Input */}
-              <div className="relative">
-                <Search className="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
-                <input
-                  type="text"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  placeholder={t("productsSearchPlaceholder")}
-                  className="w-full rounded-xl border border-slate-200/80 bg-slate-50/50 py-2.5 pl-10 pr-9 text-xs font-medium text-slate-800 outline-none transition-all focus:border-[#0b2f5c] focus:bg-white focus:ring-2 focus:ring-[#0b2f5c]/10"
-                />
-                {searchQuery && (
-                  <button
-                    onClick={() => setSearchQuery("")}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
-                  >
-                    <X className="h-4 w-4" />
-                  </button>
-                )}
-              </div>
-
-              {/* Category Pill Tabs */}
-              <div className="flex gap-2 overflow-x-auto pb-1 no-scrollbar">
-                {[
-                  ["all", t("navAllProducts"), Sparkles],
-                  ["ceiling-fan", t("navCeilingFans"), Fan],
-                  ["table-fan", t("navTableFans"), Wind],
-                  ["pedestal-fan", t("navPedestalFans"), ShieldCheck],
-                ].map(([id, label, Icon]) => {
-                  const categoryId = id as string;
-                  const categoryLabel = label as string;
-                  const IconComp = Icon as any;
-                  const isActive = selectedCategory === categoryId;
-
-                  return (
-                    <button
-                      key={categoryId}
-                      onClick={() => setSelectedCategory(categoryId as any)}
-                      className={`inline-flex shrink-0 items-center gap-2 rounded-xl px-4 py-2.5 text-xs font-bold transition-all duration-200 active:scale-95 ${
-                        isActive
-                          ? "bg-slate-900 text-white shadow-sm"
-                          : "bg-white text-slate-600 border border-slate-200/80 hover:bg-slate-50 hover:text-slate-900"
-                      }`}
-                    >
-                      <IconComp className={`h-3.5 w-3.5 ${isActive ? "text-sky-400" : "text-slate-400"}`} />
-                      <span>{categoryLabel}</span>
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
-
-            {/* Right Column: Quick Actions / Badges (Span 4) */}
-            <div className="lg:col-span-4 flex flex-row lg:flex-col lg:items-end justify-start gap-2.5">
-              <span className="inline-flex items-center rounded-xl bg-slate-50 px-3.5 py-2.5 text-xs font-bold text-slate-600 border border-slate-200/80">
-                {t("productsShowing", {
-                  count: filteredProducts.length,
-                  total: products.length,
-                })}
-              </span>
-
-              <Link
-                href="/wholesale"
-                className="inline-flex items-center gap-1.5 rounded-xl bg-[#0b2f5c] px-4 py-2.5 text-xs font-bold text-white shadow-xs transition-all hover:bg-[#082243] active:scale-95"
-              >
-                {t("navGetQuote")}
-              </Link>
-
-              <DownloadCatalogue />
-            </div>
-
+            <DownloadCatalogue />
           </div>
 
+          {/* Header */}
+
+          <div className="mt-5 flex flex-col justify-between gap-4 md:flex-row md:items-center">
+            <div>
+              <h1 className="text-3xl font-black tracking-tight text-slate-900">
+                {pageTitle}
+              </h1>
+
+              <p className="mt-1 max-w-2xl text-sm text-slate-500">
+                {t("productsPageDescription")}
+              </p>
+            </div>
+
+            <div className="flex items-center gap-2">
+              <span className="rounded-md bg-slate-100 px-3 py-1.5 text-xs font-semibold text-slate-500">
+                {t("productsShowing", {
+                  count: filteredProducts.length,
+                  total: searchQuery
+                    ? searchResults.length
+                    : products.length,
+                })}
+              </span>
+            </div>
+          </div>
+
+          {/* =================================================
+              CATEGORY TABS
+          ================================================= */}
+
+          <div className="mt-6 flex gap-2 overflow-x-auto pb-2">
+            {/* ALL */}
+
+            <button
+              type="button"
+              onClick={() =>
+                handleCategoryChange("all")
+              }
+              className={`shrink-0 rounded-lg px-4 py-2 text-xs font-bold transition-all ${
+                selectedCategory === "all"
+                  ? "bg-[#0b2f5c] text-white shadow-sm"
+                  : "bg-slate-100 text-slate-700 hover:bg-slate-200"
+              }`}
+            >
+              {t("navAllProducts")}
+            </button>
+
+            {/* CEILING */}
+
+            <button
+              type="button"
+              onClick={() =>
+                handleCategoryChange("ceiling-fan")
+              }
+              className={`flex shrink-0 items-center gap-1.5 rounded-lg px-4 py-2 text-xs font-bold transition-all ${
+                selectedCategory === "ceiling-fan"
+                  ? "bg-[#0b2f5c] text-white shadow-sm"
+                  : "bg-slate-100 text-slate-700 hover:bg-slate-200"
+              }`}
+            >
+              <Fan className="h-3.5 w-3.5" />
+
+              {t("navCeilingFans")}
+            </button>
+
+            {/* TABLE */}
+
+            <button
+              type="button"
+              onClick={() =>
+                handleCategoryChange("table-fan")
+              }
+              className={`flex shrink-0 items-center gap-1.5 rounded-lg px-4 py-2 text-xs font-bold transition-all ${
+                selectedCategory === "table-fan"
+                  ? "bg-[#0b2f5c] text-white shadow-sm"
+                  : "bg-slate-100 text-slate-700 hover:bg-slate-200"
+              }`}
+            >
+              <Wind className="h-3.5 w-3.5" />
+
+              {t("navTableFans")}
+            </button>
+
+            {/* PEDESTAL */}
+
+            <button
+              type="button"
+              onClick={() =>
+                handleCategoryChange("pedestal-fan")
+              }
+              className={`flex shrink-0 items-center gap-1.5 rounded-lg px-4 py-2 text-xs font-bold transition-all ${
+                selectedCategory === "pedestal-fan"
+                  ? "bg-[#0b2f5c] text-white shadow-sm"
+                  : "bg-slate-100 text-slate-700 hover:bg-slate-200"
+              }`}
+            >
+              <ShieldCheck className="h-3.5 w-3.5" />
+
+              {t("navPedestalFans")}
+            </button>
+          </div>
         </div>
       </section>
 
-      {/* =====================================================
-          SEARCH + CONTROLS BAR
-      ===================================================== */}
+      {/* =================================================
+          MAIN CONTENT
+      ================================================= */}
+
       <section className="mx-auto max-w-7xl px-4 pt-6 sm:px-6 lg:px-8">
-        <div className="mb-6 flex flex-col gap-3 rounded-2xl border border-slate-200/80 bg-white p-3.5 shadow-xs md:flex-row md:items-center md:justify-between">
+        {/* =================================================
+            SEARCH BAR
+        ================================================= */}
 
-        
+        <div className="mb-6 flex flex-col gap-3 rounded-xl border border-slate-200 bg-white p-3 sm:p-4 md:flex-row md:items-center md:justify-between">
+          {/* Search */}
 
-          {/* Sorting & Filter Toggle */}
-          <div className="flex items-center gap-2.5">
+          <div className="relative flex-1">
+            <Search className="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
+
+            <input
+              type="text"
+              value={searchQuery}
+              onChange={(event) =>
+                handleDatabaseSearch(
+                  event.target.value
+                )
+              }
+              placeholder={t(
+                "productsSearchPlaceholder"
+              )}
+              className="w-full rounded-lg border border-slate-200 bg-slate-50/50 py-2 pl-10 pr-16 text-sm outline-none transition focus:ring-2 focus:ring-[#0b2f5c]"
+            />
+
+            {/* Search loader */}
+
+            {isSearching && (
+              <Loader2 className="absolute right-9 top-1/2 h-4 w-4 -translate-y-1/2 animate-spin text-[#0b2f5c]" />
+            )}
+
+            {/* Clear */}
+
+            {searchQuery && !isSearching && (
+              <button
+                type="button"
+                onClick={clearSearch}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
+                aria-label="Clear search"
+              >
+                <X className="h-4 w-4" />
+              </button>
+            )}
+          </div>
+
+          {/* Sort / Mobile Filter */}
+
+          <div className="flex items-center gap-2">
             <select
               value={priceSort}
-              onChange={(e) => setPriceSort(e.target.value as any)}
-              className="rounded-xl border border-slate-200/80 bg-white px-3.5 py-2.5 text-xs font-bold text-slate-700 outline-none transition-all hover:bg-slate-50 focus:border-[#0b2f5c] focus:ring-2 focus:ring-[#0b2f5c]/10"
+              onChange={(event) =>
+                setPriceSort(
+                  event.target.value as
+                    | "default"
+                    | "low-high"
+                    | "high-low"
+                )
+              }
+              className="rounded-lg border border-slate-200 bg-white px-3 py-2 text-xs font-semibold text-slate-700 outline-none focus:ring-2 focus:ring-[#0b2f5c]"
             >
-              <option value="default">{t("sortDefault")}</option>
-              <option value="low-high">{t("sortPriceLowHigh")}</option>
-              <option value="high-low">{t("sortPriceHighLow")}</option>
+              <option value="default">
+                {t("sortDefault")}
+              </option>
+
+              <option value="low-high">
+                {t("sortPriceLowHigh")}
+              </option>
+
+              <option value="high-low">
+                {t("sortPriceHighLow")}
+              </option>
             </select>
 
             <button
-              onClick={() => setIsFilterOpen(!isFilterOpen)}
-              className={`inline-flex items-center gap-1.5 rounded-xl border px-4 py-2.5 text-xs font-bold transition-all lg:hidden ${
-                isFilterOpen
+              type="button"
+              onClick={() =>
+                setIsFilterOpen(!isFilterOpen)
+              }
+              className={`flex items-center gap-1.5 rounded-lg border px-3 py-2 text-xs font-bold lg:hidden ${
+                hasActiveFilters
                   ? "border-[#0b2f5c] bg-[#0b2f5c] text-white"
-                  : "border-slate-200/80 bg-white text-slate-700 hover:bg-slate-50"
+                  : "border-slate-200 bg-white text-slate-700"
               }`}
             >
               <SlidersHorizontal className="h-3.5 w-3.5" />
-              <span>{t("filters")}</span>
+
+              {t("filters")}
             </button>
           </div>
         </div>
 
-        {/* =====================================================
-            MAIN GRID & SIDEBAR
-        ===================================================== */}
-        <div className="grid grid-cols-1 gap-8 lg:grid-cols-4">
+        {/* =================================================
+            SIDEBAR + PRODUCTS
+        ================================================= */}
 
-          {/* =====================================================
+        <div className="grid grid-cols-1 gap-8 lg:grid-cols-4">
+          {/* =================================================
               FILTER SIDEBAR
-          ===================================================== */}
+          ================================================= */}
+
           <aside
             className={`lg:col-span-1 ${
-              isFilterOpen ? "block" : "hidden lg:block"
+              isFilterOpen
+                ? "block"
+                : "hidden lg:block"
             }`}
           >
-            <div className="sticky top-24 space-y-6 rounded-2xl border border-slate-200/80 bg-white p-5 shadow-xs">
+            <div className="sticky top-24 space-y-6 rounded-xl border border-slate-200 bg-white p-5">
+              {/* Filter Header */}
 
-              {/* Header */}
-              <div className="flex items-center justify-between border-b border-slate-100 pb-4">
-                <span className="flex items-center gap-2 text-xs font-extrabold uppercase tracking-wider text-slate-900">
+              <div className="flex items-center justify-between border-b border-slate-100 pb-3">
+                <span className="flex items-center gap-1.5 text-sm font-bold text-slate-900">
                   <SlidersHorizontal className="h-4 w-4 text-[#0b2f5c]" />
-                  <span>{t("filterProducts")}</span>
+
+                  {t("filterProducts")}
                 </span>
 
                 {hasActiveFilters && (
                   <button
+                    type="button"
                     onClick={resetFilters}
-                    className="inline-flex items-center gap-1 text-xs font-bold text-[#0b2f5c] transition-colors hover:text-sky-800"
+                    className="flex items-center gap-1 text-xs font-semibold text-[#0b2f5c] hover:underline"
                   >
                     <RotateCcw className="h-3 w-3" />
-                    <span>{t("reset")}</span>
+
+                    {t("reset")}
                   </button>
                 )}
               </div>
 
-              {/* Category Filter */}
+              {/* =================================================
+                  CATEGORY FILTER
+              ================================================= */}
+
               <div>
-                <label className="mb-2.5 block text-[11px] font-extrabold uppercase tracking-wider text-slate-400">
+                <label className="mb-2 block text-xs font-bold uppercase tracking-wider text-slate-500">
                   {t("category")}
                 </label>
-                <div className="space-y-2 text-xs font-medium">
-                  {[
-                    ["all", t("navAllProducts")],
-                    ["ceiling-fan", t("navCeilingFans")],
-                    ["table-fan", t("navTableFans")],
-                    ["pedestal-fan", t("navPedestalFans")],
-                  ].map(([id, label]) => (
+
+                <div className="space-y-2 text-xs">
+                  {(
+                    [
+                      ["all", t("navAllProducts")],
+                      [
+                        "ceiling-fan",
+                        t("navCeilingFans"),
+                      ],
+                      [
+                        "table-fan",
+                        t("navTableFans"),
+                      ],
+                      [
+                        "pedestal-fan",
+                        t("navPedestalFans"),
+                      ],
+                    ] as const
+                  ).map(([id, label]) => (
                     <label
                       key={id}
-                      className="flex cursor-pointer items-center gap-2.5 rounded-lg px-2 py-1.5 transition-colors hover:bg-slate-50 text-slate-700"
+                      className="flex cursor-pointer items-center gap-2 text-slate-700"
                     >
                       <input
                         type="radio"
-                        name="category"
-                        checked={selectedCategory === id}
-                        onChange={() => setSelectedCategory(id as any)}
-                        className="h-4 w-4 accent-[#0b2f5c]"
+                        name="product-category"
+                        checked={
+                          selectedCategory === id
+                        }
+                        onChange={() =>
+                          handleCategoryChange(
+                            id as ProductCategory | "all"
+                          )
+                        }
                       />
-                      <span className={selectedCategory === id ? "font-bold text-slate-900" : ""}>
-                        {label}
-                      </span>
+
+                      <span>{label}</span>
                     </label>
                   ))}
                 </div>
               </div>
 
-              {/* Size Filter */}
+              {/* =================================================
+                  SIZE FILTER
+              ================================================= */}
+
               {availableSizes.length > 0 && (
-                <div className="border-t border-slate-100 pt-4">
-                  <label className="mb-2 block text-[11px] font-extrabold uppercase tracking-wider text-slate-400">
+                <div>
+                  <label className="mb-2 block text-xs font-bold uppercase tracking-wider text-slate-500">
                     {t("sweepSize")}
                   </label>
+
                   <select
                     value={selectedSize}
-                    onChange={(e) => setSelectedSize(e.target.value)}
-                    className="w-full rounded-xl border border-slate-200/80 bg-slate-50/50 px-3 py-2.5 text-xs font-semibold text-slate-700 outline-none focus:border-[#0b2f5c] focus:bg-white"
+                    onChange={(event) =>
+                      setSelectedSize(
+                        event.target.value
+                      )
+                    }
+                    className="w-full rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-xs font-medium text-slate-700 outline-none focus:ring-2 focus:ring-[#0b2f5c]"
                   >
-                    <option value="all">{t("allSizes")}</option>
+                    <option value="all">
+                      {t("allSizes")}
+                    </option>
+
                     {availableSizes.map((size) => (
-                      <option key={size} value={size}>
+                      <option
+                        key={size}
+                        value={size}
+                      >
                         {size}
                       </option>
                     ))}
@@ -426,74 +693,110 @@ export default function ProductsPage({
                 </div>
               )}
 
-              {/* Preferences / Checkboxes */}
-              <div className="space-y-2.5 border-t border-slate-100 pt-4">
-                <label className="mb-2.5 block text-[11px] font-extrabold uppercase tracking-wider text-slate-400">
+              {/* =================================================
+                  PREFERENCES
+              ================================================= */}
+
+              <div className="space-y-2 border-t border-slate-100 pt-3">
+                <label className="mb-2 block text-xs font-bold uppercase tracking-wider text-slate-500">
                   {t("preferences")}
                 </label>
 
-                <label className="flex cursor-pointer items-center gap-2.5 rounded-lg px-2 py-1.5 text-xs font-medium text-slate-700 hover:bg-slate-50">
+                <label className="flex cursor-pointer items-center gap-2 text-xs font-medium text-slate-700">
                   <input
                     type="checkbox"
                     checked={featuredOnly}
-                    onChange={(e) => setFeaturedOnly(e.target.checked)}
-                    className="h-4 w-4 rounded accent-[#0b2f5c]"
+                    onChange={(event) =>
+                      setFeaturedOnly(
+                        event.target.checked
+                      )
+                    }
                   />
-                  <span>{t("featuredOnly")}</span>
+
+                  {t("featuredOnly")}
                 </label>
 
-                <label className="flex cursor-pointer items-center gap-2.5 rounded-lg px-2 py-1.5 text-xs font-medium text-slate-700 hover:bg-slate-50">
+                <label className="flex cursor-pointer items-center gap-2 text-xs font-medium text-slate-700">
                   <input
                     type="checkbox"
                     checked={inStockOnly}
-                    onChange={(e) => setInStockOnly(e.target.checked)}
-                    className="h-4 w-4 rounded accent-[#0b2f5c]"
+                    onChange={(event) =>
+                      setInStockOnly(
+                        event.target.checked
+                      )
+                    }
                   />
-                  <span>{t("inStockOnly")}</span>
+
+                  {t("inStockOnly")}
                 </label>
               </div>
 
-              {/* Bulk Note Card */}
-              <div className="rounded-xl border border-sky-100 bg-sky-50/50 p-3.5 text-[11px] leading-relaxed text-slate-600">
+              {/* =================================================
+                  BULK ORDER NOTE
+              ================================================= */}
+
+              <div className="rounded-lg border border-blue-100 bg-blue-50/70 p-3 text-[11px] leading-relaxed text-slate-600">
                 <span className="mb-1 block font-bold text-[#0b2f5c]">
                   {t("bulkQuantities")}
                 </span>
+
                 {t("bulkQuantitiesDescription")}
               </div>
-
             </div>
           </aside>
 
-          {/* =====================================================
-              PRODUCT CARDS GRID AREA
-          ===================================================== */}
+          {/* =================================================
+              PRODUCT GRID
+          ================================================= */}
+
           <div className="lg:col-span-3">
             {filteredProducts.length === 0 ? (
-              <div className="rounded-2xl border border-slate-200/80 bg-white p-16 text-center shadow-xs">
-                <Search className="mx-auto mb-3 h-10 w-10 text-slate-300" />
-                <h3 className="text-base font-bold text-slate-900">
+              /* =================================================
+                 EMPTY STATE
+              ================================================= */
+
+              <div className="rounded-xl border border-slate-200 bg-white p-12 text-center">
+                <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-slate-100 text-slate-400">
+                  <Search className="h-6 w-6" />
+                </div>
+
+                <h3 className="text-base font-bold text-slate-800">
                   {t("noProductsFound")}
                 </h3>
-                <p className="mx-auto mt-1 max-w-sm text-xs text-slate-500 leading-relaxed">
-                  {t("noProductsFoundDescription")}
+
+                <p className="mx-auto mt-1 max-w-sm text-xs text-slate-500">
+                  {t(
+                    "noProductsFoundDescription"
+                  )}
                 </p>
+
                 <button
+                  type="button"
                   onClick={resetFilters}
-                  className="mt-5 inline-flex items-center gap-2 rounded-xl bg-[#0b2f5c] px-4 py-2.5 text-xs font-bold text-white shadow-sm transition-transform active:scale-95"
+                  className="mt-4 inline-flex items-center gap-1.5 rounded-lg bg-[#0b2f5c] px-4 py-2 text-xs font-bold text-white"
                 >
                   <RotateCcw className="h-3.5 w-3.5" />
-                  <span>{t("resetAllFilters")}</span>
+
+                  {t("resetAllFilters")}
                 </button>
               </div>
             ) : (
+              /* =================================================
+                 PRODUCT CARDS
+              ================================================= */
+
               <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-3">
-                {filteredProducts.map((product) => (
-                  <ProductCard key={product.id} product={product} />
-                ))}
+                {filteredProducts.map(
+                  (product) => (
+                    <ProductCard
+                      key={product.id}
+                      product={product}
+                    />
+                  )
+                )}
               </div>
             )}
           </div>
-
         </div>
       </section>
     </main>

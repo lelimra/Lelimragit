@@ -4,7 +4,6 @@ import { Link } from "@/lib/navigation";
 import { useTranslations } from "next-intl";
 import WhatsAppIcon from '@mui/icons-material/WhatsApp';
 import {
-  MessageSquare,
   ArrowRight,
   ShieldCheck,
   Zap,
@@ -41,20 +40,20 @@ export default function ProductCard({ product }: ProductCardProps) {
   )}`;
 
   return (
-    <article className="group relative flex flex-col overflow-hidden rounded-2xl border border-slate-200/85 bg-white shadow-xs transition-all duration-300 hover:-translate-y-1 hover:border-slate-300 hover:shadow-xl">
+    <article className="group relative flex flex-col overflow-hidden rounded-[28px] border-2 border-white bg-gradient-to-b from-white via-slate-50/80 to-slate-100/70 p-3 shadow-[0_12px_32px_-8px_rgba(15,23,42,0.08),inset_0_2px_6px_rgba(255,255,255,0.9)] transition-all duration-300 hover:-translate-y-1.5 hover:border-slate-200 hover:shadow-[0_20px_40px_-10px_rgba(15,23,42,0.14),inset_0_2px_6px_rgba(255,255,255,1)]">
 
       {/* =====================================================
-          PRODUCT IMAGE SECTION
+          PRODUCT IMAGE SECTION (Claymorphic Frame)
       ===================================================== */}
       <Link
         href={`/products/${product.slug}`}
-        className="relative block aspect-[4/3] w-full overflow-hidden bg-slate-50"
+        className="relative block aspect-[4/3] w-full overflow-hidden rounded-2xl bg-gradient-to-br from-slate-100 to-slate-200 shadow-[inset_0_2px_4px_rgba(0,0,0,0.06)]"
       >
         {product.images?.[0] ? (
           <img
             src={product.images[0]}
             alt={product.name}
-            className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+            className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-108"
           />
         ) : (
           <div className="flex h-full w-full items-center justify-center bg-slate-100">
@@ -68,21 +67,21 @@ export default function ProductCard({ product }: ProductCardProps) {
         <div className="absolute inset-x-0 top-0 h-20 bg-gradient-to-b from-black/40 via-black/10 to-transparent pointer-events-none" />
 
         {/* Category Pill */}
-        <span className="absolute left-3.5 top-3.5 rounded-full bg-slate-900/80 px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-white shadow-xs backdrop-blur-md">
+        <span className="absolute left-3.5 top-3.5 rounded-full bg-slate-900/85 px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-white shadow-[0_4px_10px_rgba(0,0,0,0.2)] backdrop-blur-md">
           {categoryLabels[product.category]}
         </span>
 
         {/* Featured / Popular Pill */}
         {product.featured && (
-          <span className="absolute right-3.5 top-3.5 rounded-full bg-amber-500 px-2.5 py-1 text-[10px] font-extrabold uppercase tracking-wider text-white shadow-xs">
+          <span className="absolute right-3.5 top-3.5 rounded-full bg-gradient-to-r from-amber-500 to-orange-500 px-2.5 py-1 text-[10px] font-extrabold uppercase tracking-wider text-white shadow-[0_4px_10px_rgba(245,158,11,0.4)]">
             {t("popular")}
           </span>
         )}
 
         {/* Out of Stock / On Request Overlay */}
         {!product.available && (
-          <div className="absolute inset-0 flex items-center justify-center bg-white/80 backdrop-blur-[2px]">
-            <span className="rounded-lg bg-slate-900 px-4 py-2 text-xs font-bold text-white shadow-sm">
+          <div className="absolute inset-0 flex items-center justify-center bg-white/85 backdrop-blur-[3px]">
+            <span className="rounded-xl bg-slate-900 px-4 py-2 text-xs font-bold text-white shadow-md">
               {t("onRequest")}
             </span>
           </div>
@@ -92,7 +91,7 @@ export default function ProductCard({ product }: ProductCardProps) {
       {/* =====================================================
           PRODUCT CONTENT SECTION
       ===================================================== */}
-      <div className="flex flex-grow flex-col p-2">
+      <div className="flex flex-grow flex-col pt-3 px-1.5 pb-1">
 
         {/* Model Code */}
         {product.model && (
@@ -104,29 +103,26 @@ export default function ProductCard({ product }: ProductCardProps) {
         )}
 
         {/* Product Name */}
-        <h3 className="mt-1.5 line-clamp-2 text-base font-bold tracking-tight text-slate-900 transition-colors group-hover:text-sky-600">
+        <h3 className="mt-1 line-clamp-2 text-base font-extrabold tracking-tight text-slate-900 transition-colors group-hover:text-sky-600">
           <Link href={`/products/${product.slug}`}>
             {product.name}
           </Link>
         </h3>
 
         {/* Short Description */}
-        <p className="mt-1.5 line-clamp-2 text-xs leading-relaxed text-slate-500">
+        <p className="mt-1 line-clamp-2 text-xs leading-relaxed text-slate-500">
           {product.shortDescription}
         </p>
 
         {/* =====================================================
-            SPECIFICATION PILLS
-        ===================================================== */}
-      {/* =====================================================
-            SPECIFICATION PILLS (FRESH UI)
+            SPECIFICATION PILLS (Claymorphic Sub-Cards)
         ===================================================== */}
         {hasSpecs && (
-          <div className="my-1 grid grid-cols-2 gap-2 rounded-xl bg-slate-50/80 p-1 border border-slate-100 text-[11px]">
+          <div className="my-2.5 grid grid-cols-2 gap-2 rounded-2xl bg-gradient-to-b from-white/90 to-slate-100/90 p-2 shadow-[inset_0_2px_4px_rgba(0,0,0,0.03),0_2px_8px_rgba(0,0,0,0.02)] border border-slate-200/60 text-[11px]">
 
             {product.specifications.size && (
-              <div className="flex items-center gap-2 rounded-lg bg-white p-2 shadow-2xs border border-slate-100/80">
-                <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md bg-sky-50 text-sky-600">
+              <div className="flex items-center gap-2 rounded-xl bg-white p-2 shadow-[0_3px_8px_rgba(0,0,0,0.04),inset_0_1px_2px_rgba(255,255,255,1)] border border-slate-100">
+                <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-sky-50 text-sky-600 shadow-xs">
                   <Gauge className="h-3.5 w-3.5" />
                 </div>
                 <div className="min-w-0 flex-1">
@@ -141,8 +137,8 @@ export default function ProductCard({ product }: ProductCardProps) {
             )}
 
             {product.specifications.rpm && (
-              <div className="flex items-center gap-2 rounded-lg bg-white p-2 shadow-2xs border border-slate-100/80">
-                <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md bg-indigo-50 text-indigo-600">
+              <div className="flex items-center gap-2 rounded-xl bg-white p-2 shadow-[0_3px_8px_rgba(0,0,0,0.04),inset_0_1px_2px_rgba(255,255,255,1)] border border-slate-100">
+                <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-indigo-50 text-indigo-600 shadow-xs">
                   <Gauge className="h-3.5 w-3.5" />
                 </div>
                 <div className="min-w-0 flex-1">
@@ -157,8 +153,8 @@ export default function ProductCard({ product }: ProductCardProps) {
             )}
 
             {product.specifications.wattage && (
-              <div className="flex items-center gap-1 rounded-lg bg-white p-2 shadow-2xs border border-slate-100/80">
-                <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md bg-amber-50 text-amber-600">
+              <div className="flex items-center gap-2 rounded-xl bg-white p-2 shadow-[0_3px_8px_rgba(0,0,0,0.04),inset_0_1px_2px_rgba(255,255,255,1)] border border-slate-100">
+                <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-amber-50 text-amber-600 shadow-xs">
                   <Zap className="h-3.5 w-3.5" />
                 </div>
                 <div className="min-w-0 flex-1">
@@ -173,8 +169,8 @@ export default function ProductCard({ product }: ProductCardProps) {
             )}
 
             {product.warranty && (
-              <div className="flex items-center gap-2 rounded-lg bg-white p-2 shadow-2xs border border-slate-100/80">
-                <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md bg-emerald-50 text-emerald-600">
+              <div className="flex items-center gap-2 rounded-xl bg-white p-2 shadow-[0_3px_8px_rgba(0,0,0,0.04),inset_0_1px_2px_rgba(255,255,255,1)] border border-slate-100">
+                <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-emerald-50 text-emerald-600 shadow-xs">
                   <ShieldCheck className="h-3.5 w-3.5" />
                 </div>
                 <div className="min-w-0 flex-1">
@@ -194,7 +190,7 @@ export default function ProductCard({ product }: ProductCardProps) {
         {/* =====================================================
             PRICE & WHOLESALE BADGE
         ===================================================== */}
-        <div className="mt-auto flex items-baseline justify-between border-t border-slate-100 pt-3.5">
+        <div className="mt-auto flex items-baseline justify-between border-t border-slate-200/60 pt-3">
           <div>
             {product.price ? (
               <div className="flex items-baseline gap-2">
@@ -214,35 +210,36 @@ export default function ProductCard({ product }: ProductCardProps) {
               </span>
             )}
 
-            <span className="mt-0.5 block text-[10px] font-medium tracking-wide text-slate-400 uppercase">
+            <span className="mt-0.5 block text-[10px] font-bold tracking-wide text-slate-400 uppercase">
               {t("wholesaleBulkRates")}
             </span>
           </div>
         </div>
 
         {/* =====================================================
-            ACTION BUTTONS
+            ACTION BUTTONS (3D Claymorphic Tactile Design)
         ===================================================== */}
-        <div className="mt-4 grid bg-violet-400 grid-cols-2 gap-2.5">
+        <div className="mt-2 grid grid-cols-2 gap-2">
+          {/* View Details Button - 3D Clay Amber */}
           <Link
             href={`/products/${product.slug}`}
-            className="inline-flex w-full items-center justify-center gap-1.5 rounded-xl bg-yellow-300 rounded-2xl px-3 py-2.5 text-center text-xs font-bold text-slate-700 transition-all duration-200 hover:bg-slate-200/80 active:scale-95"
+            className="group relative inline-flex w-full items-center justify-center gap-1.5 rounded-2xl bg-gradient-to-b from-amber-300 to-amber-500 px-1 py-1 text-center text-xs font-extrabold text-slate-950 shadow-[0_6px_0_0_#b45309,0_10px_20px_-4px_rgba(245,158,11,0.4),inset_0_2px_3px_rgba(255,255,255,0.7)] transition-all duration-150 hover:brightness-105 active:translate-y-1.5 active:shadow-[0_0px_0_0_#b45309,0_4px_10px_rgba(245,158,11,0.3),inset_0_1px_2px_rgba(255,255,255,0.5)] focus:outline-none focus:ring-2 focus:ring-amber-400/50"
           >
             <span>{t("viewDetails")}</span>
-            <ArrowRight className="h-3.5 w-3.5" />
+            <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1" />
           </Link>
 
+          {/* WhatsApp Enquiry Button - 3D Clay Emerald */}
           <a
             href={whatsappUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex w-full items-center justify-center gap-1.5 rounded-xl bg-emerald-600 px-3 py-2.5 text-center text-xs font-bold text-white shadow-xs transition-all duration-200 hover:bg-emerald-700 active:scale-95"
+            className="group relative inline-flex w-full items-center justify-center gap-1.5 rounded-2xl bg-gradient-to-b from-emerald-500 to-emerald-700 px-1 py-1 text-center text-xs font-extrabold text-white shadow-[0_6px_0_0_#064e3b,0_10px_20px_-4px_rgba(16,185,129,0.4),inset_0_2px_3px_rgba(255,255,255,0.4)] transition-all duration-150 hover:brightness-105 active:translate-y-1.5 active:shadow-[0_0px_0_0_#064e3b,0_4px_10px_rgba(16,185,129,0.3),inset_0_1px_2px_rgba(255,255,255,0.3)] focus:outline-none focus:ring-2 focus:ring-emerald-500/50"
           >
-            <WhatsAppIcon className="h-3.5 w-3.5" />
+            <WhatsAppIcon className="h-4 w-4 fill-current drop-shadow-sm" />
             <span>{t("enquireBtn")}</span>
           </a>
         </div>
-
       </div>
     </article>
   );

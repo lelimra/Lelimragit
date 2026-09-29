@@ -4,10 +4,7 @@ import Image from "next/image";
 import { useState } from "react";
 import { useTranslations } from "next-intl";
 
-import type { Product } from "@/data/products";
-import {
-  getRelatedProducts,
-} from "@/data/products";
+import type { Product } from "@/types/product";
 
 import {
   ArrowLeft,
@@ -22,31 +19,34 @@ import {
   X,
 } from "lucide-react";
 
-import WholesaleForm  from "@/components/wholesale/WholesaleForm";
-import ProductCard  from "@/components/products/ProductCard";
+import WholesaleForm from "@/components/wholesale/WholesaleForm";
+import ProductCard from "@/components/products/ProductCard";
 import { Link } from "@/lib/navigation";
 
 type ProductDetailsProps = {
   product: Product;
+  relatedProducts: Product[];
 };
 
-export default function ProductDetails({
+export default function ProductDetailClient({
   product,
+  relatedProducts,
 }: ProductDetailsProps) {
   const t = useTranslations();
 
   const [activeImageIndex, setActiveImageIndex] = useState(0);
-  const [selectedColor, setSelectedColor] = useState<string | null>(
-    null
-  );
+
+  const [selectedColor, setSelectedColor] =
+    useState<string | null>(null);
+
   const [showWholesaleModal, setShowWholesaleModal] =
     useState(false);
 
-  const relatedProducts = getRelatedProducts(
-    product.slug,
-    product.category,
-    3
-  );
+  /*
+   * ============================================================
+   * CATEGORY
+   * ============================================================
+   */
 
   const categoryLabels: Record<Product["category"], string> = {
     "ceiling-fan": t("navCeilingFans"),
@@ -66,15 +66,35 @@ export default function ProductDetails({
   const categoryUrl =
     categoryUrls[product.category] || "/products";
 
+  /*
+   * ============================================================
+   * WHATSAPP
+   * ============================================================
+   */
+
   const whatsappUrl = createProductWhatsAppUrl(
     product.name,
     product.model
   );
 
+  /*
+   * ============================================================
+   * PRODUCT IMAGES
+   * ============================================================
+   */
+
   const imageList = product.images?.filter(Boolean) ?? [];
 
   const activeImage =
-    imageList[activeImageIndex] ?? imageList[0] ?? null;
+    imageList[activeImageIndex] ??
+    imageList[0] ??
+    null;
+
+  /*
+   * ============================================================
+   * TECHNICAL SPECIFICATIONS
+   * ============================================================
+   */
 
   const specRows = [
     {
@@ -129,11 +149,19 @@ export default function ProductDetails({
     },
   ].filter((row) => Boolean(row.value));
 
+  /*
+   * ============================================================
+   * RENDER
+   * ============================================================
+   */
+
   return (
     <main className="min-h-screen bg-slate-50 pb-20">
+
       {/* =====================================================
           BREADCRUMB
       ===================================================== */}
+
       <div className="border-b border-slate-200 bg-white">
         <div className="mx-auto max-w-7xl px-4 py-4 sm:px-6 lg:px-8">
           <nav
@@ -168,16 +196,23 @@ export default function ProductDetails({
       {/* =====================================================
           MAIN PRODUCT
       ===================================================== */}
+
       <div className="mx-auto max-w-7xl px-4 pt-8 sm:px-6 lg:px-8">
         <section className="overflow-hidden rounded-2xl border border-slate-200 bg-white p-5 shadow-sm sm:p-8">
+
           <div className="grid grid-cols-1 gap-10 lg:grid-cols-12">
+
             {/* =================================================
                 LEFT - PRODUCT GALLERY
             ================================================= */}
+
             <div className="lg:col-span-6">
               <div className="space-y-4">
+
                 {/* MAIN IMAGE */}
+
                 <div className="relative aspect-[4/3] overflow-hidden rounded-2xl border border-slate-200 bg-slate-50">
+
                   {activeImage ? (
                     <Image
                       src={activeImage}
@@ -193,9 +228,13 @@ export default function ProductDetails({
                     />
                   )}
 
+                  {/* CATEGORY BADGE */}
+
                   <span className="absolute left-4 top-4 rounded-lg bg-[#07192f] px-3 py-1.5 text-[10px] font-bold uppercase tracking-wider text-white shadow">
                     {categoryLabel}
                   </span>
+
+                  {/* FEATURED BADGE */}
 
                   {product.featured && (
                     <span className="absolute right-4 top-4 rounded-lg bg-amber-400 px-3 py-1.5 text-[10px] font-bold uppercase tracking-wider text-slate-950 shadow">
@@ -204,6 +243,7 @@ export default function ProductDetails({
                   )}
 
                   {/* IMAGE ARROWS */}
+
                   {imageList.length > 1 && (
                     <>
                       <button
@@ -241,6 +281,7 @@ export default function ProductDetails({
                 </div>
 
                 {/* THUMBNAILS */}
+
                 {imageList.length > 1 && (
                   <div className="flex gap-3 overflow-x-auto pb-1">
                     {imageList.map((image, index) => (
@@ -255,11 +296,15 @@ export default function ProductDetails({
                             ? "border-[#0b2f5c] shadow-sm"
                             : "border-slate-200 opacity-70 hover:opacity-100"
                         }`}
-                        aria-label={`${product.name} ${index + 1}`}
+                        aria-label={`${product.name} ${
+                          index + 1
+                        }`}
                       >
                         <Image
                           src={image}
-                          alt={`${product.name} - ${index + 1}`}
+                          alt={`${product.name} - ${
+                            index + 1
+                          }`}
                           fill
                           sizes="96px"
                           className="object-cover"
@@ -270,6 +315,7 @@ export default function ProductDetails({
                 )}
 
                 {/* DISPATCH INFORMATION */}
+
                 <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
                   <div className="flex items-center gap-2.5 rounded-xl border border-slate-200 bg-slate-50 p-3 text-xs text-slate-600">
                     <Truck className="h-4 w-4 shrink-0 text-[#0b2f5c]" />
@@ -287,11 +333,14 @@ export default function ProductDetails({
             {/* =================================================
                 RIGHT - PRODUCT INFORMATION
             ================================================= */}
+
             <div className="flex flex-col lg:col-span-6">
+
               {/* BRAND */}
+
               <div className="flex flex-wrap items-center justify-between gap-3">
                 <span className="text-xs font-extrabold uppercase tracking-[0.15em] text-[#174e8c]">
-                  LIMRA INDUSTRY
+                  Le Limra
                 </span>
 
                 {product.model && (
@@ -302,17 +351,20 @@ export default function ProductDetails({
               </div>
 
               {/* PRODUCT NAME */}
-              <h1 className="mt-3 text-3xl font-black leading-tight tracking-tight text-slate-900 sm:text-4xl">
+
+              <h1 className="mt-3 text-3xl font-black leading-tight tracking-tight text-slate-900 sm:text-2xl">
                 {product.name}
               </h1>
 
               {/* DESCRIPTION */}
+
               <p className="mt-4 text-sm leading-7 text-slate-600">
                 {product.description ||
                   product.shortDescription}
               </p>
 
               {/* PRICE */}
+
               <div className="mt-7 rounded-2xl border border-slate-200 bg-slate-50 p-5">
                 <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                   <div>
@@ -361,6 +413,7 @@ export default function ProductDetails({
               </div>
 
               {/* COLORS */}
+
               {product.specifications.colors &&
                 product.specifications.colors.length > 0 && (
                   <div className="mt-7">
@@ -392,6 +445,7 @@ export default function ProductDetails({
                 )}
 
               {/* ACTIONS */}
+
               <div className="mt-8 grid grid-cols-1 gap-3.5 sm:grid-cols-2">
                 <a
                   href={whatsappUrl}
@@ -416,6 +470,7 @@ export default function ProductDetails({
               </div>
 
               {/* FEATURES */}
+
               {product.features &&
                 product.features.length > 0 && (
                   <div className="mt-8 border-t border-slate-200 pt-6">
@@ -445,6 +500,7 @@ export default function ProductDetails({
           {/* =================================================
               TECHNICAL SPECIFICATIONS
           ================================================= */}
+
           {specRows.length > 0 && (
             <section className="mt-12 border-t border-slate-200 pt-10">
               <div className="mb-5 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
@@ -505,6 +561,7 @@ export default function ProductDetails({
         {/* =====================================================
             RELATED PRODUCTS
         ===================================================== */}
+
         {relatedProducts.length > 0 && (
           <section className="mt-14">
             <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
@@ -542,6 +599,7 @@ export default function ProductDetails({
       {/* =====================================================
           WHOLESALE MODAL
       ===================================================== */}
+
       {showWholesaleModal && (
         <div
           className="fixed inset-0 z-[100] flex items-center justify-center overflow-y-auto bg-black/60 p-4 backdrop-blur-sm"
@@ -615,11 +673,11 @@ function createProductWhatsAppUrl(
   productName: string,
   model?: string
 ) {
-  const number = "910000000000";
+  const number = "918919854467";
 
   const message = encodeURIComponent(
     [
-      "Hello LIMRA INDUSTRY,",
+      "Hello LIMRA INDUSTRIES,",
       "",
       "I am interested in this product:",
       `Product: ${productName}`,

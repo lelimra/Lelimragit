@@ -33,7 +33,7 @@ const faqs = [
   {
     question: "What warranty is provided?",
     answer:
-      "The Avencer Prime comes with a 2 year warranty.",
+      "The Avencer Prime comes with a 2 Years.",
   },
   {
     question: "Do you accept wholesale and bulk orders?",

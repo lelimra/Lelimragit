@@ -33,6 +33,7 @@ import LanguageSwitcher from "../ui/LanguageSwitcher";
 import NavSearchBar from "../common/NavSearchBar";
 
 import { useAIAssistant } from "@/context/AiAssistantContext";
+import ThemeToggle from "./ThemeToggle";
 
 const WHATSAPP_NUMBER = "918919854467";
 
@@ -205,6 +206,10 @@ export default function Navbar() {
             >
               <span>🔒 {t("admin")}</span>
             </NextLink>
+
+              <div className="hidden z-100 sm:block pl-2 border-l border-slate-700">
+              <ThemeToggle />
+            </div>
 
             {/* Language */}
             <div className="hidden z-100 sm:block pl-2 border-l border-slate-700">
