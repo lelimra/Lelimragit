@@ -48,7 +48,7 @@ export const TrustStrip: React.FC = () => {
                   <h4 className="text-xs font-bold text-slate-900 leading-tight">
                     {item.title}
                   </h4>
-                  <p className="text-[11px] text-slate-500 mt-0.5 leading-snug">
+                  <p className="text-[10px] text-slate-500 mt-0.5 leading-snug">
                     {item.desc}
                   </p>
                 </div>
