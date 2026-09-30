@@ -260,7 +260,7 @@ export default function DealerApplicationsPageClient() {
       setError("");
 
       const response = await apiFetch(
-        "/api/admin/dealer-applications?limit=100&offset=0"
+        "/api/dealer-applications?limit=100&offset=0"
       );
 
       const data = await response.json();
@@ -409,7 +409,7 @@ export default function DealerApplicationsPageClient() {
 
     try {
       const response = await apiFetch(
-        `/api/admin/dealer-applications/${encodeURIComponent(
+        `/api/dealer-applications/${encodeURIComponent(
           application.inquiry_id
         )}`
       );
