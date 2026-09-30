@@ -14,7 +14,6 @@ import {
   Fan,
   FileText,
   Menu,
-  MessageSquare,
   Phone,
   Search,
   ShieldCheck,
@@ -27,18 +26,240 @@ import WhatsAppIcon from "@mui/icons-material/WhatsApp";
 
 import { Link } from "@/lib/navigation";
 import { siteConfig } from "@/data/site";
-import { getAllProducts } from "@/data/products";
 
 import LanguageSwitcher from "../ui/LanguageSwitcher";
 import NavSearchBar from "../common/NavSearchBar";
-
 import { useAIAssistant } from "@/context/AiAssistantContext";
 import ThemeToggle from "./ThemeToggle";
 
-const WHATSAPP_NUMBER = "918919854467";
+/* =========================================================
+   BACKEND PRODUCT TYPE
+   ---------------------------------------------------------
+   The navbar no longer imports the static product catalogue.
+   Product data is loaded from the backend API.
+========================================================= */
+
+export interface BackendProduct {
+  id: string;
+  name: string;
+  slug: string;
+  model?: string;
+  category?: string;
+  description?: string;
+
+  image?: string;
+  images?: string[];
+
+  price?: number | string | null;
+  mrp?: number | string | null;
+
+  available?: boolean;
+  featured?: boolean;
+
+  warranty?: string | number | null;
+
+  specifications?: Record<string, unknown>;
+
+  [key: string]: unknown;
+}
+
+type BackendProductsResponse =
+  | BackendProduct[]
+  | {
+      products?: unknown;
+      data?: unknown;
+      content?: unknown;
+    };
+
+const PRODUCTS_API_URL =
+  process.env.NEXT_PUBLIC_PRODUCTS_API_URL || "/api/products";
+
+const WHATSAPP_NUMBER =
+  process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "918919854467";
 
 const GENERAL_WHATSAPP_MESSAGE =
   "Hello LIMRA INDUSTRY, I would like to enquire about your ceiling, table and pedestal fans.";
+
+/* =========================================================
+   BACKEND RESPONSE HELPERS
+========================================================= */
+
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === "object" && value !== null;
+}
+
+function stringValue(value: unknown): string | undefined {
+  return typeof value === "string" && value.trim().length > 0
+    ? value.trim()
+    : undefined;
+}
+
+function normalizeImage(value: unknown): string | undefined {
+  if (typeof value === "string" && value.trim()) {
+    return value.trim();
+  }
+
+  if (isRecord(value)) {
+    return (
+      stringValue(value.url) ||
+      stringValue(value.src) ||
+      stringValue(value.imageUrl) ||
+      stringValue(value.path)
+    );
+  }
+
+  return undefined;
+}
+
+function normalizeImages(value: unknown): string[] {
+  if (!Array.isArray(value)) {
+    const single = normalizeImage(value);
+    return single ? [single] : [];
+  }
+
+  return value
+    .map(normalizeImage)
+    .filter((image): image is string => Boolean(image));
+}
+
+function normalizeSpecifications(
+  value: unknown
+): Record<string, unknown> | undefined {
+  return isRecord(value) ? value : undefined;
+}
+
+function normalizeProduct(
+  raw: unknown,
+  index: number
+): BackendProduct | null {
+  if (!isRecord(raw)) {
+    return null;
+  }
+
+  const id =
+    stringValue(raw.id) ||
+    stringValue(raw.productId) ||
+    stringValue(raw._id) ||
+    `backend-product-${index}`;
+
+  const name =
+    stringValue(raw.name) ||
+    stringValue(raw.productName) ||
+    stringValue(raw.title) ||
+    stringValue(raw.model) ||
+    `Product ${index + 1}`;
+
+  const slug =
+    stringValue(raw.slug) ||
+    stringValue(raw.productSlug) ||
+    id;
+
+  const images = [
+    ...normalizeImages(raw.images),
+    ...normalizeImages(raw.image),
+    ...normalizeImages(raw.imageUrl),
+    ...normalizeImages(raw.thumbnail),
+  ].filter(
+    (image, imageIndex, array) => array.indexOf(image) === imageIndex
+  );
+
+  return {
+    ...raw,
+    id,
+    name,
+    slug,
+    model: stringValue(raw.model),
+    category: stringValue(raw.category),
+    description: stringValue(raw.description),
+    image: images[0],
+    images,
+    price:
+      typeof raw.price === "number" || typeof raw.price === "string"
+        ? raw.price
+        : null,
+    mrp:
+      typeof raw.mrp === "number" || typeof raw.mrp === "string"
+        ? raw.mrp
+        : null,
+    available:
+      typeof raw.available === "boolean" ? raw.available : undefined,
+    featured:
+      typeof raw.featured === "boolean" ? raw.featured : undefined,
+    warranty:
+      typeof raw.warranty === "string" || typeof raw.warranty === "number"
+        ? raw.warranty
+        : null,
+    specifications: normalizeSpecifications(raw.specifications),
+  };
+}
+
+function extractProductArray(payload: unknown): unknown[] {
+  if (Array.isArray(payload)) {
+    return payload;
+  }
+
+  if (!isRecord(payload)) {
+    return [];
+  }
+
+  const candidates = [
+    payload.products,
+    payload.data,
+    payload.content,
+  ];
+
+  for (const candidate of candidates) {
+    if (Array.isArray(candidate)) {
+      return candidate;
+    }
+
+    if (isRecord(candidate)) {
+      const nestedCandidates = [
+        candidate.products,
+        candidate.data,
+        candidate.content,
+      ];
+
+      for (const nested of nestedCandidates) {
+        if (Array.isArray(nested)) {
+          return nested;
+        }
+      }
+    }
+  }
+
+  return [];
+}
+
+async function fetchProducts(
+  signal: AbortSignal
+): Promise<BackendProduct[]> {
+  const response = await fetch(PRODUCTS_API_URL, {
+    method: "GET",
+    headers: {
+      Accept: "application/json",
+    },
+    cache: "no-store",
+    signal,
+  });
+
+  if (!response.ok) {
+    throw new Error(
+      `Products API request failed with status ${response.status}`
+    );
+  }
+
+  const payload: unknown =
+    (await response.json()) as BackendProductsResponse;
+
+  return extractProductArray(payload)
+    .map(normalizeProduct)
+    .filter((product): product is BackendProduct => product !== null);
+}
+
+/* =========================================================
+   WHATSAPP
+========================================================= */
 
 const getWhatsAppUrl = () => {
   return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(
@@ -46,14 +267,18 @@ const getWhatsAppUrl = () => {
   )}`;
 };
 
+/* =========================================================
+   NAVBAR
+========================================================= */
+
 export default function Navbar() {
   const pathname = usePathname();
   const locale = useLocale();
-
   const t = useTranslations("Navbar");
 
   const { openAssistant } = useAIAssistant();
 
+  const [products, setProducts] = useState<BackendProduct[]>([]);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isMobileSearchOpen, setIsMobileSearchOpen] = useState(false);
   const [isProductsOpen, setIsProductsOpen] = useState(false);
@@ -62,21 +287,40 @@ export default function Navbar() {
     useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
 
-  /*
-   * Keep this call here so the navbar remains connected
-   * to the actual static product catalogue.
-   */
-  const products = getAllProducts();
+  /* =========================================================
+     LOAD PRODUCTS FROM BACKEND
+  ========================================================== */
 
-  /*
-   * Remove locale from pathname.
-   *
-   * /en/products        -> /products
-   * /hi/products        -> /products
-   * /te/about           -> /about
-   */
-  const currentPath =
-    pathname.replace(new RegExp(`^/${locale}(?=/|$)`), "") || "/";
+  useEffect(() => {
+    const controller = new AbortController();
+
+    const loadProducts = async () => {
+      try {
+        const backendProducts = await fetchProducts(controller.signal);
+
+        if (!controller.signal.aborted) {
+          setProducts(backendProducts);
+        }
+      } catch (error) {
+        if (controller.signal.aborted) {
+          return;
+        }
+
+        console.error("Navbar: failed to load products", error);
+        setProducts([]);
+      }
+    };
+
+    loadProducts();
+
+    return () => {
+      controller.abort();
+    };
+  }, []);
+
+  /* =========================================================
+     SCROLL STATE
+  ========================================================== */
 
   useEffect(() => {
     const handleScroll = () => {
@@ -94,9 +338,10 @@ export default function Navbar() {
     };
   }, []);
 
-  /*
-   * Close menus whenever route changes.
-   */
+  /* =========================================================
+     CLOSE MENUS ON ROUTE CHANGE
+  ========================================================== */
+
   useEffect(() => {
     setIsMobileMenuOpen(false);
     setIsMobileSearchOpen(false);
@@ -107,9 +352,16 @@ export default function Navbar() {
     window.scrollTo({
       top: 0,
       left: 0,
-      behavior: "instant",
+      behavior: "auto",
     });
   }, [pathname]);
+
+  /* =========================================================
+     ACTIVE ROUTE
+  ========================================================== */
+
+  const currentPath =
+    pathname.replace(new RegExp(`^/${locale}(?=/|$)`), "") || "/";
 
   const isActive = (path: string) => {
     if (path === "/") {
@@ -126,6 +378,10 @@ export default function Navbar() {
   const isApplicationActive =
     isActive("/wholesale") || isActive("/dealers");
 
+  /* =========================================================
+     MOBILE MENU HELPERS
+  ========================================================== */
+
   const closeMobileMenu = () => {
     setIsMobileMenuOpen(false);
     setIsMobileSearchOpen(false);
@@ -141,6 +397,7 @@ export default function Navbar() {
       {/* =========================================================
           TOP UTILITY BAR
       ========================================================== */}
+
       <div className="bg-slate-900 text-slate-300 text-xs py-1 px-2 border-b border-slate-800">
         <div className="max-w-7xl mx-auto flex items-center justify-between gap-3">
           {/* Manufacturer information */}
@@ -151,17 +408,13 @@ export default function Navbar() {
               {t("directManufacturer")}
             </span>
 
-            <span className="text-slate-500 hidden sm:inline">
-              ·
-            </span>
+            <span className="text-slate-500 hidden sm:inline">·</span>
 
             <span className="text-slate-400 hidden sm:inline">
               {siteConfig.city}
             </span>
 
-            <span className="text-slate-500 hidden md:inline">
-              ·
-            </span>
+            <span className="text-slate-500 hidden md:inline">·</span>
 
             <span className="text-slate-400 hidden md:inline">
               {t("panIndiaSupply")}
@@ -172,7 +425,7 @@ export default function Navbar() {
           <div className="flex items-center gap-3 sm:gap-4 shrink-0 text-xs">
             {/* Phone */}
             <a
-              href={`tel:${siteConfig.phone.replace(
+              href={`tel:${String(siteConfig.phone || "").replace(
                 /[^0-9+]/g,
                 ""
               )}`}
@@ -207,13 +460,14 @@ export default function Navbar() {
               <span>🔒 {t("admin")}</span>
             </NextLink>
 
-              <div className="hidden z-100 sm:block pl-2 border-l border-slate-700">
+            {/* Theme */}
+            <div className="hidden z-[100] sm:block pl-2 border-l border-slate-700">
               <ThemeToggle />
             </div>
 
             {/* Language */}
-            <div className="hidden z-100 sm:block pl-2 border-l border-slate-700">
-              <LanguageSwitcher  />
+            <div className="hidden z-[100] sm:block pl-2 border-l border-slate-700">
+              <LanguageSwitcher />
             </div>
           </div>
         </div>
@@ -222,6 +476,7 @@ export default function Navbar() {
       {/* =========================================================
           MAIN HEADER
       ========================================================== */}
+
       <header
         className={`sticky top-0 z-50 transition-all duration-200 bg-white/95 backdrop-blur-md ${
           isScrolled
@@ -234,9 +489,10 @@ export default function Navbar() {
             {/* ===================================================
                 LOGO
             ==================================================== */}
+
             <Link
               href="/"
-              className="flex items-center shrink-0 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#091a32] rounded "
+              className="flex items-center shrink-0 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#091a32] rounded"
               aria-label={t("homeAria")}
             >
               <Image
@@ -252,6 +508,7 @@ export default function Navbar() {
             {/* ===================================================
                 DESKTOP NAVIGATION
             ==================================================== */}
+
             <nav className="hidden lg:flex items-center space-x-1 xl:space-x-2">
               {/* Home */}
               <Link
@@ -268,6 +525,7 @@ export default function Navbar() {
               {/* =================================================
                   PRODUCTS
               ================================================== */}
+
               <div
                 className="relative"
                 onMouseEnter={() => setIsProductsOpen(true)}
@@ -304,7 +562,6 @@ export default function Navbar() {
                       className="flex items-center justify-between px-4 py-2.5 text-xs font-bold text-slate-900 hover:bg-slate-50 border-b border-slate-100"
                     >
                       <span>{t("allProductCatalog")}</span>
-
                       <ArrowUpRight className="w-3.5 h-3.5" />
                     </Link>
 
@@ -371,6 +628,7 @@ export default function Navbar() {
               {/* =================================================
                   APPLICATIONS
               ================================================== */}
+
               <div
                 className="relative"
                 onMouseEnter={() => setIsApplicationOpen(true)}
@@ -484,16 +742,16 @@ export default function Navbar() {
                 )}
               </div>
 
-              {/* Warranty */}
+              {/* About */}
               <Link
-                href="/warranty"
+                href="/about"
                 className={`px-3 py-2 text-sm font-medium transition-colors rounded-md ${
-                  isActive("/warranty")
+                  isActive("/about")
                     ? "text-[#091a32] font-semibold bg-slate-100"
                     : "text-slate-600 hover:text-slate-900 hover:bg-slate-50"
                 }`}
               >
-                {t("digitalWarranty")}
+                {t("about")}
               </Link>
 
               {/* Contact */}
@@ -512,6 +770,7 @@ export default function Navbar() {
             {/* ===================================================
                 DESKTOP ACTIONS
             ==================================================== */}
+
             <div className="hidden lg:flex items-center gap-2.5">
               {/* Search */}
               <NavSearchBar
@@ -521,7 +780,6 @@ export default function Navbar() {
               />
 
               {/* AI */}
-              
               <button
                 type="button"
                 onClick={openAI}
@@ -550,6 +808,7 @@ export default function Navbar() {
             {/* ===================================================
                 MOBILE CONTROLS
             ==================================================== */}
+
             <div className="flex items-center lg:hidden gap-1.5">
               {/* AI */}
               <button
@@ -587,7 +846,7 @@ export default function Navbar() {
               </button>
 
               {/* Language */}
-              <LanguageSwitcher  />
+              <LanguageSwitcher />
 
               {/* Hamburger */}
               <button
@@ -601,6 +860,7 @@ export default function Navbar() {
                 }}
                 className="p-2 rounded-md text-slate-700 hover:text-slate-900"
                 aria-label={t("toggleNavigation")}
+                aria-expanded={isMobileMenuOpen}
               >
                 {isMobileMenuOpen ? (
                   <X className="w-6 h-6" />
@@ -614,14 +874,13 @@ export default function Navbar() {
           {/* =====================================================
               MOBILE SEARCH
           ====================================================== */}
+
           {isMobileSearchOpen && (
             <div className="lg:hidden border-t border-slate-200 bg-slate-50 px-0 py-3 mt-3 animate-in slide-in-from-top-2 duration-150">
               <NavSearchBar
                 variant="mobile"
                 products={products}
-                onCloseMobile={() =>
-                  setIsMobileSearchOpen(false)
-                }
+                onCloseMobile={() => setIsMobileSearchOpen(false)}
               />
             </div>
           )}
@@ -629,6 +888,7 @@ export default function Navbar() {
           {/* =====================================================
               MOBILE MENU
           ====================================================== */}
+
           {isMobileMenuOpen && (
             <div className="lg:hidden border-t border-slate-200 bg-white pt-4 pb-2 space-y-1 animate-in slide-in-from-top-2 duration-200">
               {/* Home */}
@@ -697,14 +957,13 @@ export default function Navbar() {
                       ? "bg-slate-100 text-[#091a32] font-bold"
                       : "text-slate-700 hover:bg-slate-50"
                   }`}
+                  aria-expanded={isMobileApplicationOpen}
                 >
                   <span>{t("application")}</span>
 
                   <ChevronDown
                     className={`w-4 h-4 transition-transform ${
-                      isMobileApplicationOpen
-                        ? "rotate-180"
-                        : ""
+                      isMobileApplicationOpen ? "rotate-180" : ""
                     }`}
                   />
                 </button>
@@ -746,17 +1005,17 @@ export default function Navbar() {
                 )}
               </div>
 
-              {/* Warranty */}
+              {/* About */}
               <Link
-                href="/warranty"
+                href="/about"
                 onClick={closeMobileMenu}
                 className={`block px-3 py-2.5 rounded-lg text-sm font-medium ${
-                  isActive("/warranty")
+                  isActive("/about")
                     ? "bg-slate-100 text-[#091a32] font-bold"
                     : "text-slate-700 hover:bg-slate-50"
                 }`}
               >
-                {t("digitalWarranty")}
+                {t("about")}
               </Link>
 
               {/* Contact */}
@@ -775,6 +1034,7 @@ export default function Navbar() {
               {/* =================================================
                   MOBILE ACTIONS
               ================================================== */}
+
               <div className="pt-3 border-t border-slate-200 flex flex-col gap-2">
                 {/* AI */}
                 <button
@@ -817,7 +1077,7 @@ export default function Navbar() {
 
                 {/* Call */}
                 <a
-                  href={`tel:${siteConfig.phone.replace(
+                  href={`tel:${String(siteConfig.phone || "").replace(
                     /[^0-9+]/g,
                     ""
                   )}`}

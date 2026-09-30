@@ -1,3 +1,5 @@
+// src/types/product.ts
+
 export type ProductCategory =
   | "ceiling-fan"
   | "table-fan"
@@ -41,3 +43,34 @@ export type Product = {
   available: boolean;
   featured: boolean;
 };
+
+/**
+ * Product shape returned by the backend.
+ *
+ * Backend data can be incomplete or use different
+ * representations, so fields are intentionally optional.
+ */
+export interface BackendProduct {
+  id: string;
+  name: string;
+  slug: string;
+
+  model?: string;
+  category?: string;
+  description?: string;
+
+  image?: string;
+  images?: string[];
+
+  price?: number | string | null;
+  mrp?: number | string | null;
+
+  available?: boolean;
+  featured?: boolean;
+
+  warranty?: string | number | null;
+
+  specifications?: Record<string, unknown>;
+
+  [key: string]: unknown;
+}

@@ -1,101 +1,122 @@
 "use client";
-
 import Image from "next/image";
 import { useState } from "react";
-import { useTranslations } from "next-intl";
-
+import { useLocale, useTranslations } from "next-intl";
 import type { Product } from "@/types/product";
-
 import {
   ArrowLeft,
   ArrowRight,
   Building2,
   CheckCircle,
   ChevronRight,
+  Bell,
+  BellRing,
+  Bot,
+  Sparkles,
+  ShieldCheck,
+  Star,
   Info,
   Layers,
   MessageSquare,
   Truck,
   X,
 } from "lucide-react";
-
 import WholesaleForm from "@/components/wholesale/WholesaleForm";
 import ProductCard from "@/components/products/ProductCard";
 import { Link } from "@/lib/navigation";
-
+import { useAIAssistant } from "@/context/AiAssistantContext";
 type ProductDetailsProps = {
   product: Product;
   relatedProducts: Product[];
 };
-
 export default function ProductDetailClient({
   product,
   relatedProducts,
 }: ProductDetailsProps) {
   const t = useTranslations();
+  const locale = useLocale();
 
+  const localized = (product as Product & {
+    translations?: Record<string, {
+      name?: string;
+      description?: string;
+      shortDescription?: string;
+      features?: string[];
+      highlights?: string[];
+      warranty?: string;
+    }>;
+  }).translations?.[locale];
+
+  const displayName = localized?.name ?? product.name;
+  const displayDescription =
+    localized?.description ??
+    localized?.shortDescription ??
+    product.description ??
+    product.shortDescription;
+  const displayFeatures = localized?.features ?? product.features ?? [];
+  const displayHighlights =
+    localized?.highlights ??
+    (product as Product & { highlights?: string[] }).highlights ??
+    [];
+  const displayWarranty = localized?.warranty ?? product.warranty;
   const [activeImageIndex, setActiveImageIndex] = useState(0);
-
   const [selectedColor, setSelectedColor] =
     useState<string | null>(null);
-
   const [showWholesaleModal, setShowWholesaleModal] =
     useState(false);
 
+  const { openAssistant } = useAIAssistant();
   /*
    * ============================================================
    * CATEGORY
    * ============================================================
    */
-
   const categoryLabels: Record<Product["category"], string> = {
     "ceiling-fan": t("navCeilingFans"),
     "table-fan": t("navTableFans"),
     "pedestal-fan": t("navPedestalFans"),
   };
-
   const categoryUrls: Record<Product["category"], string> = {
     "ceiling-fan": "/products?category=ceiling-fan",
     "table-fan": "/products?category=table-fan",
     "pedestal-fan": "/products?category=pedestal-fan",
   };
-
   const categoryLabel =
     categoryLabels[product.category] || t("category");
-
   const categoryUrl =
     categoryUrls[product.category] || "/products";
-
   /*
    * ============================================================
    * WHATSAPP
    * ============================================================
    */
-
   const whatsappUrl = createProductWhatsAppUrl(
-    product.name,
+    displayName,
     product.model
   );
 
+  const notifyWhatsAppUrl = createProductNotifyWhatsAppUrl(
+    displayName,
+    product.model,
+    selectedColor
+  );
+
+  const productHighlights = displayHighlights;
   /*
    * ============================================================
    * PRODUCT IMAGES
    * ============================================================
    */
-
   const imageList = product.images?.filter(Boolean) ?? [];
-
   const activeImage =
     imageList[activeImageIndex] ??
     imageList[0] ??
     null;
-
   /*
    * ============================================================
    * TECHNICAL SPECIFICATIONS
    * ============================================================
    */
-
   const specRows = [
     {
       label: t("specSizeSweep"),
@@ -148,20 +169,16 @@ export default function ProductDetailClient({
       value: product.specifications.bladeMaterial,
     },
   ].filter((row) => Boolean(row.value));
-
   /*
    * ============================================================
    * RENDER
    * ============================================================
    */
-
   return (
     <main className="min-h-screen bg-slate-50 pb-20">
-
       {/* =====================================================
           BREADCRUMB
       ===================================================== */}
-
       <div className="border-b border-slate-200 bg-white">
         <div className="mx-auto max-w-7xl px-4 py-4 sm:px-6 lg:px-8">
           <nav
@@ -174,49 +191,37 @@ export default function ProductDetailClient({
             >
               {t("navProducts")}
             </Link>
-
             <ChevronRight className="h-3.5 w-3.5" />
-
             <Link
               href={categoryUrl}
               className="font-semibold transition hover:text-[#0b2f5c]"
             >
               {categoryLabel}
             </Link>
-
             <ChevronRight className="h-3.5 w-3.5" />
-
             <span className="font-medium text-slate-700">
               {product.name}
             </span>
           </nav>
         </div>
       </div>
-
       {/* =====================================================
           MAIN PRODUCT
       ===================================================== */}
-
       <div className="mx-auto max-w-7xl px-4 pt-8 sm:px-6 lg:px-8">
         <section className="overflow-hidden rounded-2xl border border-slate-200 bg-white p-5 shadow-sm sm:p-8">
-
           <div className="grid grid-cols-1 gap-10 lg:grid-cols-12">
-
             {/* =================================================
                 LEFT - PRODUCT GALLERY
             ================================================= */}
-
             <div className="lg:col-span-6">
               <div className="space-y-4">
-
                 {/* MAIN IMAGE */}
-
                 <div className="relative aspect-[4/3] overflow-hidden rounded-2xl border border-slate-200 bg-slate-50">
-
                   {activeImage ? (
                     <Image
                       src={activeImage}
-                      alt={product.name}
+                      alt={displayName}
                       fill
                       priority
                       sizes="(max-width: 1024px) 100vw, 50vw"
@@ -227,23 +232,17 @@ export default function ProductDetailClient({
                       label={t("productImageComingSoon")}
                     />
                   )}
-
                   {/* CATEGORY BADGE */}
-
                   <span className="absolute left-4 top-4 rounded-lg bg-[#07192f] px-3 py-1.5 text-[10px] font-bold uppercase tracking-wider text-white shadow">
                     {categoryLabel}
                   </span>
-
                   {/* FEATURED BADGE */}
-
                   {product.featured && (
                     <span className="absolute right-4 top-4 rounded-lg bg-amber-400 px-3 py-1.5 text-[10px] font-bold uppercase tracking-wider text-slate-950 shadow">
                       {t("featured")}
                     </span>
                   )}
-
                   {/* IMAGE ARROWS */}
-
                   {imageList.length > 1 && (
                     <>
                       <button
@@ -260,7 +259,6 @@ export default function ProductDetailClient({
                       >
                         <ArrowLeft className="h-4 w-4" />
                       </button>
-
                       <button
                         type="button"
                         onClick={() =>
@@ -279,9 +277,7 @@ export default function ProductDetailClient({
                     </>
                   )}
                 </div>
-
                 {/* THUMBNAILS */}
-
                 {imageList.length > 1 && (
                   <div className="flex gap-3 overflow-x-auto pb-1">
                     {imageList.map((image, index) => (
@@ -296,13 +292,13 @@ export default function ProductDetailClient({
                             ? "border-[#0b2f5c] shadow-sm"
                             : "border-slate-200 opacity-70 hover:opacity-100"
                         }`}
-                        aria-label={`${product.name} ${
+                        aria-label={`${displayName} ${
                           index + 1
                         }`}
                       >
                         <Image
                           src={image}
-                          alt={`${product.name} - ${
+                          alt={`${displayName} - ${
                             index + 1
                           }`}
                           fill
@@ -313,15 +309,12 @@ export default function ProductDetailClient({
                     ))}
                   </div>
                 )}
-
                 {/* DISPATCH INFORMATION */}
-
                 <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
                   <div className="flex items-center gap-2.5 rounded-xl border border-slate-200 bg-slate-50 p-3 text-xs text-slate-600">
                     <Truck className="h-4 w-4 shrink-0 text-[#0b2f5c]" />
                     <span>{t("panIndiaDispatch")}</span>
                   </div>
-
                   <div className="flex items-center gap-2.5 rounded-xl border border-slate-200 bg-slate-50 p-3 text-xs text-slate-600">
                     <Layers className="h-4 w-4 shrink-0 text-[#0b2f5c]" />
                     <span>{t("bulkOrdersAvailable")}</span>
@@ -329,42 +322,30 @@ export default function ProductDetailClient({
                 </div>
               </div>
             </div>
-
             {/* =================================================
                 RIGHT - PRODUCT INFORMATION
             ================================================= */}
-
             <div className="flex flex-col lg:col-span-6">
-
               {/* BRAND */}
-
               <div className="flex flex-wrap items-center justify-between gap-3">
                 <span className="text-xs font-extrabold uppercase tracking-[0.15em] text-[#174e8c]">
                   Le Limra
                 </span>
-
                 {product.model && (
                   <span className="rounded-lg bg-slate-100 px-2.5 py-1 font-mono text-xs font-medium text-slate-600">
                     {t("model")}: {product.model}
                   </span>
                 )}
               </div>
-
               {/* PRODUCT NAME */}
-
               <h1 className="mt-3 text-3xl font-black leading-tight tracking-tight text-slate-900 sm:text-2xl">
                 {product.name}
               </h1>
-
               {/* DESCRIPTION */}
-
               <p className="mt-4 text-sm leading-7 text-slate-600">
-                {product.description ||
-                  product.shortDescription}
+                {displayDescription}
               </p>
-
               {/* PRICE */}
-
               <div className="mt-7 rounded-2xl border border-slate-200 bg-slate-50 p-5">
                 <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                   <div>
@@ -376,7 +357,6 @@ export default function ProductDetailClient({
                             "en-IN"
                           )}
                         </span>
-
                         {product.mrp &&
                           product.mrp > product.price && (
                             <span className="text-sm text-slate-400 line-through">
@@ -392,12 +372,10 @@ export default function ProductDetailClient({
                         {t("onRequest")}
                       </span>
                     )}
-
                     <p className="mt-1 text-xs text-slate-500">
                       {t("taxesExtraWholesale")}
                     </p>
                   </div>
-
                   <span
                     className={`w-fit rounded-lg px-3 py-1.5 text-xs font-bold ${
                       product.available
@@ -411,25 +389,65 @@ export default function ProductDetailClient({
                   </span>
                 </div>
               </div>
+              {/* STOCK / FACTORY SUPPLY */}
+
+              <div className="mt-5 rounded-xl border border-slate-200 bg-slate-50 p-4">
+                <div className="flex flex-wrap items-center justify-between gap-3">
+                  <div className="flex items-center gap-2.5">
+                    <span className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-xs font-bold ${product.available ? "border-emerald-200 bg-emerald-100 text-emerald-800" : "border-rose-200 bg-rose-50 text-rose-700"}`}>
+                      <span className={`h-2 w-2 rounded-full ${product.available ? "bg-emerald-600" : "animate-pulse bg-[#e31e24]"}`} />
+                      {product.available ? t("inStock") : t("outOfStock")}
+                    </span>
+                    <span className="text-xs font-medium text-slate-600">
+                      {t("directFactorySupply")} • {t("wholesaleTradeInquiries")}
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              {!product.available && (
+                <div className="mt-5 rounded-xl border border-amber-200 bg-amber-50/90 p-4 shadow-sm">
+                  <div className="flex flex-col items-start justify-between gap-3 sm:flex-row sm:items-center">
+                    <div className="flex items-start gap-3">
+                      <div className="mt-0.5 shrink-0 rounded-lg bg-amber-100 p-2">
+                        <BellRing className="h-5 w-5 animate-bounce text-amber-700" />
+                      </div>
+                      <div>
+                        <div className="flex flex-wrap items-center gap-2">
+                          <h4 className="text-sm font-bold text-amber-950">{t("outOfStockProduction")}</h4>
+                          <span className="rounded bg-amber-200 px-2 py-0.5 text-[10px] font-extrabold uppercase tracking-wider text-amber-900">{t("restockScheduled")}</span>
+                        </div>
+                        <p className="mt-1 text-xs leading-relaxed text-amber-800">{t("restockDescription")}</p>
+                      </div>
+                    </div>
+                    <a href={notifyWhatsAppUrl} target="_blank" rel="noopener noreferrer" className="inline-flex w-full shrink-0 items-center justify-center gap-2 rounded-lg bg-[#e31e24] px-4 py-2.5 text-xs font-bold text-white shadow transition-all hover:scale-[1.02] hover:bg-[#c4181d] sm:w-auto">
+                      <Bell className="h-3.5 w-3.5" />
+                      <span>{t("notifyMeWhatsApp")}</span>
+                    </a>
+                  </div>
+                </div>
+              )}
 
               {/* COLORS */}
-
               {product.specifications.colors &&
                 product.specifications.colors.length > 0 && (
                   <div className="mt-7">
                     <label className="mb-3 block text-xs font-bold uppercase tracking-wider text-slate-500">
                       {t("availableColors")}
                     </label>
-
                     <div className="flex flex-wrap gap-2">
                       {product.specifications.colors.map(
                         (color) => (
                           <button
                             type="button"
                             key={color}
-                            onClick={() =>
-                              setSelectedColor(color)
-                            }
+                            onClick={() => {
+                              setSelectedColor(color);
+                              const colorIndex = product.specifications.colors?.indexOf(color) ?? -1;
+                              if (colorIndex >= 0 && imageList[colorIndex]) {
+                                setActiveImageIndex(colorIndex);
+                              }
+                            }}
                             className={`rounded-lg border px-3.5 py-2 text-xs font-semibold transition ${
                               selectedColor === color
                                 ? "border-[#0b2f5c] bg-[#0b2f5c] text-white"
@@ -443,50 +461,69 @@ export default function ProductDetailClient({
                     </div>
                   </div>
                 )}
-
               {/* ACTIONS */}
 
-              <div className="mt-8 grid grid-cols-1 gap-3.5 sm:grid-cols-2">
-                <a
-                  href={whatsappUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-emerald-600 px-5 py-3.5 text-sm font-bold text-white shadow transition hover:bg-emerald-700"
-                >
-                  <MessageSquare className="h-5 w-5" />
-                  <span>{t("topBarWhatsApp")}</span>
-                </a>
+              {!product.available ? (
+                <div className="mt-8 space-y-3">
+                  <a href={notifyWhatsAppUrl} target="_blank" rel="noopener noreferrer" className="group inline-flex w-full items-center justify-center gap-2.5 rounded-xl bg-[#e31e24] px-6 py-4 text-base font-extrabold text-white shadow-md transition-all hover:bg-[#c4181d] hover:shadow-lg">
+                    <BellRing className="h-5 w-5 transition-transform group-hover:rotate-12" />
+                    <span>{t("notifyMeNextAvailability")}</span>
+                  </a>
+                  <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+                    <a href={whatsappUrl} target="_blank" rel="noopener noreferrer" className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-emerald-600 px-4 py-3.5 text-xs font-bold text-white shadow-sm transition-colors hover:bg-emerald-700 sm:text-sm">
+                      <MessageSquare className="h-4 w-4" />
+                      <span>{t("generalSalesChat")}</span>
+                    </a>
+                    <button type="button" onClick={() => setShowWholesaleModal(true)} className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-[#091a32] px-4 py-3.5 text-xs font-bold text-white shadow-sm transition-colors hover:bg-[#112d52] sm:text-sm">
+                      <Building2 className="h-4 w-4 text-slate-300" />
+                      <span>{t("wholesaleBulkInquiry")}</span>
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                <div className="mt-8 grid grid-cols-1 gap-3.5 sm:grid-cols-2">
+                  <a href={whatsappUrl} target="_blank" rel="noopener noreferrer" className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-[#e31e24] px-5 py-3.5 text-sm font-bold text-white shadow transition-colors hover:bg-[#c4181d]">
+                    <MessageSquare className="h-4 w-4 fill-current" />
+                    <span>{t("enquireOnWhatsApp")}</span>
+                  </a>
+                  <button type="button" onClick={() => setShowWholesaleModal(true)} className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-[#091a32] px-5 py-3.5 text-sm font-bold text-white shadow transition-colors hover:bg-[#112d52]">
+                    <Building2 className="h-4 w-4 text-slate-300" />
+                    <span>{t("requestWholesaleQuote")}</span>
+                  </button>
+                </div>
+              )}
 
-                <button
-                  type="button"
-                  onClick={() =>
-                    setShowWholesaleModal(true)
-                  }
-                  className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-[#0b2f5c] px-5 py-3.5 text-sm font-bold text-white shadow transition hover:bg-[#07192f]"
-                >
-                  <Building2 className="h-5 w-5" />
-                  <span>{t("navGetQuote")}</span>
-                </button>
+              <div className="mt-3 grid grid-cols-1 gap-2 sm:grid-cols-2">
+                <Link href="/freight-estimator" className="flex items-center justify-center gap-1.5 rounded-xl border border-slate-300 bg-slate-50 px-3 py-2.5 text-center text-xs font-bold text-slate-800 shadow-sm transition-all hover:bg-slate-100">
+                  <Truck className="h-3.5 w-3.5 text-slate-600" />
+                  <span>{t("freightEstimator")}</span>
+                </Link>
+                <Link href={`/warranty?tab=register&model=${product.slug}`} className="flex items-center justify-center gap-1.5 rounded-xl border border-emerald-300 bg-emerald-50 px-3 py-2.5 text-center text-xs font-bold text-emerald-900 shadow-sm transition-all hover:bg-emerald-100">
+                  <ShieldCheck className="h-3.5 w-3.5 text-emerald-600" />
+                  <span>{t("warrantyPortal")}</span>
+                </Link>
               </div>
 
-              {/* FEATURES */}
+              <button type="button" onClick={() => openAssistant(`Tell me about ${displayName} (Model: ${product.model || "LE LIMRA"}). What room size is it ideal for, what is its RPM & air delivery, and why should I choose it?`)} className="group mt-3 flex w-full items-center justify-center gap-2 rounded-xl border border-slate-200 bg-slate-100 px-4 py-2.5 text-xs font-bold text-[#091a32] shadow-sm transition-all hover:bg-slate-200">
+                <Bot className="h-4 w-4 text-[#e31e24] transition-transform group-hover:rotate-12" />
+                <span>{t("askLimraAI", { product: displayName.split(" ")[0] })}</span>
+                <Sparkles className="h-3.5 w-3.5 text-amber-500" />
+              </button>
 
-              {product.features &&
-                product.features.length > 0 && (
+              {/* FEATURES */}
+              {displayFeatures.length > 0 && (
                   <div className="mt-8 border-t border-slate-200 pt-6">
                     <h2 className="mb-4 text-xs font-bold uppercase tracking-wider text-slate-700">
                       {t("keyHighlights")}
                     </h2>
-
                     <ul className="space-y-3">
-                      {product.features.map(
+                      {displayFeatures.map(
                         (feature, index) => (
                           <li
                             key={`${feature}-${index}`}
                             className="flex items-start gap-2.5 text-sm leading-6 text-slate-600"
                           >
                             <CheckCircle className="mt-0.5 h-4 w-4 shrink-0 text-emerald-600" />
-
                             <span>{feature}</span>
                           </li>
                         )
@@ -494,25 +531,38 @@ export default function ProductDetailClient({
                     </ul>
                   </div>
                 )}
+              {productHighlights.length > 0 && (
+                <div className="mt-8 rounded-xl border border-blue-200/80 bg-gradient-to-r from-blue-50/80 via-indigo-50/50 to-slate-50 p-4">
+                  <div className="mb-3 flex items-center gap-1.5 text-xs font-extrabold uppercase tracking-wider text-[#0b2f5c]">
+                    <Star className="h-4 w-4 fill-amber-500 text-amber-500" />
+                    <span>{t("productHighlights")}</span>
+                  </div>
+                  <ul className="grid grid-cols-1 gap-2.5 sm:grid-cols-2">
+                    {productHighlights.map((highlight, index) => (
+                      <li key={`${highlight}-${index}`} className="flex items-start gap-2 rounded-lg border border-blue-100 bg-white/90 p-2.5 text-xs font-semibold text-slate-800 shadow-sm">
+                        <CheckCircle className="mt-0.5 h-4 w-4 shrink-0 text-blue-600" />
+                        <span>{highlight}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+
             </div>
           </div>
-
           {/* =================================================
               TECHNICAL SPECIFICATIONS
           ================================================= */}
-
           {specRows.length > 0 && (
             <section className="mt-12 border-t border-slate-200 pt-10">
               <div className="mb-5 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
                 <h2 className="text-xl font-bold text-slate-900">
                   {t("technicalSpecifications")}
                 </h2>
-
                 <span className="text-xs text-slate-400">
                   {t("standardTestConditions")}
                 </span>
               </div>
-
               <div className="overflow-hidden rounded-2xl border border-slate-200">
                 <table className="w-full text-left text-sm">
                   <tbody className="divide-y divide-slate-200">
@@ -528,28 +578,24 @@ export default function ProductDetailClient({
                         <td className="w-1/2 px-4 py-3 font-semibold text-slate-700 sm:w-1/3">
                           {row.label}
                         </td>
-
                         <td className="px-4 py-3 font-medium text-slate-900">
                           {row.value}
                         </td>
                       </tr>
                     ))}
-
-                    {product.warranty && (
+                    {displayWarranty && (
                       <tr className="bg-emerald-50/40">
                         <td className="px-4 py-3 font-semibold text-emerald-900">
                           {t("warranty")}
                         </td>
-
                         <td className="px-4 py-3 font-bold text-emerald-900">
-                          {product.warranty}
+                          {displayWarranty}
                         </td>
                       </tr>
                     )}
                   </tbody>
                 </table>
               </div>
-
               <p className="mt-3 flex items-center gap-1 text-[11px] text-slate-400">
                 <Info className="h-3.5 w-3.5" />
                 {t("specificationsDisclaimer")}
@@ -557,11 +603,31 @@ export default function ProductDetailClient({
             </section>
           )}
         </section>
+        {/* MOBILE QUICK INQUIRY BAR */}
+        <div className="fixed inset-x-0 bottom-14 z-30 flex items-center justify-between gap-3 border-t border-slate-200 bg-white/95 px-4 py-2.5 shadow-md backdrop-blur-md lg:hidden">
+          <div className="min-w-0">
+            <div className="truncate text-xs font-bold text-slate-900">{displayName}</div>
+            <div className="text-[11px] font-medium text-slate-500">{product.available ? `${t("inStock")} • ${t("factoryDirect")}` : t("outOfStock")}</div>
+          </div>
+          <div className="flex shrink-0 items-center gap-2">
+            {product.available ? (
+              <a href={whatsappUrl} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 rounded-lg bg-emerald-600 px-3.5 py-2 text-xs font-bold text-white shadow-sm transition-colors hover:bg-emerald-700">
+                <MessageSquare className="h-3.5 w-3.5 fill-current" />
+                <span>{t("enquireShort")}</span>
+              </a>
+            ) : (
+              <a href={notifyWhatsAppUrl} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 rounded-lg bg-[#e31e24] px-3.5 py-2 text-xs font-bold text-white shadow-sm transition-colors hover:bg-[#c4181d]">
+                <Bell className="h-3.5 w-3.5" />
+                <span>{t("notifyMe")}</span>
+              </a>
+            )}
+            <button type="button" onClick={() => setShowWholesaleModal(true)} className="rounded-lg bg-[#091a32] px-3.5 py-2 text-xs font-bold text-white shadow-sm transition-colors hover:bg-slate-800">{t("wholesaleShort")}</button>
+          </div>
+        </div>
 
         {/* =====================================================
             RELATED PRODUCTS
         ===================================================== */}
-
         {relatedProducts.length > 0 && (
           <section className="mt-14">
             <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
@@ -569,12 +635,10 @@ export default function ProductDetailClient({
                 <h2 className="text-2xl font-bold text-slate-900">
                   {t("relatedProducts")}
                 </h2>
-
                 <p className="mt-1 text-sm text-slate-500">
                   {t("relatedProductsDescription")}
                 </p>
               </div>
-
               <Link
                 href={categoryUrl}
                 className="inline-flex items-center gap-1 text-sm font-bold text-[#0b2f5c] hover:underline"
@@ -583,7 +647,6 @@ export default function ProductDetailClient({
                 <ArrowRight className="h-4 w-4" />
               </Link>
             </div>
-
             <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
               {relatedProducts.map((related) => (
                 <ProductCard
@@ -595,11 +658,9 @@ export default function ProductDetailClient({
           </section>
         )}
       </div>
-
       {/* =====================================================
           WHOLESALE MODAL
       ===================================================== */}
-
       {showWholesaleModal && (
         <div
           className="fixed inset-0 z-[100] flex items-center justify-center overflow-y-auto bg-black/60 p-4 backdrop-blur-sm"
@@ -615,12 +676,10 @@ export default function ProductDetailClient({
                 <h2 className="text-lg font-bold text-slate-900">
                   {t("requestWholesaleQuotation")}
                 </h2>
-
                 <p className="mt-1 text-xs text-slate-500">
                   {t("productLabel")}: {product.name}
                 </p>
               </div>
-
               <button
                 type="button"
                 onClick={() =>
@@ -632,7 +691,6 @@ export default function ProductDetailClient({
                 <X className="h-5 w-5" />
               </button>
             </div>
-
             <WholesaleForm
               defaultProduct={`${product.name} (Bulk)`}
             />
@@ -642,11 +700,32 @@ export default function ProductDetailClient({
     </main>
   );
 }
+function createProductNotifyWhatsAppUrl(
+  productName: string,
+  model?: string,
+  color?: string | null
+) {
+  const number = "918919854467";
+  const message = encodeURIComponent(
+    [
+      "Hello LIMRA INDUSTRIES,",
+      "",
+      "I would like to be notified when this product is available:",
+      `Product: ${productName}`,
+      model ? `Model: ${model}` : "",
+      color ? `Finish: ${color}` : "",
+      "",
+      "Please share the next availability date.",
+    ]
+      .filter(Boolean)
+      .join("\n")
+  );
+  return `https://wa.me/${number}?text=${message}`;
+}
 
 /* ============================================================
    PRODUCT IMAGE PLACEHOLDER
-============================================================ */
-
+\============================================================ */
 function ProductImagePlaceholder({
   label,
 }: {
@@ -657,24 +736,20 @@ function ProductImagePlaceholder({
       <div className="mb-3 flex h-16 w-16 items-center justify-center rounded-full border border-slate-200 bg-white">
         <Layers className="h-7 w-7" />
       </div>
-
       <span className="text-xs font-medium">
         {label}
       </span>
     </div>
   );
 }
-
 /* ============================================================
    WHATSAPP URL
-============================================================ */
-
+\============================================================ */
 function createProductWhatsAppUrl(
   productName: string,
   model?: string
 ) {
   const number = "918919854467";
-
   const message = encodeURIComponent(
     [
       "Hello LIMRA INDUSTRIES,",
@@ -688,6 +763,5 @@ function createProductWhatsAppUrl(
       .filter(Boolean)
       .join("\n")
   );
-
-  return `https://wa.me/${number}?text=${message}`;
+  return `https\://wa.me/${number}?text=${message}`;
 }

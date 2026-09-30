@@ -1,17 +1,27 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
-import { Search, X, ArrowUpRight, Fan, Wind, ShieldCheck } from "lucide-react";
+import {
+  Search,
+  X,
+  ArrowUpRight,
+  Fan,
+  Wind,
+  ShieldCheck,
+} from "lucide-react";
 
 import { Link } from "@/lib/navigation";
-import type { Product, ProductCategory } from "@/data/products";
+import type {
+  BackendProduct,
+  ProductCategory,
+} from "@/types/product";
 
 type SearchVariant = "navbar" | "mobile";
 
 interface NavSearchBarProps {
   variant?: SearchVariant;
   className?: string;
-  products?: Product[];
+  products?: BackendProduct[];
   onCloseMobile?: () => void;
 }
 
@@ -78,8 +88,26 @@ const POPULAR_SEARCHES = [
   "Jazz Decorative",
 ];
 
-function normalize(value: string) {
-  return value
+function normalize(value: unknown): string {
+  if (value === null || value === undefined) {
+    return "";
+  }
+
+  if (Array.isArray(value)) {
+    return value
+      .map((item) => normalize(item))
+      .filter(Boolean)
+      .join(" ");
+  }
+
+  if (typeof value === "object") {
+    return Object.values(value as Record<string, unknown>)
+      .map((item) => normalize(item))
+      .filter(Boolean)
+      .join(" ");
+  }
+
+  return String(value)
     .toLowerCase()
     .trim()
     .replace(/\s+/g, " ");
@@ -97,32 +125,112 @@ function getCategoryIcon(category: ProductCategory) {
   return ShieldCheck;
 }
 
-function getProductSearchText(product: Product) {
+/**
+ * Converts the complete backend product into searchable text.
+ *
+ * This intentionally works with BackendProduct instead of Product
+ * because products are loaded directly from the backend API.
+ */
+function getProductSearchText(product: BackendProduct): string {
+  const specificationText = product.specifications
+    ? Object.values(product.specifications)
+        .map((value) => normalize(value))
+        .filter(Boolean)
+        .join(" ")
+    : "";
+
   return [
     product.name,
     product.model,
     product.category,
-    product.shortDescription,
     product.description,
     product.warranty,
-    ...product.features,
-    product.specifications.size,
-    product.specifications.sweep,
-    product.specifications.rpm,
-    product.specifications.wattage,
-    product.specifications.voltage,
-    product.specifications.frequency,
-    product.specifications.motorType,
-    product.specifications.winding,
-    product.specifications.blades,
-    product.specifications.airDelivery,
-    product.specifications.noise,
-    product.specifications.bodyMaterial,
-    product.specifications.bladeMaterial,
-    ...(product.specifications.colors ?? []),
+    product.image,
+    product.images,
+    product.price,
+    product.mrp,
+    product.available,
+    product.featured,
+    product.features,
+    product.shortDescription,
+    product.company,
+    specificationText,
   ]
+    .map((value) => normalize(value))
     .filter(Boolean)
     .join(" ");
+}
+
+function getProductCategory(
+  product: BackendProduct
+): ProductCategory | null {
+  const category = normalize(product.category);
+
+  if (
+    category === "ceiling-fan" ||
+    category.includes("ceiling")
+  ) {
+    return "ceiling-fan";
+  }
+
+  if (
+    category === "table-fan" ||
+    category.includes("table")
+  ) {
+    return "table-fan";
+  }
+
+  if (
+    category === "pedestal-fan" ||
+    category.includes("pedestal")
+  ) {
+    return "pedestal-fan";
+  }
+
+  return null;
+}
+
+function getProductImage(product: BackendProduct): string | undefined {
+  if (
+    Array.isArray(product.images) &&
+    typeof product.images[0] === "string" &&
+    product.images[0].trim()
+  ) {
+    return product.images[0];
+  }
+
+  if (
+    typeof product.image === "string" &&
+    product.image.trim()
+  ) {
+    return product.image;
+  }
+
+  return undefined;
+}
+
+function getSpecification(
+  product: BackendProduct,
+  key: string
+): string | undefined {
+  const value = product.specifications?.[key];
+
+  if (value === null || value === undefined) {
+    return undefined;
+  }
+
+  if (typeof value === "string") {
+    return value;
+  }
+
+  if (
+    typeof value === "number" ||
+    typeof value === "boolean"
+  ) {
+    return String(value);
+  }
+
+  return undefined;
 }
 
 export default function NavSearchBar({
@@ -151,18 +259,28 @@ export default function NavSearchBar({
 
         let score = 0;
 
-        if (normalize(product.name).includes(normalizedQuery)) {
+        const productName = normalize(product.name);
+        const productModel = normalize(product.model);
+        const productCategory = normalize(product.category);
+
+        if (
+          productName &&
+          productName.includes(normalizedQuery)
+        ) {
           score += 100;
         }
 
         if (
-          product.model &&
-          normalize(product.model).includes(normalizedQuery)
+          productModel &&
+          productModel.includes(normalizedQuery)
         ) {
           score += 80;
         }
 
-        if (normalize(product.category).includes(normalizedQuery)) {
+        if (
+          productCategory &&
+          productCategory.includes(normalizedQuery)
+        ) {
           score += 50;
         }
 
@@ -207,7 +325,11 @@ export default function NavSearchBar({
         categoryText.includes(normalizedQuery) ||
         normalizedQuery
           .split(" ")
-          .some((word) => word.length > 1 && categoryText.includes(word))
+          .some(
+            (word) =>
+              word.length > 1 &&
+              categoryText.includes(word)
+          )
       );
     }).slice(0, 3);
   }, [normalizedQuery]);
@@ -231,16 +353,24 @@ export default function NavSearchBar({
     const handleOutsideClick = (event: MouseEvent) => {
       if (
         wrapperRef.current &&
-        !wrapperRef.current.contains(event.target as Node)
+        !wrapperRef.current.contains(
+          event.target as Node
+        )
       ) {
         setIsOpen(false);
       }
     };
 
-    document.addEventListener("mousedown", handleOutsideClick);
+    document.addEventListener(
+      "mousedown",
+      handleOutsideClick
+    );
 
     return () => {
-      document.removeEventListener("mousedown", handleOutsideClick);
+      document.removeEventListener(
+        "mousedown",
+        handleOutsideClick
+      );
     };
   }, []);
 
@@ -310,16 +440,14 @@ export default function NavSearchBar({
   return (
     <div
       ref={wrapperRef}
-      className={`relative ${isMobile ? "w-full" : ""} ${className}`}
+      className={`relative ${
+        isMobile ? "w-full" : ""
+      } ${className}`}
     >
-      {/* =====================================================
-          SEARCH INPUT
-      ====================================================== */}
+      {/* SEARCH INPUT */}
       <div
         className={`relative flex items-center ${
-          isMobile
-            ? "w-full"
-            : "w-full"
+          isMobile ? "w-full" : "w-full"
         }`}
       >
         <Search
@@ -361,7 +489,9 @@ export default function NavSearchBar({
           >
             <X
               className={
-                isMobile ? "w-4 h-4" : "w-3.5 h-3.5"
+                isMobile
+                  ? "w-4 h-4"
+                  : "w-3.5 h-3.5"
               }
             />
           </button>
@@ -379,9 +509,7 @@ export default function NavSearchBar({
         )}
       </div>
 
-      {/* =====================================================
-          SEARCH DROPDOWN
-      ====================================================== */}
+      {/* SEARCH DROPDOWN */}
       {isOpen && (
         <div
           className={`absolute ${
@@ -390,7 +518,7 @@ export default function NavSearchBar({
               : "right-0 top-full mt-2 w-[390px]"
           } z-[100] overflow-hidden rounded-xl border border-slate-200 bg-white shadow-2xl`}
         >
-          {/* Empty state */}
+          {/* POPULAR SEARCHES */}
           {!query.trim() && (
             <div className="p-4">
               <div className="mb-3 text-[10px] font-bold uppercase tracking-wider text-slate-400">
@@ -416,10 +544,10 @@ export default function NavSearchBar({
             </div>
           )}
 
-          {/* Search results */}
+          {/* SEARCH RESULTS */}
           {query.trim() && (
             <div className="max-h-[480px] overflow-y-auto">
-              {/* Categories */}
+              {/* CATEGORIES */}
               {matchingCategories.length > 0 && (
                 <div className="border-b border-slate-100 p-2">
                   <div className="px-2 py-1.5 text-[10px] font-bold uppercase tracking-wider text-slate-400">
@@ -427,7 +555,9 @@ export default function NavSearchBar({
                   </div>
 
                   {matchingCategories.map((category) => {
-                    const Icon = getCategoryIcon(category.id);
+                    const Icon = getCategoryIcon(
+                      category.id
+                    );
 
                     return (
                       <Link
@@ -460,62 +590,70 @@ export default function NavSearchBar({
                 </div>
               )}
 
-              {/* Products */}
+              {/* PRODUCTS */}
               {matchingProducts.length > 0 && (
                 <div className="border-b border-slate-100 p-2">
                   <div className="px-2 py-1.5 text-[10px] font-bold uppercase tracking-wider text-slate-400">
                     Products
                   </div>
 
-                  {matchingProducts.map((product) => (
-                    <Link
-                      key={product.id}
-                      href={`/products/${product.slug}`}
-                      onClick={() => {
-                        setIsOpen(false);
-                        onCloseMobile?.();
-                      }}
-                      className="flex items-center gap-3 rounded-lg px-2 py-2.5 hover:bg-slate-50"
-                    >
-                      <div className="h-10 w-10 shrink-0 overflow-hidden rounded-lg border border-slate-200 bg-slate-50">
-                        {product.images?.[0] ? (
-                          <img
-                            src={product.images[0]}
-                            alt={product.name}
-                            className="h-full w-full object-cover"
-                          />
-                        ) : (
-                          <div className="flex h-full w-full items-center justify-center">
-                            <Fan className="h-4 w-4 text-slate-300" />
-                          </div>
-                        )}
-                      </div>
+                  {matchingProducts.map((product) => {
+                    const image = getProductImage(product);
+                    const sweep = getSpecification(
+                      product,
+                      "sweep"
+                    );
 
-                      <div className="min-w-0 flex-1">
-                        <div className="truncate text-xs font-bold text-slate-800">
-                          {product.name}
+                    return (
+                      <Link
+                        key={product.id}
+                        href={`/products/${product.slug}`}
+                        onClick={() => {
+                          setIsOpen(false);
+                          onCloseMobile?.();
+                        }}
+                        className="flex items-center gap-3 rounded-lg px-2 py-2.5 hover:bg-slate-50"
+                      >
+                        <div className="h-10 w-10 shrink-0 overflow-hidden rounded-lg border border-slate-200 bg-slate-50">
+                          {image ? (
+                            <img
+                              src={image}
+                              alt={product.name}
+                              className="h-full w-full object-cover"
+                            />
+                          ) : (
+                            <div className="flex h-full w-full items-center justify-center">
+                              <Fan className="h-4 w-4 text-slate-300" />
+                            </div>
+                          )}
                         </div>
 
-                        {product.model && (
-                          <div className="truncate text-[10px] text-slate-400">
-                            {product.model}
+                        <div className="min-w-0 flex-1">
+                          <div className="truncate text-xs font-bold text-slate-800">
+                            {product.name}
                           </div>
-                        )}
 
-                        {product.specifications?.sweep && (
-                          <div className="text-[10px] text-slate-500">
-                            {product.specifications.sweep}
-                          </div>
-                        )}
-                      </div>
+                          {product.model && (
+                            <div className="truncate text-[10px] text-slate-400">
+                              {product.model}
+                            </div>
+                          )}
 
-                      <ArrowUpRight className="h-3.5 w-3.5 shrink-0 text-slate-400" />
-                    </Link>
-                  ))}
+                          {sweep && (
+                            <div className="text-[10px] text-slate-500">
+                              {sweep}
+                            </div>
+                          )}
+                        </div>
+
+                        <ArrowUpRight className="h-3.5 w-3.5 shrink-0 text-slate-400" />
+                      </Link>
+                    );
+                  })}
                 </div>
               )}
 
-              {/* Popular search matches */}
+              {/* POPULAR SEARCH MATCHES */}
               {popularResults.length > 0 && (
                 <div className="p-2">
                   <div className="px-2 py-1.5 text-[10px] font-bold uppercase tracking-wider text-slate-400">
@@ -533,14 +671,13 @@ export default function NavSearchBar({
                       className="flex w-full items-center gap-2 rounded-lg px-2 py-2 text-left text-xs text-slate-600 hover:bg-slate-50 hover:text-[#091a32]"
                     >
                       <Search className="h-3.5 w-3.5 text-slate-400" />
-
                       <span>{item}</span>
                     </button>
                   ))}
                 </div>
               )}
 
-              {/* No results */}
+              {/* NO RESULTS */}
               {resultCount === 0 && (
                 <div className="px-5 py-8 text-center">
                   <Search className="mx-auto mb-3 h-7 w-7 text-slate-300" />
@@ -550,7 +687,8 @@ export default function NavSearchBar({
                   </div>
 
                   <div className="mt-1 text-xs text-slate-400">
-                    Try a product name, model, category or specification..
+                    Try a product name, model, category or
+                    specification.
                   </div>
 
                   <Link
@@ -567,7 +705,7 @@ export default function NavSearchBar({
                 </div>
               )}
 
-              {/* View all */}
+              {/* VIEW ALL */}
               {resultCount > 0 && (
                 <Link
                   href={`/products?q=${encodeURIComponent(query)}`}
