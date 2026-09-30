@@ -66,19 +66,17 @@ function SortableImageCard({
     <div
       ref={setNodeRef}
       style={style}
-      className={`overflow-hidden rounded-2xl border bg-white dark:bg-gray-950 ${
-        isDragging
+      className={`overflow-hidden rounded-2xl border bg-white dark:bg-gray-950 ${isDragging
           ? "border-primary shadow-2xl opacity-90"
           : "border-gray-200 dark:border-gray-800"
-      }`}
+        }`}
     >
       {/* Image */}
       <div className="relative aspect-square bg-gray-100 dark:bg-gray-900">
-        <Image
+        <img
           src={image.image_url}
           alt={image.alt_text || "Product image"}
-          fill
-          className="object-cover"
+          className="absolute inset-0 h-full w-full object-cover"
         />
 
         {image.is_primary && (
@@ -335,8 +333,7 @@ export default function ProductImagesManager({
       }
 
       setMessage(
-        `${uploadedCount} image${
-          uploadedCount > 1 ? "s" : ""
+        `${uploadedCount} image${uploadedCount > 1 ? "s" : ""
         } uploaded successfully.`
       );
 
@@ -547,9 +544,9 @@ export default function ProductImagesManager({
         current.map((image) =>
           image.id === imageId
             ? {
-                ...image,
-                alt_text: altText,
-              }
+              ...image,
+              alt_text: altText,
+            }
             : image
         )
       );
@@ -675,12 +672,10 @@ export default function ProductImagesManager({
                 className="overflow-hidden rounded-xl border border-gray-200 dark:border-gray-800"
               >
                 <div className="relative aspect-square">
-                  <Image
+                  <img
                     src={previewUrls[index]}
                     alt={file.name}
-                    fill
-                    unoptimized
-                    className="object-cover"
+                    className="absolute inset-0 h-full w-full object-cover"
                   />
                 </div>
 

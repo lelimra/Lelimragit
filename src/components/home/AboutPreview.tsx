@@ -13,10 +13,9 @@ export default function AboutPreview() {
           <div className="relative aspect-[4/3] bg-secondary lg:aspect-auto lg:min-h-[520px]">
             
            
-              <Image
+              <img
                 src="/images/company/factory.png"
                 alt="Limra Industries"
-                fill
                 className="object-cover"
               />
            

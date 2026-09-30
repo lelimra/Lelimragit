@@ -77,10 +77,10 @@ export default function ProductCategoriesSection() {
                 className="group bg-white rounded-xl border border-slate-200 hover:border-slate-300 hover:shadow-md transition-all duration-200 overflow-hidden flex flex-col"
               >
                 <div className="relative aspect-[4/3] bg-slate-50 overflow-hidden border-b border-slate-100">
-                  <Image
+                  <img
                     src={cat.image}
                     alt={cat.title}
-                    fill
+                    
                     sizes="(max-width: 768px) 100vw, (max-width: 1280px) 33vw, 400px"
                     referrerPolicy="no-referrer"
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
