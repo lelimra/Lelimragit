@@ -294,6 +294,7 @@ export default function CataloguePage() {
                     <Image
                       src="/images/products/hero.png"
                       alt={`${product.model} 48 inch ceiling fan`}
+                      unoptimized
                       fill
                       className="object-contain p-8 transition-transform duration-500 group-hover:scale-105"
                     />

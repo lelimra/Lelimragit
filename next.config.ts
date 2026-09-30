@@ -8,11 +8,16 @@ const nextConfig: NextConfig = {
         pathname: "/images/**",
       },
     ],
-    qualities: [75],
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "lelimra.com",
+      },
+    ],
+    qualities: [25, 50, 75], // Allow default Next.js fallback qualities
   },
 };
+
 const withNextIntl = createNextIntlPlugin();
-
-
 
 export default withNextIntl(nextConfig);
