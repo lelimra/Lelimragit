@@ -219,14 +219,10 @@ export default function ProductDetailClient({
                 {/* MAIN IMAGE */}
                 <div className="relative aspect-[4/3] overflow-hidden rounded-2xl border border-slate-200 bg-slate-50">
                   {activeImage ? (
-                    <Image
+                    <img
                       src={activeImage}
                       alt={displayName}
-                      fill
-                      priority
-                      unoptimized
-                      sizes="(max-width: 1024px) 100vw, 50vw"
-                      className="object-cover"
+                      className="absolute inset-0 h-full w-full object-cover"
                     />
                   ) : (
                     <ProductImagePlaceholder
@@ -295,13 +291,10 @@ export default function ProductDetailClient({
                         aria-label={`${displayName} ${index + 1
                           }`}
                       >
-                        <Image
+                        <img
                           src={image}
                           alt={`${displayName} - ${index + 1}`}
-                          fill
-                          unoptimized
-                          sizes="96px"
-                          className="object-cover"
+                          className="absolute inset-0 h-full w-full object-cover"
                         />
                       </button>
                     ))}
