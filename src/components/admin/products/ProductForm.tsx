@@ -339,7 +339,7 @@ export default function ProductForm({
                  * features and images.
                  */
                 if (createdId) {
-                    window.location.href = `/en/admin/products/${createdId}/edit`;
+                    window.location.href = `/admin/products/${createdId}/edit`;
                     return;
                 }
             } else {
@@ -374,426 +374,401 @@ export default function ProductForm({
         );
     }
 
-    return (
-        <main className="min-h-screen bg-gray-50 px-4 py-8 dark:bg-black sm:px-6 lg:px-8">
-            <div className="mx-auto max-w-5xl">
-                {/* Header */}
-                <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-                    <div>
-                        <div className="mb-2">
-                            <Link
-                                href="/en/admin/products"
-                                className="text-sm text-gray-500 hover:text-gray-900 dark:hover:text-white"
-                            >
-                                ← Back to Products
-                            </Link>
-                        </div>
+return (
+  <div className="mx-auto w-full max-w-6xl space-y-6">
+    {/* Header */}
+    <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+      <div>
+        <Link
+          href="/admin/products"
+          className="inline-flex items-center text-sm font-medium text-slate-500 transition hover:text-slate-900"
+        >
+          ← Back to Products
+        </Link>
 
-                        <h1 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-                            {mode === "create"
-                                ? "Add Product"
-                                : "Edit Product"}
-                        </h1>
+        <h1 className="mt-3 text-2xl font-bold tracking-tight text-slate-900">
+          {mode === "create" ? "Add Product" : "Edit Product"}
+        </h1>
 
-                        <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
-                            {mode === "create"
-                                ? "Create a new product for the catalogue."
-                                : "Update the product information."}
-                        </p>
-                    </div>
-                </div>
+        <p className="mt-1 text-sm text-slate-500">
+          {mode === "create"
+            ? "Create a new product for the catalogue."
+            : "Update product information and publishing settings."}
+        </p>
+      </div>
+    </div>
 
-                {/* Messages */}
-                {error && (
-                    <div className="mb-6 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700 dark:border-red-900 dark:bg-red-950/30 dark:text-red-400">
-                        {error}
-                    </div>
-                )}
+    {/* Error */}
+    {error && (
+      <div className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm font-medium text-red-700">
+        {error}
+      </div>
+    )}
 
-                {success && (
-                    <div className="mb-6 rounded-xl border border-green-200 bg-green-50 px-4 py-3 text-sm text-green-700 dark:border-green-900 dark:bg-green-950/30 dark:text-green-400">
-                        {success}
-                    </div>
-                )}
+    {/* Success */}
+    {success && (
+      <div className="rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm font-medium text-emerald-700">
+        {success}
+      </div>
+    )}
 
-                <form
-                    onSubmit={handleSubmit}
-                    className="space-y-6"
-                >
-                    {/* Basic information */}
-                    <section className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-800 dark:bg-gray-950">
-                        <div className="mb-6">
-                            <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
-                                Basic Information
-                            </h2>
+    <form onSubmit={handleSubmit} className="space-y-6">
+      {/* Basic Information */}
+      <section className="rounded-xl border border-slate-200 bg-white shadow-sm">
+        <div className="border-b border-slate-200 px-6 py-5">
+          <h2 className="text-base font-semibold text-slate-900">
+            Basic Information
+          </h2>
 
-                            <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
-                                Basic product information used throughout
-                                the catalogue.
-                            </p>
-                        </div>
+          <p className="mt-1 text-sm text-slate-500">
+            Basic product information used throughout the catalogue.
+          </p>
+        </div>
 
-                        <div className="grid gap-5 md:grid-cols-2">
-                            {/* Name */}
-                            <div>
-                                <label className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">
-                                    Product Name *
-                                </label>
+        <div className="p-6">
+          <div className="grid gap-6 md:grid-cols-2">
+            {/* Product Name */}
+            <div>
+              <label className="mb-2 block text-sm font-medium text-slate-700">
+                Product Name <span className="text-red-500">*</span>
+              </label>
 
-                                <input
-                                    type="text"
-                                    value={form.name}
-                                    onChange={(event) =>
-                                        handleNameChange(
-                                            event.target.value
-                                        )
-                                    }
-                                    placeholder="e.g. AeroFlow"
-                                    required
-                                    className="w-full rounded-xl border border-gray-200 bg-transparent px-4 py-3 text-sm outline-none transition focus:border-gray-500 dark:border-gray-700"
-                                />
-                            </div>
-
-                            {/* Model */}
-                            <div>
-                                <label className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">
-                                    Model
-                                </label>
-
-                                <input
-                                    type="text"
-                                    value={form.model}
-                                    onChange={(event) =>
-                                        updateField(
-                                            "model",
-                                            event.target.value
-                                        )
-                                    }
-                                    placeholder="e.g. CF-01"
-                                    className="w-full rounded-xl border border-gray-200 bg-transparent px-4 py-3 text-sm outline-none transition focus:border-gray-500 dark:border-gray-700"
-                                />
-                            </div>
-
-                            {/* Slug */}
-                            <div>
-                                <label className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">
-                                    Slug *
-                                </label>
-
-                                <input
-                                    type="text"
-                                    value={form.slug}
-                                    onChange={(event) =>
-                                        updateField(
-                                            "slug",
-                                            generateSlug(
-                                                event.target.value
-                                            )
-                                        )
-                                    }
-                                    placeholder="aeroflow"
-                                    required
-                                    className="w-full rounded-xl border border-gray-200 bg-transparent px-4 py-3 text-sm outline-none transition focus:border-gray-500 dark:border-gray-700"
-                                />
-
-                                <p className="mt-1.5 text-xs text-gray-400">
-                                    Used in the product URL.
-                                </p>
-                            </div>
-
-                            {/* Category */}
-                            <div>
-                                <label className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">
-                                    Category *
-                                </label>
-
-                                <select
-                                    value={form.category_id}
-                                    onChange={(event) =>
-                                        updateField(
-                                            "category_id",
-                                            event.target.value
-                                        )
-                                    }
-                                    required
-                                    disabled={loadingCategories}
-                                    className="w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm outline-none transition focus:border-gray-500 disabled:opacity-50 dark:border-gray-700 dark:bg-gray-950"
-                                >
-                                    <option value="">
-                                        {loadingCategories
-                                            ? "Loading categories..."
-                                            : "Select category"}
-                                    </option>
-
-                                    {categories.map((category) => (
-                                        <option
-                                            key={category.id}
-                                            value={category.id}
-                                        >
-                                            {category.name}
-                                        </option>
-                                    ))}
-                                </select>
-                            </div>
-
-                            {/* Short description */}
-                            <div className="md:col-span-2">
-                                <label className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">
-                                    Short Description
-                                </label>
-
-                                <textarea
-                                    value={form.short_description}
-                                    onChange={(event) =>
-                                        updateField(
-                                            "short_description",
-                                            event.target.value
-                                        )
-                                    }
-                                    rows={3}
-                                    maxLength={500}
-                                    placeholder="A short description for product cards and listings."
-                                    className="w-full resize-y rounded-xl border border-gray-200 bg-transparent px-4 py-3 text-sm outline-none transition focus:border-gray-500 dark:border-gray-700"
-                                />
-
-                                <p className="mt-1.5 text-right text-xs text-gray-400">
-                                    {form.short_description.length}/500
-                                </p>
-                            </div>
-
-                            {/* Description */}
-                            <div className="md:col-span-2">
-                                <label className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">
-                                    Product Description
-                                </label>
-
-                                <textarea
-                                    value={form.description}
-                                    onChange={(event) =>
-                                        updateField(
-                                            "description",
-                                            event.target.value
-                                        )
-                                    }
-                                    rows={6}
-                                    placeholder="Detailed product description."
-                                    className="w-full resize-y rounded-xl border border-gray-200 bg-transparent px-4 py-3 text-sm outline-none transition focus:border-gray-500 dark:border-gray-700"
-                                />
-                            </div>
-                        </div>
-                    </section>
-
-                    {/* Pricing */}
-                    <section className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-800 dark:bg-gray-950">
-                        <div className="mb-6">
-                            <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
-                                Pricing & Warranty
-                            </h2>
-
-                            <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
-                                Pricing information displayed for the
-                                product.
-                            </p>
-                        </div>
-
-                        <div className="grid gap-5 md:grid-cols-3">
-                            {/* MRP */}
-                            <div>
-                                <label className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">
-                                    MRP
-                                </label>
-
-                                <div className="relative">
-                                    <span className="absolute left-4 top-1/2 -translate-y-1/2 text-sm text-gray-400">
-                                        ₹
-                                    </span>
-
-                                    <input
-                                        type="number"
-                                        min="0"
-                                        step="0.01"
-                                        value={form.mrp}
-                                        onChange={(event) =>
-                                            updateField(
-                                                "mrp",
-                                                event.target.value
-                                            )
-                                        }
-                                        placeholder="2999"
-                                        className="w-full rounded-xl border border-gray-200 bg-transparent py-3 pl-8 pr-4 text-sm outline-none transition focus:border-gray-500 dark:border-gray-700"
-                                    />
-                                </div>
-                            </div>
-
-                            {/* Selling price */}
-                            <div>
-                                <label className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">
-                                    Selling Price
-                                </label>
-
-                                <div className="relative">
-                                    <span className="absolute left-4 top-1/2 -translate-y-1/2 text-sm text-gray-400">
-                                        ₹
-                                    </span>
-
-                                    <input
-                                        type="number"
-                                        min="0"
-                                        step="0.01"
-                                        value={form.price}
-                                        onChange={(event) =>
-                                            updateField(
-                                                "price",
-                                                event.target.value
-                                            )
-                                        }
-                                        placeholder="2499"
-                                        className="w-full rounded-xl border border-gray-200 bg-transparent py-3 pl-8 pr-4 text-sm outline-none transition focus:border-gray-500 dark:border-gray-700"
-                                    />
-                                </div>
-                            </div>
-
-                            {/* Warranty */}
-                            <div>
-                                <label className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">
-                                    Warranty
-                                </label>
-
-                                <input
-                                    type="text"
-                                    value={form.warranty}
-                                    onChange={(event) =>
-                                        updateField(
-                                            "warranty",
-                                            event.target.value
-                                        )
-                                    }
-                                    placeholder="e.g. 2 Year"
-                                    className="w-full rounded-xl border border-gray-200 bg-transparent px-4 py-3 text-sm outline-none transition focus:border-gray-500 dark:border-gray-700"
-                                />
-                            </div>
-                        </div>
-                    </section>
-
-                    {/* Publishing */}
-                    <section className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-800 dark:bg-gray-950">
-                        <div className="mb-6">
-                            <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
-                                Publishing
-                            </h2>
-
-                            <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
-                                Control how this product appears on the
-                                website.
-                            </p>
-                        </div>
-
-                        <div className="grid gap-5 md:grid-cols-3">
-                            {/* Available */}
-                            <label className="flex cursor-pointer items-start gap-3 rounded-xl border border-gray-200 p-4 dark:border-gray-700">
-                                <input
-                                    type="checkbox"
-                                    checked={form.is_available}
-                                    onChange={(event) =>
-                                        updateField(
-                                            "is_available",
-                                            event.target.checked
-                                        )
-                                    }
-                                    className="mt-0.5 h-4 w-4"
-                                />
-
-                                <div>
-                                    <p className="text-sm font-medium text-gray-900 dark:text-white">
-                                        Available
-                                    </p>
-
-                                    <p className="mt-1 text-xs text-gray-500">
-                                        Product is available on the website.
-                                    </p>
-                                </div>
-                            </label>
-
-                            {/* Featured */}
-                            <label className="flex cursor-pointer items-start gap-3 rounded-xl border border-gray-200 p-4 dark:border-gray-700">
-                                <input
-                                    type="checkbox"
-                                    checked={form.is_featured}
-                                    onChange={(event) =>
-                                        updateField(
-                                            "is_featured",
-                                            event.target.checked
-                                        )
-                                    }
-                                    className="mt-0.5 h-4 w-4"
-                                />
-
-                                <div>
-                                    <p className="text-sm font-medium text-gray-900 dark:text-white">
-                                        Featured
-                                    </p>
-
-                                    <p className="mt-1 text-xs text-gray-500">
-                                        Show this product in featured sections.
-                                    </p>
-                                </div>
-                            </label>
-
-                            {/* Sort order */}
-                            <div>
-                                <label className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">
-                                    Sort Order
-                                </label>
-
-                                <input
-                                    type="number"
-                                    min="0"
-                                    step="1"
-                                    value={form.sort_order}
-                                    onChange={(event) =>
-                                        updateField(
-                                            "sort_order",
-                                            event.target.value
-                                        )
-                                    }
-                                    className="w-full rounded-xl border border-gray-200 bg-transparent px-4 py-3 text-sm outline-none transition focus:border-gray-500 dark:border-gray-700"
-                                />
-
-                                <p className="mt-1.5 text-xs text-gray-400">
-                                    Lower numbers appear first.
-                                </p>
-                            </div>
-                        </div>
-                    </section>
-
-                    {/* Actions */}
-                    <div className="flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
-                        <Link
-                            href="/en/admin/products"
-                            className="rounded-xl border border-gray-200 px-5 py-3 text-center text-sm font-medium text-gray-700 hover:bg-gray-50 dark:border-gray-700 dark:text-gray-300 dark:hover:bg-gray-900"
-                        >
-                            Cancel
-                        </Link>
-
-                        <button
-                            type="submit"
-                            disabled={saving}
-                            className="rounded-xl bg-black px-6 py-3 text-sm font-semibold text-white transition hover:bg-gray-800 disabled:cursor-not-allowed disabled:opacity-50 dark:bg-white dark:text-black dark:hover:bg-gray-200"
-                        >
-                            {saving
-                                ? mode === "create"
-                                    ? "Creating..."
-                                    : "Saving..."
-                                : mode === "create"
-                                    ? "Create Product"
-                                    : "Save Changes"}
-                        </button>
-                    </div>
-                </form>
-                {mode === "edit" && productId && (
-                    <ProductSpecificationsForm productId={productId} />
-                )}
+              <input
+                type="text"
+                value={form.name}
+                onChange={(event) =>
+                  handleNameChange(event.target.value)
+                }
+                placeholder="e.g. AeroFlow"
+                required
+                className="h-11 w-full rounded-lg border border-slate-300 bg-white px-3.5 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-slate-900 focus:ring-4 focus:ring-slate-900/5"
+              />
             </div>
-        </main>
-    );
+
+            {/* Model */}
+            <div>
+              <label className="mb-2 block text-sm font-medium text-slate-700">
+                Model
+              </label>
+
+              <input
+                type="text"
+                value={form.model}
+                onChange={(event) =>
+                  updateField("model", event.target.value)
+                }
+                placeholder="e.g. CF-01"
+                className="h-11 w-full rounded-lg border border-slate-300 bg-white px-3.5 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-slate-900 focus:ring-4 focus:ring-slate-900/5"
+              />
+            </div>
+
+            {/* Slug */}
+            <div>
+              <label className="mb-2 block text-sm font-medium text-slate-700">
+                Slug <span className="text-red-500">*</span>
+              </label>
+
+              <input
+                type="text"
+                value={form.slug}
+                onChange={(event) =>
+                  updateField(
+                    "slug",
+                    generateSlug(event.target.value),
+                  )
+                }
+                placeholder="aeroflow"
+                required
+                className="h-11 w-full rounded-lg border border-slate-300 bg-white px-3.5 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-slate-900 focus:ring-4 focus:ring-slate-900/5"
+              />
+
+              <p className="mt-1.5 text-xs text-slate-400">
+                Used in the product URL.
+              </p>
+            </div>
+
+            {/* Category */}
+            <div>
+              <label className="mb-2 block text-sm font-medium text-slate-700">
+                Category <span className="text-red-500">*</span>
+              </label>
+
+              <select
+                value={form.category_id}
+                onChange={(event) =>
+                  updateField("category_id", event.target.value)
+                }
+                required
+                disabled={loadingCategories}
+                className="h-11 w-full rounded-lg border border-slate-300 bg-white px-3.5 text-sm text-slate-900 outline-none transition focus:border-slate-900 focus:ring-4 focus:ring-slate-900/5 disabled:cursor-not-allowed disabled:bg-slate-50"
+              >
+                <option value="">
+                  {loadingCategories
+                    ? "Loading categories..."
+                    : "Select category"}
+                </option>
+
+                {categories.map((category) => (
+                  <option
+                    key={category.id}
+                    value={category.id}
+                  >
+                    {category.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            {/* Short Description */}
+            <div className="md:col-span-2">
+              <label className="mb-2 block text-sm font-medium text-slate-700">
+                Short Description
+              </label>
+
+              <textarea
+                value={form.short_description}
+                onChange={(event) =>
+                  updateField(
+                    "short_description",
+                    event.target.value,
+                  )
+                }
+                rows={3}
+                maxLength={500}
+                placeholder="A short description for product cards and listings."
+                className="w-full resize-y rounded-lg border border-slate-300 bg-white px-3.5 py-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-slate-900 focus:ring-4 focus:ring-slate-900/5"
+              />
+
+              <p className="mt-1.5 text-right text-xs text-slate-400">
+                {form.short_description.length}/500
+              </p>
+            </div>
+
+            {/* Description */}
+            <div className="md:col-span-2">
+              <label className="mb-2 block text-sm font-medium text-slate-700">
+                Product Description
+              </label>
+
+              <textarea
+                value={form.description}
+                onChange={(event) =>
+                  updateField("description", event.target.value)
+                }
+                rows={6}
+                placeholder="Detailed product description."
+                className="w-full resize-y rounded-lg border border-slate-300 bg-white px-3.5 py-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-slate-900 focus:ring-4 focus:ring-slate-900/5"
+              />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Pricing */}
+      <section className="rounded-xl border border-slate-200 bg-white shadow-sm">
+        <div className="border-b border-slate-200 px-6 py-5">
+          <h2 className="text-base font-semibold text-slate-900">
+            Pricing & Warranty
+          </h2>
+
+          <p className="mt-1 text-sm text-slate-500">
+            Pricing and warranty information for this product.
+          </p>
+        </div>
+
+        <div className="p-6">
+          <div className="grid gap-6 md:grid-cols-3">
+            {/* MRP */}
+            <div>
+              <label className="mb-2 block text-sm font-medium text-slate-700">
+                MRP
+              </label>
+
+              <div className="relative">
+                <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-sm text-slate-400">
+                  ₹
+                </span>
+
+                <input
+                  type="number"
+                  min="0"
+                  step="0.01"
+                  value={form.mrp}
+                  onChange={(event) =>
+                    updateField("mrp", event.target.value)
+                  }
+                  placeholder="2999"
+                  className="h-11 w-full rounded-lg border border-slate-300 bg-white py-3 pl-8 pr-3.5 text-sm text-slate-900 outline-none transition focus:border-slate-900 focus:ring-4 focus:ring-slate-900/5"
+                />
+              </div>
+            </div>
+
+            {/* Selling Price */}
+            <div>
+              <label className="mb-2 block text-sm font-medium text-slate-700">
+                Selling Price
+              </label>
+
+              <div className="relative">
+                <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-sm text-slate-400">
+                  ₹
+                </span>
+
+                <input
+                  type="number"
+                  min="0"
+                  step="0.01"
+                  value={form.price}
+                  onChange={(event) =>
+                    updateField("price", event.target.value)
+                  }
+                  placeholder="2499"
+                  className="h-11 w-full rounded-lg border border-slate-300 bg-white py-3 pl-8 pr-3.5 text-sm text-slate-900 outline-none transition focus:border-slate-900 focus:ring-4 focus:ring-slate-900/5"
+                />
+              </div>
+            </div>
+
+            {/* Warranty */}
+            <div>
+              <label className="mb-2 block text-sm font-medium text-slate-700">
+                Warranty
+              </label>
+
+              <input
+                type="text"
+                value={form.warranty}
+                onChange={(event) =>
+                  updateField("warranty", event.target.value)
+                }
+                placeholder="e.g. 2 Year"
+                className="h-11 w-full rounded-lg border border-slate-300 bg-white px-3.5 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-slate-900 focus:ring-4 focus:ring-slate-900/5"
+              />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Publishing */}
+      <section className="rounded-xl border border-slate-200 bg-white shadow-sm">
+        <div className="border-b border-slate-200 px-6 py-5">
+          <h2 className="text-base font-semibold text-slate-900">
+            Publishing
+          </h2>
+
+          <p className="mt-1 text-sm text-slate-500">
+            Control how this product appears on the website.
+          </p>
+        </div>
+
+        <div className="p-6">
+          <div className="grid gap-4 md:grid-cols-3">
+            {/* Available */}
+            <label className="flex cursor-pointer items-start gap-3 rounded-lg border border-slate-200 p-4 transition hover:border-slate-300 hover:bg-slate-50">
+              <input
+                type="checkbox"
+                checked={form.is_available}
+                onChange={(event) =>
+                  updateField(
+                    "is_available",
+                    event.target.checked,
+                  )
+                }
+                className="mt-0.5 h-4 w-4 rounded border-slate-300 text-slate-900 focus:ring-slate-900"
+              />
+
+              <div>
+                <p className="text-sm font-semibold text-slate-900">
+                  Available
+                </p>
+
+                <p className="mt-1 text-xs leading-5 text-slate-500">
+                  Product is available on the website.
+                </p>
+              </div>
+            </label>
+
+            {/* Featured */}
+            <label className="flex cursor-pointer items-start gap-3 rounded-lg border border-slate-200 p-4 transition hover:border-slate-300 hover:bg-slate-50">
+              <input
+                type="checkbox"
+                checked={form.is_featured}
+                onChange={(event) =>
+                  updateField(
+                    "is_featured",
+                    event.target.checked,
+                  )
+                }
+                className="mt-0.5 h-4 w-4 rounded border-slate-300 text-slate-900 focus:ring-slate-900"
+              />
+
+              <div>
+                <p className="text-sm font-semibold text-slate-900">
+                  Featured
+                </p>
+
+                <p className="mt-1 text-xs leading-5 text-slate-500">
+                  Show this product in featured sections.
+                </p>
+              </div>
+            </label>
+
+            {/* Sort Order */}
+            <div>
+              <label className="mb-2 block text-sm font-medium text-slate-700">
+                Sort Order
+              </label>
+
+              <input
+                type="number"
+                min="0"
+                step="1"
+                value={form.sort_order}
+                onChange={(event) =>
+                  updateField(
+                    "sort_order",
+                    event.target.value,
+                  )
+                }
+                className="h-11 w-full rounded-lg border border-slate-300 bg-white px-3.5 text-sm text-slate-900 outline-none transition focus:border-slate-900 focus:ring-4 focus:ring-slate-900/5"
+              />
+
+              <p className="mt-1.5 text-xs text-slate-400">
+                Lower numbers appear first.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Specifications */}
+      {mode === "edit" && productId && (
+        <ProductSpecificationsForm productId={productId} />
+      )}
+
+      {/* Actions */}
+      <div className="flex flex-col-reverse gap-3 border-t border-slate-200 pt-6 sm:flex-row sm:justify-end">
+        <Link
+          href="/admin/products"
+          className="inline-flex h-11 items-center justify-center rounded-lg border border-slate-300 bg-white px-5 text-sm font-semibold text-slate-700 transition hover:bg-slate-50"
+        >
+          Cancel
+        </Link>
+
+        <button
+          type="submit"
+          disabled={saving}
+          className="inline-flex h-11 items-center justify-center rounded-lg bg-slate-900 px-6 text-sm font-semibold text-white transition hover:bg-slate-800 disabled:cursor-not-allowed disabled:opacity-50"
+        >
+          {saving
+            ? mode === "create"
+              ? "Creating..."
+              : "Saving..."
+            : mode === "create"
+              ? "Create Product"
+              : "Save Changes"}
+        </button>
+      </div>
+    </form>
+  </div>
+);
 }

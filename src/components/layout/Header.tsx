@@ -66,10 +66,10 @@ export interface BackendProduct {
 type BackendProductsResponse =
   | BackendProduct[]
   | {
-      products?: unknown;
-      data?: unknown;
-      content?: unknown;
-    };
+    products?: unknown;
+    data?: unknown;
+    content?: unknown;
+  };
 
 const PRODUCTS_API_URL =
   process.env.NEXT_PUBLIC_PRODUCTS_API_URL || "/api/products";
@@ -453,7 +453,7 @@ export default function Navbar() {
 
             {/* Admin */}
             <NextLink
-              href="/admin"
+              href="/admin/login"
               className="hidden md:inline-flex items-center gap-1 text-[11px] font-bold text-amber-300 hover:text-amber-200 bg-slate-800 hover:bg-slate-700 px-2 py-0.5 rounded border border-slate-700 transition-all"
               title={t("adminDashboard")}
             >
@@ -478,11 +478,10 @@ export default function Navbar() {
       ========================================================== */}
 
       <header
-        className={`sticky top-0 z-50 transition-all duration-200 bg-white/95 backdrop-blur-md ${
-          isScrolled
+        className={`sticky top-0 z-50 transition-all duration-200 bg-white/95 backdrop-blur-md ${isScrolled
             ? "shadow-sm border-b border-slate-200 py-3"
             : "border-b border-slate-200 py-2"
-        }`}
+          }`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between gap-4">
@@ -513,11 +512,10 @@ export default function Navbar() {
               {/* Home */}
               <Link
                 href="/"
-                className={`px-3 py-2 text-sm font-medium transition-colors rounded-md ${
-                  isActive("/")
+                className={`px-3 py-2 text-sm font-medium transition-colors rounded-md ${isActive("/")
                     ? "text-[#091a32] font-semibold bg-slate-100"
                     : "text-slate-600 hover:text-slate-900 hover:bg-slate-50"
-                }`}
+                  }`}
               >
                 {t("home")}
               </Link>
@@ -533,19 +531,17 @@ export default function Navbar() {
               >
                 <Link
                   href="/products"
-                  className={`px-3 py-2 text-sm font-medium inline-flex items-center gap-1.5 rounded-md transition-colors ${
-                    isActive("/products")
+                  className={`px-3 py-2 text-sm font-medium inline-flex items-center gap-1.5 rounded-md transition-colors ${isActive("/products")
                       ? "text-[#091a32] font-semibold bg-slate-100"
                       : "text-slate-600 hover:text-slate-900 hover:bg-slate-50"
-                  }`}
+                    }`}
                   onClick={() => setIsProductsOpen(false)}
                 >
                   <span>{t("products")}</span>
 
                   <ChevronDown
-                    className={`w-3.5 h-3.5 text-slate-400 transition-transform ${
-                      isProductsOpen ? "rotate-180" : ""
-                    }`}
+                    className={`w-3.5 h-3.5 text-slate-400 transition-transform ${isProductsOpen ? "rotate-180" : ""
+                      }`}
                   />
                 </Link>
 
@@ -636,18 +632,16 @@ export default function Navbar() {
               >
                 <Link
                   href="/wholesale"
-                  className={`px-3 py-2 text-sm font-medium inline-flex items-center gap-1.5 rounded-md transition-colors ${
-                    isApplicationActive
+                  className={`px-3 py-2 text-sm font-medium inline-flex items-center gap-1.5 rounded-md transition-colors ${isApplicationActive
                       ? "text-[#091a32] font-semibold bg-slate-100"
                       : "text-slate-600 hover:text-slate-900 hover:bg-slate-50"
-                  }`}
+                    }`}
                 >
                   <span>{t("application")}</span>
 
                   <ChevronDown
-                    className={`w-3.5 h-3.5 text-slate-400 transition-transform ${
-                      isApplicationOpen ? "rotate-180" : ""
-                    }`}
+                    className={`w-3.5 h-3.5 text-slate-400 transition-transform ${isApplicationOpen ? "rotate-180" : ""
+                      }`}
                   />
                 </Link>
 
@@ -745,11 +739,10 @@ export default function Navbar() {
               {/* About */}
               <Link
                 href="/about"
-                className={`px-3 py-2 text-sm font-medium transition-colors rounded-md ${
-                  isActive("/about")
+                className={`px-3 py-2 text-sm font-medium transition-colors rounded-md ${isActive("/about")
                     ? "text-[#091a32] font-semibold bg-slate-100"
                     : "text-slate-600 hover:text-slate-900 hover:bg-slate-50"
-                }`}
+                  }`}
               >
                 {t("about")}
               </Link>
@@ -757,11 +750,10 @@ export default function Navbar() {
               {/* Contact */}
               <Link
                 href="/contact"
-                className={`px-3 py-2 text-sm font-medium transition-colors rounded-md ${
-                  isActive("/contact")
+                className={`px-3 py-2 text-sm font-medium transition-colors rounded-md ${isActive("/contact")
                     ? "text-[#091a32] font-semibold bg-slate-100"
                     : "text-slate-600 hover:text-slate-900 hover:bg-slate-50"
-                }`}
+                  }`}
               >
                 {t("contact")}
               </Link>
@@ -835,11 +827,10 @@ export default function Navbar() {
                     setIsMobileMenuOpen(false);
                   }
                 }}
-                className={`p-2 rounded-md transition-colors ${
-                  isMobileSearchOpen
+                className={`p-2 rounded-md transition-colors ${isMobileSearchOpen
                     ? "bg-slate-100 text-slate-900"
                     : "text-slate-700 hover:text-slate-900"
-                }`}
+                  }`}
                 aria-label={t("searchFans")}
               >
                 <Search className="w-5 h-5" />
@@ -895,11 +886,10 @@ export default function Navbar() {
               <Link
                 href="/"
                 onClick={closeMobileMenu}
-                className={`block px-3 py-2.5 rounded-lg text-sm font-medium ${
-                  isActive("/")
+                className={`block px-3 py-2.5 rounded-lg text-sm font-medium ${isActive("/")
                     ? "bg-slate-100 text-[#091a32] font-bold"
                     : "text-slate-700 hover:bg-slate-50"
-                }`}
+                  }`}
               >
                 {t("home")}
               </Link>
@@ -909,11 +899,10 @@ export default function Navbar() {
                 <Link
                   href="/products"
                   onClick={closeMobileMenu}
-                  className={`block px-3 py-2.5 rounded-lg text-sm font-medium ${
-                    isActive("/products")
+                  className={`block px-3 py-2.5 rounded-lg text-sm font-medium ${isActive("/products")
                       ? "bg-slate-100 text-[#091a32] font-bold"
                       : "text-slate-700 hover:bg-slate-50"
-                  }`}
+                    }`}
                 >
                   {t("allProductCatalog")}
                 </Link>
@@ -952,19 +941,17 @@ export default function Navbar() {
                   onClick={() =>
                     setIsMobileApplicationOpen((prev) => !prev)
                   }
-                  className={`w-full flex items-center justify-between px-3 py-2.5 rounded-lg text-sm font-medium ${
-                    isApplicationActive
+                  className={`w-full flex items-center justify-between px-3 py-2.5 rounded-lg text-sm font-medium ${isApplicationActive
                       ? "bg-slate-100 text-[#091a32] font-bold"
                       : "text-slate-700 hover:bg-slate-50"
-                  }`}
+                    }`}
                   aria-expanded={isMobileApplicationOpen}
                 >
                   <span>{t("application")}</span>
 
                   <ChevronDown
-                    className={`w-4 h-4 transition-transform ${
-                      isMobileApplicationOpen ? "rotate-180" : ""
-                    }`}
+                    className={`w-4 h-4 transition-transform ${isMobileApplicationOpen ? "rotate-180" : ""
+                      }`}
                   />
                 </button>
 
@@ -1009,11 +996,10 @@ export default function Navbar() {
               <Link
                 href="/about"
                 onClick={closeMobileMenu}
-                className={`block px-3 py-2.5 rounded-lg text-sm font-medium ${
-                  isActive("/about")
+                className={`block px-3 py-2.5 rounded-lg text-sm font-medium ${isActive("/about")
                     ? "bg-slate-100 text-[#091a32] font-bold"
                     : "text-slate-700 hover:bg-slate-50"
-                }`}
+                  }`}
               >
                 {t("about")}
               </Link>
@@ -1022,11 +1008,10 @@ export default function Navbar() {
               <Link
                 href="/contact"
                 onClick={closeMobileMenu}
-                className={`block px-3 py-2.5 rounded-lg text-sm font-medium ${
-                  isActive("/contact")
+                className={`block px-3 py-2.5 rounded-lg text-sm font-medium ${isActive("/contact")
                     ? "bg-slate-100 text-[#091a32] font-bold"
                     : "text-slate-700 hover:bg-slate-50"
-                }`}
+                  }`}
               >
                 {t("contact")}
               </Link>

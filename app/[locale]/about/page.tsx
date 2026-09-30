@@ -17,6 +17,8 @@ import {
 } from "lucide-react";
 import LeadershipProfiles from "@/components/about/LeadershipProfiles";
 
+
+
 const values = [
   {
     number: "01",

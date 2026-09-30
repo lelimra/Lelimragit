@@ -44,23 +44,77 @@ export async function PUT(
 
     const body = await request.json();
 
-    const imageUrl = String(
-      body.image_url ?? ""
-    ).trim();
+    /*
+     * Get the existing image first.
+     * This allows partial updates such as:
+     *
+     * { "is_primary": true }
+     */
+    const [existingRows] = await db.query(
+      `
+        SELECT
+          id,
+          image_url,
+          alt_text,
+          sort_order,
+          is_primary
+        FROM product_images
+        WHERE id = ?
+          AND product_id = ?
+        LIMIT 1
+      `,
+      [imageIdNumber, productId]
+    );
 
-    const altText = body.alt_text
-      ? String(body.alt_text).trim()
-      : null;
+    const existingImage = (
+      existingRows as Array<{
+        id: number;
+        image_url: string;
+        alt_text: string | null;
+        sort_order: number;
+        is_primary: number;
+      }>
+    )[0];
 
-    const sortOrder = Number.isFinite(
-      Number(body.sort_order)
-    )
-      ? Number(body.sort_order)
-      : 0;
+    if (!existingImage) {
+      return NextResponse.json(
+        {
+          error: "Image not found.",
+        },
+        { status: 404 }
+      );
+    }
+
+    /*
+     * Use existing values when a field
+     * isn't included in the request.
+     */
+    const imageUrl =
+      body.image_url !== undefined
+        ? String(body.image_url).trim()
+        : existingImage.image_url;
+
+    const altText =
+      body.alt_text !== undefined
+        ? body.alt_text === null
+          ? null
+          : String(body.alt_text).trim()
+        : existingImage.alt_text;
+
+    const sortOrder =
+      body.sort_order !== undefined &&
+      Number.isFinite(Number(body.sort_order))
+        ? Number(body.sort_order)
+        : existingImage.sort_order;
 
     const requestedPrimary =
-      body.is_primary === true;
+      body.is_primary !== undefined
+        ? body.is_primary === true
+        : existingImage.is_primary === 1;
 
+    /*
+     * Validate image URL.
+     */
     if (!imageUrl) {
       return NextResponse.json(
         {
@@ -81,7 +135,9 @@ export async function PUT(
     }
 
     /*
-     * Make this image the only primary image.
+     * If this image becomes primary,
+     * remove primary status from all
+     * other images of this product.
      */
     if (requestedPrimary) {
       await db.query(
@@ -89,11 +145,15 @@ export async function PUT(
           UPDATE product_images
           SET is_primary = 0
           WHERE product_id = ?
+            AND id != ?
         `,
-        [productId]
+        [productId, imageIdNumber]
       );
     }
 
+    /*
+     * Update the image.
+     */
     const [result] = await db.query(
       `
         UPDATE product_images
@@ -122,9 +182,9 @@ export async function PUT(
     if (updateResult.affectedRows === 0) {
       return NextResponse.json(
         {
-          error: "Image not found.",
+          error: "Image update failed.",
         },
-        { status: 404 }
+        { status: 400 }
       );
     }
 

@@ -1,6 +1,97 @@
-import {createHmac,timingSafeEqual} from "node:crypto";import {cookies} from "next/headers";
-const name="limra_admin";function signature(payload:string){const secret=process.env.ADMIN_SESSION_SECRET;if(!secret)return "";return createHmac("sha256",secret).update(payload).digest("hex")}
-export function verifyPassword(password:string){const expected=process.env.ADMIN_PASSWORD;if(!expected||!process.env.ADMIN_SESSION_SECRET)return false;const a=Buffer.from(password),b=Buffer.from(expected);return a.length===b.length&&timingSafeEqual(a,b)}
-export function issueToken(){const payload=String(Date.now()+8*60*60*1000);return `${payload}.${signature(payload)}`}
-export async function isAdmin(){const token=(await cookies()).get(name)?.value||"";const [payload,sig]=token.split(".");if(!payload||!sig||!process.env.ADMIN_SESSION_SECRET||!/^\d+$/.test(payload)||Number(payload)<Date.now())return false;const expected=signature(payload);return sig.length===expected.length&&timingSafeEqual(Buffer.from(sig),Buffer.from(expected))}
-export const adminCookie=name;
+import crypto from "crypto";
+import { cookies } from "next/headers";
+
+const SESSION_COOKIE = "limra_admin_session";
+
+type AdminSession = {
+  adminId: number;
+  expiresAt: number;
+};
+
+export async function getAdminSession(): Promise<AdminSession | null> {
+  const secret = process.env.ADMIN_SESSION_SECRET;
+
+  if (!secret) {
+    throw new Error("ADMIN_SESSION_SECRET is not configured");
+  }
+
+  const cookieStore = await cookies();
+  const token = cookieStore.get(SESSION_COOKIE)?.value;
+
+  if (!token) {
+    return null;
+  }
+
+  const parts = token.split(".");
+
+  if (parts.length !== 3) {
+    return null;
+  }
+
+  const [adminIdString, expiresAtString, signature] = parts;
+
+  const adminId = Number(adminIdString);
+  const expiresAt = Number(expiresAtString);
+
+  if (
+    !Number.isInteger(adminId) ||
+    !Number.isFinite(expiresAt) ||
+    !signature
+  ) {
+    return null;
+  }
+
+  // Session expired
+  if (expiresAt <= Math.floor(Date.now() / 1000)) {
+    return null;
+  }
+
+  const payload = `${adminId}.${expiresAt}`;
+
+  const expectedSignature = crypto
+    .createHmac("sha256", secret)
+    .update(payload)
+    .digest("hex");
+
+  let receivedBuffer: Buffer;
+
+  try {
+    receivedBuffer = Buffer.from(signature, "hex");
+  } catch {
+    return null;
+  }
+
+  const expectedBuffer = Buffer.from(expectedSignature, "hex");
+
+  if (
+    receivedBuffer.length !== expectedBuffer.length ||
+    !crypto.timingSafeEqual(receivedBuffer, expectedBuffer)
+  ) {
+    return null;
+  }
+
+  return {
+    adminId,
+    expiresAt,
+  };
+}
+
+export async function isAdmin(): Promise<boolean> {
+  const session = await getAdminSession();
+
+  return session !== null;
+}
+
+export async function clearAdminSession(): Promise<void> {
+  const cookieStore = await cookies();
+
+  cookieStore.set({
+    name: SESSION_COOKIE,
+    value: "",
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "lax",
+    path: "/",
+    expires: new Date(0),
+  });
+}
