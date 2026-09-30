@@ -224,6 +224,7 @@ export default function ProductDetailClient({
                       alt={displayName}
                       fill
                       priority
+                      unoptimized
                       sizes="(max-width: 1024px) 100vw, 50vw"
                       className="object-cover"
                     />
@@ -287,21 +288,18 @@ export default function ProductDetailClient({
                         onClick={() =>
                           setActiveImageIndex(index)
                         }
-                        className={`relative h-20 w-24 shrink-0 overflow-hidden rounded-xl border-2 transition ${
-                          activeImageIndex === index
-                            ? "border-[#0b2f5c] shadow-sm"
-                            : "border-slate-200 opacity-70 hover:opacity-100"
-                        }`}
-                        aria-label={`${displayName} ${
-                          index + 1
-                        }`}
+                        className={`relative h-20 w-24 shrink-0 overflow-hidden rounded-xl border-2 transition ${activeImageIndex === index
+                          ? "border-[#0b2f5c] shadow-sm"
+                          : "border-slate-200 opacity-70 hover:opacity-100"
+                          }`}
+                        aria-label={`${displayName} ${index + 1
+                          }`}
                       >
                         <Image
                           src={image}
-                          alt={`${displayName} - ${
-                            index + 1
-                          }`}
+                          alt={`${displayName} - ${index + 1}`}
                           fill
+                          unoptimized
                           sizes="96px"
                           className="object-cover"
                         />
@@ -377,11 +375,10 @@ export default function ProductDetailClient({
                     </p>
                   </div>
                   <span
-                    className={`w-fit rounded-lg px-3 py-1.5 text-xs font-bold ${
-                      product.available
-                        ? "bg-emerald-100 text-emerald-800"
-                        : "bg-rose-100 text-rose-800"
-                    }`}
+                    className={`w-fit rounded-lg px-3 py-1.5 text-xs font-bold ${product.available
+                      ? "bg-emerald-100 text-emerald-800"
+                      : "bg-rose-100 text-rose-800"
+                      }`}
                   >
                     {product.available
                       ? t("inStock")
@@ -448,11 +445,10 @@ export default function ProductDetailClient({
                                 setActiveImageIndex(colorIndex);
                               }
                             }}
-                            className={`rounded-lg border px-3.5 py-2 text-xs font-semibold transition ${
-                              selectedColor === color
-                                ? "border-[#0b2f5c] bg-[#0b2f5c] text-white"
-                                : "border-slate-200 bg-white text-slate-700 hover:border-slate-300"
-                            }`}
+                            className={`rounded-lg border px-3.5 py-2 text-xs font-semibold transition ${selectedColor === color
+                              ? "border-[#0b2f5c] bg-[#0b2f5c] text-white"
+                              : "border-slate-200 bg-white text-slate-700 hover:border-slate-300"
+                              }`}
                           >
                             {color}
                           </button>
@@ -512,25 +508,25 @@ export default function ProductDetailClient({
 
               {/* FEATURES */}
               {displayFeatures.length > 0 && (
-                  <div className="mt-8 border-t border-slate-200 pt-6">
-                    <h2 className="mb-4 text-xs font-bold uppercase tracking-wider text-slate-700">
-                      {t("keyHighlights")}
-                    </h2>
-                    <ul className="space-y-3">
-                      {displayFeatures.map(
-                        (feature, index) => (
-                          <li
-                            key={`${feature}-${index}`}
-                            className="flex items-start gap-2.5 text-sm leading-6 text-slate-600"
-                          >
-                            <CheckCircle className="mt-0.5 h-4 w-4 shrink-0 text-emerald-600" />
-                            <span>{feature}</span>
-                          </li>
-                        )
-                      )}
-                    </ul>
-                  </div>
-                )}
+                <div className="mt-8 border-t border-slate-200 pt-6">
+                  <h2 className="mb-4 text-xs font-bold uppercase tracking-wider text-slate-700">
+                    {t("keyHighlights")}
+                  </h2>
+                  <ul className="space-y-3">
+                    {displayFeatures.map(
+                      (feature, index) => (
+                        <li
+                          key={`${feature}-${index}`}
+                          className="flex items-start gap-2.5 text-sm leading-6 text-slate-600"
+                        >
+                          <CheckCircle className="mt-0.5 h-4 w-4 shrink-0 text-emerald-600" />
+                          <span>{feature}</span>
+                        </li>
+                      )
+                    )}
+                  </ul>
+                </div>
+              )}
               {productHighlights.length > 0 && (
                 <div className="mt-8 rounded-xl border border-blue-200/80 bg-gradient-to-r from-blue-50/80 via-indigo-50/50 to-slate-50 p-4">
                   <div className="mb-3 flex items-center gap-1.5 text-xs font-extrabold uppercase tracking-wider text-[#0b2f5c]">
