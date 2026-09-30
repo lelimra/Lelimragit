@@ -14,7 +14,8 @@ function createSessionToken(adminId: number) {
     throw new Error("ADMIN_SESSION_SECRET is not configured");
   }
 
-  const expiresAt = Math.floor(Date.now() / 1000) + SESSION_TTL_SECONDS;
+  const expiresAt =
+    Math.floor(Date.now() / 1000) + SESSION_TTL_SECONDS;
 
   const payload = `${adminId}.${expiresAt}`;
 
@@ -26,45 +27,154 @@ function createSessionToken(adminId: number) {
   return `${payload}.${signature}`;
 }
 
+export const runtime = "nodejs";
+
 export async function POST(request: NextRequest) {
   try {
-    const body = await request.json();
+    // -------------------------------------------------------
+    // 1. Parse request body
+    // -------------------------------------------------------
+
+    let body: unknown;
+
+    try {
+      body = await request.json();
+    } catch (error) {
+      console.error("ADMIN LOGIN - INVALID JSON:", error);
+
+      return NextResponse.json(
+        {
+          success: false,
+          error: "Invalid JSON request body.",
+          details:
+            process.env.NODE_ENV !== "production"
+              ? error instanceof Error
+                ? error.message
+                : String(error)
+              : undefined,
+        },
+        { status: 400 }
+      );
+    }
+
+    // -------------------------------------------------------
+    // 2. Validate body
+    // -------------------------------------------------------
+
+    if (
+      typeof body !== "object" ||
+      body === null
+    ) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: "Request body must be a JSON object.",
+        },
+        { status: 400 }
+      );
+    }
+
+    const data = body as Record<string, unknown>;
 
     const email =
-      typeof body.email === "string"
-        ? body.email.trim().toLowerCase()
+      typeof data.email === "string"
+        ? data.email.trim().toLowerCase()
         : "";
 
     const password =
-      typeof body.password === "string"
-        ? body.password
+      typeof data.password === "string"
+        ? data.password
         : "";
 
     if (!email || !password) {
       return NextResponse.json(
         {
+          success: false,
           error: "Email and password are required.",
         },
-        { status: 400 },
+        { status: 400 }
       );
     }
 
-    // Find administrator by email.
-    const [rows] = await db.query(
-      `
-        SELECT
-          id,
-          name,
-          email,
-          password_hash,
-          role,
-          is_active
-        FROM admin_users
-        WHERE email = ?
-        LIMIT 1
-      `,
-      [email],
-    );
+    // -------------------------------------------------------
+    // 3. Check environment configuration
+    // -------------------------------------------------------
+
+    const missingEnv: string[] = [];
+
+    if (!process.env.ADMIN_SESSION_SECRET) {
+      missingEnv.push("ADMIN_SESSION_SECRET");
+    }
+
+    if (!process.env.DB_HOST) {
+      missingEnv.push("DB_HOST");
+    }
+
+    if (!process.env.DB_USER) {
+      missingEnv.push("DB_USER");
+    }
+
+    if (!process.env.DB_NAME) {
+      missingEnv.push("DB_NAME");
+    }
+
+    if (missingEnv.length > 0) {
+      const message = `Missing environment variables: ${missingEnv.join(
+        ", "
+      )}`;
+
+      console.error("ADMIN LOGIN CONFIG ERROR:", message);
+
+      return NextResponse.json(
+        {
+          success: false,
+          error: "Server configuration error.",
+          details: message,
+        },
+        { status: 500 }
+      );
+    }
+
+    // -------------------------------------------------------
+    // 4. Database query
+    // -------------------------------------------------------
+
+    let rows;
+
+    try {
+      [rows] = await db.query(
+        `
+          SELECT
+            id,
+            name,
+            email,
+            password_hash,
+            role,
+            is_active
+          FROM admin_users
+          WHERE email = ?
+          LIMIT 1
+        `,
+        [email]
+      );
+    } catch (error) {
+      console.error(
+        "ADMIN LOGIN - DATABASE QUERY ERROR:",
+        error
+      );
+
+      return NextResponse.json(
+        {
+          success: false,
+          error: "Database query failed.",
+          details:
+            error instanceof Error
+              ? error.message
+              : String(error),
+        },
+        { status: 500 }
+      );
+    }
 
     const admins = rows as Array<{
       id: number;
@@ -77,59 +187,167 @@ export async function POST(request: NextRequest) {
 
     const admin = admins[0];
 
-    // Use the same response for unknown users and invalid passwords.
+    // -------------------------------------------------------
+    // 5. Admin not found
+    // -------------------------------------------------------
+
     if (!admin) {
       return NextResponse.json(
         {
+          success: false,
           error: "Invalid email or password.",
         },
-        { status: 401 },
+        { status: 401 }
       );
     }
 
-    // Check whether the account is active.
+    // -------------------------------------------------------
+    // 6. Check active status
+    // -------------------------------------------------------
+
     if (Number(admin.is_active) !== 1) {
       return NextResponse.json(
         {
+          success: false,
           error: "This administrator account is inactive.",
         },
-        { status: 403 },
+        { status: 403 }
       );
     }
 
-    // Compare submitted password with bcrypt hash.
-    const passwordValid = await bcrypt.compare(
-      password,
-      admin.password_hash,
-    );
+    // -------------------------------------------------------
+    // 7. Validate password hash
+    // -------------------------------------------------------
+
+    if (
+      !admin.password_hash ||
+      typeof admin.password_hash !== "string"
+    ) {
+      console.error(
+        "ADMIN LOGIN - INVALID PASSWORD HASH FOR:",
+        admin.email
+      );
+
+      return NextResponse.json(
+        {
+          success: false,
+          error: "Administrator password configuration is invalid.",
+          details:
+            "The password_hash field is empty or invalid.",
+        },
+        { status: 500 }
+      );
+    }
+
+    // -------------------------------------------------------
+    // 8. Compare password
+    // -------------------------------------------------------
+
+    let passwordValid = false;
+
+    try {
+      passwordValid = await bcrypt.compare(
+        password,
+        admin.password_hash
+      );
+    } catch (error) {
+      console.error(
+        "ADMIN LOGIN - BCRYPT ERROR:",
+        error
+      );
+
+      return NextResponse.json(
+        {
+          success: false,
+          error: "Password verification failed.",
+          details:
+            error instanceof Error
+              ? error.message
+              : String(error),
+        },
+        { status: 500 }
+      );
+    }
 
     if (!passwordValid) {
       return NextResponse.json(
         {
+          success: false,
           error: "Invalid email or password.",
         },
-        { status: 401 },
+        { status: 401 }
       );
     }
 
-    // Create signed session token.
-    const sessionToken = createSessionToken(admin.id);
+    // -------------------------------------------------------
+    // 9. Create session
+    // -------------------------------------------------------
 
-    // Store session in secure HttpOnly cookie.
-    const cookieStore = await cookies();
+    let sessionToken: string;
 
-    cookieStore.set({
-      name: SESSION_COOKIE,
-      value: sessionToken,
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "lax",
-      path: "/",
-      maxAge: SESSION_TTL_SECONDS,
-    });
+    try {
+      sessionToken = createSessionToken(admin.id);
+    } catch (error) {
+      console.error(
+        "ADMIN LOGIN - SESSION TOKEN ERROR:",
+        error
+      );
+
+      return NextResponse.json(
+        {
+          success: false,
+          error: "Session creation failed.",
+          details:
+            error instanceof Error
+              ? error.message
+              : String(error),
+        },
+        { status: 500 }
+      );
+    }
+
+    // -------------------------------------------------------
+    // 10. Set cookie
+    // -------------------------------------------------------
+
+    try {
+      const cookieStore = await cookies();
+
+      cookieStore.set({
+        name: SESSION_COOKIE,
+        value: sessionToken,
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "lax",
+        path: "/",
+        maxAge: SESSION_TTL_SECONDS,
+      });
+    } catch (error) {
+      console.error(
+        "ADMIN LOGIN - COOKIE ERROR:",
+        error
+      );
+
+      return NextResponse.json(
+        {
+          success: false,
+          error: "Unable to create login session.",
+          details:
+            error instanceof Error
+              ? error.message
+              : String(error),
+        },
+        { status: 500 }
+      );
+    }
+
+    // -------------------------------------------------------
+    // 11. Success
+    // -------------------------------------------------------
 
     return NextResponse.json({
       success: true,
+      message: "Login successful.",
       admin: {
         id: admin.id,
         name: admin.name,
@@ -138,13 +356,30 @@ export async function POST(request: NextRequest) {
       },
     });
   } catch (error) {
-    console.error("Admin login error:", error);
+    // -------------------------------------------------------
+    // GLOBAL ERROR
+    // -------------------------------------------------------
+
+    console.error(
+      "ADMIN LOGIN - UNHANDLED ERROR:",
+      error
+    );
 
     return NextResponse.json(
       {
-        error: "Unable to sign in. Please try again.",
+        success: false,
+        error: "Unhandled admin login error.",
+        details:
+          error instanceof Error
+            ? error.message
+            : String(error),
+        stack:
+          process.env.NODE_ENV !== "production" &&
+          error instanceof Error
+            ? error.stack
+            : undefined,
       },
-      { status: 500 },
+      { status: 500 }
     );
   }
 }
