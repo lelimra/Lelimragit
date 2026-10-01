@@ -457,11 +457,11 @@ export default function Navbar() {
               className="hidden md:inline-flex items-center gap-1 text-[11px] font-bold text-amber-300 hover:text-amber-200 bg-slate-800 hover:bg-slate-700 px-2 py-0.5 rounded border border-slate-700 transition-all"
               title={t("adminDashboard")}
             >
-              <span>🔒 {t("admin")}</span>
+              <span>{t("admin")}</span>
             </NextLink>
 
             {/* Theme */}
-            <div className="hidden z-[100] sm:block pl-2 border-l border-slate-700">
+            <div className="hidden z-[100] sm:block  border-l border-slate-700">
               <ThemeToggle />
             </div>
 
@@ -479,8 +479,8 @@ export default function Navbar() {
 
       <header
         className={`sticky top-0 z-50 transition-all duration-200 bg-white/95 backdrop-blur-md ${isScrolled
-            ? "shadow-sm border-b border-slate-200 py-3"
-            : "border-b border-slate-200 py-2"
+          ? "shadow-sm border-b border-slate-200 py-3"
+          : "border-b border-slate-200 py-2"
           }`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -513,8 +513,8 @@ export default function Navbar() {
               <Link
                 href="/"
                 className={`px-3 py-2 text-sm font-medium transition-colors rounded-md ${isActive("/")
-                    ? "text-[#091a32] font-semibold bg-slate-100"
-                    : "text-slate-600 hover:text-slate-900 hover:bg-slate-50"
+                  ? "text-[#091a32] font-semibold bg-slate-100"
+                  : "text-slate-600 hover:text-slate-900 hover:bg-slate-50"
                   }`}
               >
                 {t("home")}
@@ -532,8 +532,8 @@ export default function Navbar() {
                 <Link
                   href="/products"
                   className={`px-3 py-2 text-sm font-medium inline-flex items-center gap-1.5 rounded-md transition-colors ${isActive("/products")
-                      ? "text-[#091a32] font-semibold bg-slate-100"
-                      : "text-slate-600 hover:text-slate-900 hover:bg-slate-50"
+                    ? "text-[#091a32] font-semibold bg-slate-100"
+                    : "text-slate-600 hover:text-slate-900 hover:bg-slate-50"
                     }`}
                   onClick={() => setIsProductsOpen(false)}
                 >
@@ -633,8 +633,8 @@ export default function Navbar() {
                 <Link
                   href="/wholesale"
                   className={`px-3 py-2 text-sm font-medium inline-flex items-center gap-1.5 rounded-md transition-colors ${isApplicationActive
-                      ? "text-[#091a32] font-semibold bg-slate-100"
-                      : "text-slate-600 hover:text-slate-900 hover:bg-slate-50"
+                    ? "text-[#091a32] font-semibold bg-slate-100"
+                    : "text-slate-600 hover:text-slate-900 hover:bg-slate-50"
                     }`}
                 >
                   <span>{t("application")}</span>
@@ -740,8 +740,8 @@ export default function Navbar() {
               <Link
                 href="/about"
                 className={`px-3 py-2 text-sm font-medium transition-colors rounded-md ${isActive("/about")
-                    ? "text-[#091a32] font-semibold bg-slate-100"
-                    : "text-slate-600 hover:text-slate-900 hover:bg-slate-50"
+                  ? "text-[#091a32] font-semibold bg-slate-100"
+                  : "text-slate-600 hover:text-slate-900 hover:bg-slate-50"
                   }`}
               >
                 {t("about")}
@@ -751,8 +751,8 @@ export default function Navbar() {
               <Link
                 href="/contact"
                 className={`px-3 py-2 text-sm font-medium transition-colors rounded-md ${isActive("/contact")
-                    ? "text-[#091a32] font-semibold bg-slate-100"
-                    : "text-slate-600 hover:text-slate-900 hover:bg-slate-50"
+                  ? "text-[#091a32] font-semibold bg-slate-100"
+                  : "text-slate-600 hover:text-slate-900 hover:bg-slate-50"
                   }`}
               >
                 {t("contact")}
@@ -772,7 +772,7 @@ export default function Navbar() {
               />
 
               {/* AI */}
-              <button
+              {/* <button
                 type="button"
                 onClick={openAI}
                 className="flex items-center gap-1.5 px-3 py-2 rounded-lg bg-slate-100 hover:bg-slate-200 text-[#091a32] text-xs font-bold transition-colors shrink-0 border border-slate-200 shadow-2xs group"
@@ -784,7 +784,7 @@ export default function Navbar() {
                 <span>{t("aiAssist")}</span>
 
                 <Sparkles className="w-3 h-3 text-amber-500" />
-              </button>
+              </button> */}
 
               {/* Stockist */}
               <Link
@@ -828,8 +828,8 @@ export default function Navbar() {
                   }
                 }}
                 className={`p-2 rounded-md transition-colors ${isMobileSearchOpen
-                    ? "bg-slate-100 text-slate-900"
-                    : "text-slate-700 hover:text-slate-900"
+                  ? "bg-slate-100 text-slate-900"
+                  : "text-slate-700 hover:text-slate-900"
                   }`}
                 aria-label={t("searchFans")}
               >
@@ -887,8 +887,8 @@ export default function Navbar() {
                 href="/"
                 onClick={closeMobileMenu}
                 className={`block px-3 py-2.5 rounded-lg text-sm font-medium ${isActive("/")
-                    ? "bg-slate-100 text-[#091a32] font-bold"
-                    : "text-slate-700 hover:bg-slate-50"
+                  ? "bg-slate-100 text-[#091a32] font-bold"
+                  : "text-slate-700 hover:bg-slate-50"
                   }`}
               >
                 {t("home")}
@@ -900,8 +900,8 @@ export default function Navbar() {
                   href="/products"
                   onClick={closeMobileMenu}
                   className={`block px-3 py-2.5 rounded-lg text-sm font-medium ${isActive("/products")
-                      ? "bg-slate-100 text-[#091a32] font-bold"
-                      : "text-slate-700 hover:bg-slate-50"
+                    ? "bg-slate-100 text-[#091a32] font-bold"
+                    : "text-slate-700 hover:bg-slate-50"
                     }`}
                 >
                   {t("allProductCatalog")}
@@ -942,8 +942,8 @@ export default function Navbar() {
                     setIsMobileApplicationOpen((prev) => !prev)
                   }
                   className={`w-full flex items-center justify-between px-3 py-2.5 rounded-lg text-sm font-medium ${isApplicationActive
-                      ? "bg-slate-100 text-[#091a32] font-bold"
-                      : "text-slate-700 hover:bg-slate-50"
+                    ? "bg-slate-100 text-[#091a32] font-bold"
+                    : "text-slate-700 hover:bg-slate-50"
                     }`}
                   aria-expanded={isMobileApplicationOpen}
                 >
@@ -997,8 +997,8 @@ export default function Navbar() {
                 href="/about"
                 onClick={closeMobileMenu}
                 className={`block px-3 py-2.5 rounded-lg text-sm font-medium ${isActive("/about")
-                    ? "bg-slate-100 text-[#091a32] font-bold"
-                    : "text-slate-700 hover:bg-slate-50"
+                  ? "bg-slate-100 text-[#091a32] font-bold"
+                  : "text-slate-700 hover:bg-slate-50"
                   }`}
               >
                 {t("about")}
@@ -1009,8 +1009,8 @@ export default function Navbar() {
                 href="/contact"
                 onClick={closeMobileMenu}
                 className={`block px-3 py-2.5 rounded-lg text-sm font-medium ${isActive("/contact")
-                    ? "bg-slate-100 text-[#091a32] font-bold"
-                    : "text-slate-700 hover:bg-slate-50"
+                  ? "bg-slate-100 text-[#091a32] font-bold"
+                  : "text-slate-700 hover:bg-slate-50"
                   }`}
               >
                 {t("contact")}

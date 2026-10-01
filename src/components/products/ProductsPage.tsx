@@ -22,6 +22,7 @@ import type { Product } from "@/types/product";
 
 import ProductCard from "@/components/products/ProductCard";
 import DownloadCatalogue from "../common/DownloadCatalogue";
+import Breadcrumbs from "../common/Breadcrumbs";
 
 type ProductsProps = {
   products?: Product[];
@@ -301,15 +302,15 @@ export default function Products({
   // RESET FILTERS
   // =====================================================
 
-const resetFilters = () => {
-  setSelectedCategory("all");
-  setSelectedSize("all");
-  setSearchQuery("");
-  setPriceSort("default");
-  setFeaturedOnly(false);
-  setInStockOnly(false);
-  setIsFilterOpen(false);
-};
+  const resetFilters = () => {
+    setSelectedCategory("all");
+    setSelectedSize("all");
+    setSearchQuery("");
+    setPriceSort("default");
+    setFeaturedOnly(false);
+    setInStockOnly(false);
+    setIsFilterOpen(false);
+  };
 
   // =====================================================
   // CLEAR SEARCH
@@ -325,13 +326,13 @@ const resetFilters = () => {
   // ACTIVE FILTER CHECK
   // =====================================================
 
- const hasActiveFilters =
-  selectedCategory !== "all" ||
-  selectedSize !== "all" ||
-  searchQuery.trim() !== "" ||
-  priceSort !== "default" ||
-  featuredOnly ||
-  inStockOnly;
+  const hasActiveFilters =
+    selectedCategory !== "all" ||
+    selectedSize !== "all" ||
+    searchQuery.trim() !== "" ||
+    priceSort !== "default" ||
+    featuredOnly ||
+    inStockOnly;
 
   // =====================================================
   // PAGE TITLE
@@ -346,31 +347,28 @@ const resetFilters = () => {
 
   return (
     <main className="min-h-screen bg-slate-50 pb-20">
+
+      <Breadcrumbs
+        items={[
+          {
+            label: "Products",
+          },
+        ]}
+      />
       {/* =================================================
           PAGE HEADER
       ================================================= */}
 
       <section className="border-b border-slate-200 bg-white">
-        <div className="mx-auto max-w-7xl px-4 pb-8 pt-5 sm:px-6 lg:px-8">
-          {/* Breadcrumb */}
-
-          <div className="text-xs text-slate-500">
-            <a
-              href="/"
-              className="transition-colors hover:text-[#174e8c]"
-            >
-              {t("Navbar.home")}
-            </a>
-
-            <span className="mx-2">/</span>
-
-            <span className="font-medium text-slate-700">
-              {pageTitle}
-            </span>
-
+         <div className="text-xs px-10 text-slate-500 flex justify-end">
             <DownloadCatalogue />
           </div>
 
+        <div className="mx-auto max-w-7xl px-4 pb-8 pt-5 sm:px-6 lg:px-8">
+          {/* Breadcrumb */}
+
+
+         
           {/* Header */}
 
           <div className="mt-5 flex flex-col justify-between gap-4 md:flex-row md:items-center">
@@ -408,11 +406,10 @@ const resetFilters = () => {
               onClick={() =>
                 handleCategoryChange("all")
               }
-              className={`shrink-0 rounded-lg px-4 py-2 text-xs font-bold transition-all ${
-                selectedCategory === "all"
-                  ? "bg-[#0b2f5c] text-white shadow-sm"
-                  : "bg-slate-100 text-slate-700 hover:bg-slate-200"
-              }`}
+              className={`shrink-0 rounded-lg px-4 py-2 text-xs font-bold transition-all ${selectedCategory === "all"
+                ? "bg-[#0b2f5c] text-white shadow-sm"
+                : "bg-slate-100 text-slate-700 hover:bg-slate-200"
+                }`}
             >
               {t("navAllProducts")}
             </button>
@@ -424,11 +421,10 @@ const resetFilters = () => {
               onClick={() =>
                 handleCategoryChange("ceiling-fan")
               }
-              className={`flex shrink-0 items-center gap-1.5 rounded-lg px-4 py-2 text-xs font-bold transition-all ${
-                selectedCategory === "ceiling-fan"
-                  ? "bg-[#0b2f5c] text-white shadow-sm"
-                  : "bg-slate-100 text-slate-700 hover:bg-slate-200"
-              }`}
+              className={`flex shrink-0 items-center gap-1.5 rounded-lg px-4 py-2 text-xs font-bold transition-all ${selectedCategory === "ceiling-fan"
+                ? "bg-[#0b2f5c] text-white shadow-sm"
+                : "bg-slate-100 text-slate-700 hover:bg-slate-200"
+                }`}
             >
               <Fan className="h-3.5 w-3.5" />
 
@@ -442,11 +438,10 @@ const resetFilters = () => {
               onClick={() =>
                 handleCategoryChange("table-fan")
               }
-              className={`flex shrink-0 items-center gap-1.5 rounded-lg px-4 py-2 text-xs font-bold transition-all ${
-                selectedCategory === "table-fan"
-                  ? "bg-[#0b2f5c] text-white shadow-sm"
-                  : "bg-slate-100 text-slate-700 hover:bg-slate-200"
-              }`}
+              className={`flex shrink-0 items-center gap-1.5 rounded-lg px-4 py-2 text-xs font-bold transition-all ${selectedCategory === "table-fan"
+                ? "bg-[#0b2f5c] text-white shadow-sm"
+                : "bg-slate-100 text-slate-700 hover:bg-slate-200"
+                }`}
             >
               <Wind className="h-3.5 w-3.5" />
 
@@ -460,11 +455,10 @@ const resetFilters = () => {
               onClick={() =>
                 handleCategoryChange("pedestal-fan")
               }
-              className={`flex shrink-0 items-center gap-1.5 rounded-lg px-4 py-2 text-xs font-bold transition-all ${
-                selectedCategory === "pedestal-fan"
-                  ? "bg-[#0b2f5c] text-white shadow-sm"
-                  : "bg-slate-100 text-slate-700 hover:bg-slate-200"
-              }`}
+              className={`flex shrink-0 items-center gap-1.5 rounded-lg px-4 py-2 text-xs font-bold transition-all ${selectedCategory === "pedestal-fan"
+                ? "bg-[#0b2f5c] text-white shadow-sm"
+                : "bg-slate-100 text-slate-700 hover:bg-slate-200"
+                }`}
             >
               <ShieldCheck className="h-3.5 w-3.5" />
 
@@ -483,7 +477,7 @@ const resetFilters = () => {
             SEARCH BAR
         ================================================= */}
 
-        <div className="mb-6 flex flex-col gap-3 rounded-xl border border-slate-200 bg-white p-3 sm:p-4 md:flex-row md:items-center md:justify-between">
+        <div className="mb-6 flex flex-col gap-3 rounded-xl border border-slate-200 bg-white p-1 sm:p-2 md:flex-row md:items-center md:justify-between">
           {/* Search */}
 
           <div className="relative flex-1">
@@ -531,9 +525,9 @@ const resetFilters = () => {
               onChange={(event) =>
                 setPriceSort(
                   event.target.value as
-                    | "default"
-                    | "low-high"
-                    | "high-low"
+                  | "default"
+                  | "low-high"
+                  | "high-low"
                 )
               }
               className="rounded-lg border border-slate-200 bg-white px-3 py-2 text-xs font-semibold text-slate-700 outline-none focus:ring-2 focus:ring-[#0b2f5c]"
@@ -556,11 +550,10 @@ const resetFilters = () => {
               onClick={() =>
                 setIsFilterOpen(!isFilterOpen)
               }
-              className={`flex items-center gap-1.5 rounded-lg border px-3 py-2 text-xs font-bold lg:hidden ${
-                hasActiveFilters
-                  ? "border-[#0b2f5c] bg-[#0b2f5c] text-white"
-                  : "border-slate-200 bg-white text-slate-700"
-              }`}
+              className={`flex items-center gap-1.5 rounded-lg border px-3 py-2 text-xs font-bold lg:hidden ${hasActiveFilters
+                ? "border-[#0b2f5c] bg-[#0b2f5c] text-white"
+                : "border-slate-200 bg-white text-slate-700"
+                }`}
             >
               <SlidersHorizontal className="h-3.5 w-3.5" />
 
@@ -579,11 +572,10 @@ const resetFilters = () => {
           ================================================= */}
 
           <aside
-            className={`lg:col-span-1 ${
-              isFilterOpen
-                ? "block"
-                : "hidden lg:block"
-            }`}
+            className={`lg:col-span-1 ${isFilterOpen
+              ? "block"
+              : "hidden lg:block"
+              }`}
           >
             <div className="sticky top-24 space-y-6 rounded-xl border border-slate-200 bg-white p-5">
               {/* Filter Header */}

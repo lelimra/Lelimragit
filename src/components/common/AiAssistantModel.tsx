@@ -521,11 +521,11 @@ export const AIAssistantModal: React.FC = () => {
             bottom-24 right-4
             sm:bottom-6 sm:right-6
             z-[2147483645]
-            flex items-center gap-2.5
+            flex items-center gap-1
             bg-[#091a32]
             hover:bg-[#0c2344]
             text-white
-            px-4 py-3
+            px-2 py-2
             rounded-full
             shadow-xl
             border border-slate-700/50

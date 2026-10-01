@@ -3,6 +3,8 @@ import Image from "next/image";
 import { useState } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import type { Product } from "@/types/product";
+import WhatsappIcon from "@mui/icons-material/WhatsApp";
+
 import {
   ArrowLeft,
   ArrowRight,
@@ -17,9 +19,9 @@ import {
   Star,
   Info,
   Layers,
-  MessageSquare,
   Truck,
   X,
+  MessageSquare,
 } from "lucide-react";
 import WholesaleForm from "@/components/wholesale/WholesaleForm";
 import ProductCard from "@/components/products/ProductCard";
@@ -472,7 +474,7 @@ export default function ProductDetailClient({
               ) : (
                 <div className="mt-8 grid grid-cols-1 gap-3.5 sm:grid-cols-2">
                   <a href={whatsappUrl} target="_blank" rel="noopener noreferrer" className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-[#e31e24] px-5 py-3.5 text-sm font-bold text-white shadow transition-colors hover:bg-[#c4181d]">
-                    <MessageSquare className="h-4 w-4 fill-current" />
+                    <WhatsappIcon className="h-4 w-4 fill-current" />
                     <span>{t("enquireOnWhatsApp")}</span>
                   </a>
                   <button type="button" onClick={() => setShowWholesaleModal(true)} className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-[#091a32] px-5 py-3.5 text-sm font-bold text-white shadow transition-colors hover:bg-[#112d52]">
