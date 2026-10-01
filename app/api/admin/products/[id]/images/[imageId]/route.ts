@@ -1,6 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/db";
+import { unlink } from "fs/promises";
+import path from "path";
 
+export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
 type RouteContext = {
@@ -10,18 +13,27 @@ type RouteContext = {
   }>;
 };
 
-function getId(value: string) {
-  const id = Number(value);
+const PRODUCT_IMAGE_URL_PREFIX = "/images/products/";
+const PRODUCT_IMAGE_DIRECTORY =
+  "/home/u315645729/domains/lelimra.com/product-images/products";
 
-  return Number.isInteger(id) && id > 0
-    ? id
-    : null;
+function getId(value: string): number | null {
+  const id = Number(value);
+  return Number.isInteger(id) && id > 0 ? id : null;
 }
+
+type ExistingImage = {
+  id: number;
+  image_url: string;
+  alt_text: string | null;
+  sort_order: number;
+  is_primary: number;
+};
 
 /**
  * PUT
  *
- * Update image information.
+ * Update product image information.
  */
 export async function PUT(
   request: NextRequest,
@@ -36,7 +48,7 @@ export async function PUT(
     if (!productId || !imageIdNumber) {
       return NextResponse.json(
         {
-          error: "Invalid ID.",
+          error: "Invalid product ID or image ID.",
         },
         { status: 400 }
       );
@@ -67,13 +79,7 @@ export async function PUT(
     );
 
     const existingImage = (
-      existingRows as Array<{
-        id: number;
-        image_url: string;
-        alt_text: string | null;
-        sort_order: number;
-        is_primary: number;
-      }>
+      existingRows as ExistingImage[]
     )[0];
 
     if (!existingImage) {
@@ -86,8 +92,8 @@ export async function PUT(
     }
 
     /*
-     * Use existing values when a field
-     * isn't included in the request.
+     * Keep existing values when a field
+     * is not included in the request.
      */
     const imageUrl =
       body.image_url !== undefined
@@ -114,6 +120,8 @@ export async function PUT(
 
     /*
      * Validate image URL.
+     *
+     * Only product images are allowed.
      */
     if (!imageUrl) {
       return NextResponse.json(
@@ -124,11 +132,11 @@ export async function PUT(
       );
     }
 
-    if (!imageUrl.startsWith("/images/")) {
+    if (!imageUrl.startsWith(PRODUCT_IMAGE_URL_PREFIX)) {
       return NextResponse.json(
         {
           error:
-            "Image must be inside the /images/ directory.",
+            "Image must be inside the /images/products/ directory.",
         },
         { status: 400 }
       );
@@ -152,7 +160,7 @@ export async function PUT(
     }
 
     /*
-     * Update the image.
+     * Update the image record.
      */
     const [result] = await db.query(
       `
@@ -209,7 +217,12 @@ export async function PUT(
 /**
  * DELETE
  *
- * Delete product image.
+ * Delete product image from:
+ * 1. Persistent filesystem
+ * 2. Database
+ *
+ * If the deleted image was primary,
+ * the first remaining image becomes primary.
  */
 export async function DELETE(
   _request: NextRequest,
@@ -224,20 +237,22 @@ export async function DELETE(
     if (!productId || !imageIdNumber) {
       return NextResponse.json(
         {
-          error: "Invalid ID.",
+          error: "Invalid product ID or image ID.",
         },
         { status: 400 }
       );
     }
 
     /*
-     * Check whether the image being deleted
-     * is currently the primary image.
+     * Get the image before deleting it.
+     * We need the image URL for filesystem deletion
+     * and is_primary for primary-image handling.
      */
     const [imageRows] = await db.query(
       `
         SELECT
           id,
+          image_url,
           is_primary
         FROM product_images
         WHERE id = ?
@@ -250,6 +265,7 @@ export async function DELETE(
     const image = (
       imageRows as Array<{
         id: number;
+        image_url: string;
         is_primary: number;
       }>
     )[0];
@@ -263,6 +279,55 @@ export async function DELETE(
       );
     }
 
+    /*
+     * Delete the physical image file.
+     *
+     * Only files inside /images/products/
+     * are deleted from the persistent directory.
+     */
+    if (
+      image.image_url.startsWith(
+        PRODUCT_IMAGE_URL_PREFIX
+      )
+    ) {
+      const filename = path.basename(image.image_url);
+
+      /*
+       * Prevent unexpected path traversal.
+       */
+      if (
+        filename &&
+        filename !== "." &&
+        filename !== ".."
+      ) {
+        const filePath = path.join(
+          PRODUCT_IMAGE_DIRECTORY,
+          filename
+        );
+
+        try {
+          await unlink(filePath);
+        } catch (error: unknown) {
+          const nodeError =
+            error as NodeJS.ErrnoException;
+
+          /*
+           * If the file is already missing,
+           * continue with database deletion.
+           *
+           * Any other filesystem error should
+           * stop the operation.
+           */
+          if (nodeError.code !== "ENOENT") {
+            throw error;
+          }
+        }
+      }
+    }
+
+    /*
+     * Delete the image record from database.
+     */
     await db.query(
       `
         DELETE FROM product_images
@@ -274,8 +339,7 @@ export async function DELETE(
 
     /*
      * If the deleted image was primary,
-     * automatically promote the first
-     * remaining image.
+     * promote the first remaining image.
      */
     if (image.is_primary === 1) {
       const [remainingRows] = await db.query(

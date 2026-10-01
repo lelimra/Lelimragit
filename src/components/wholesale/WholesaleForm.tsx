@@ -7,6 +7,8 @@ import {
   MessageSquare,
   Send,
 } from "lucide-react";
+import WhatsappIcon from "@mui/icons-material/WhatsApp";
+
 import { useTranslations } from "next-intl";
 
 import { getWholesaleEnquiryWhatsAppUrl } from "@/utils/whatsapp";
@@ -246,7 +248,7 @@ export default function WholesaleForm({
               onClick={handleWhatsAppDirect}
               className="inline-flex flex-1 items-center justify-center gap-2 rounded-xl bg-emerald-600 px-5 py-3 text-sm font-bold text-white shadow-sm transition hover:bg-emerald-700"
             >
-              <MessageSquare className="h-4 w-4" />
+              <WhatsappIcon className="h-4 w-4" />
               {t("wholesaleSendWhatsApp")}
             </button>
 
@@ -545,7 +547,7 @@ export default function WholesaleForm({
             onClick={handleWhatsAppDirect}
             className="inline-flex flex-1 items-center justify-center gap-2 rounded-xl bg-emerald-600 px-6 py-3.5 text-sm font-bold text-white shadow-sm transition hover:bg-emerald-700"
           >
-            <MessageSquare className="h-4 w-4" />
+            <WhatsappIcon className="h-4 w-4" />
 
             <span>
               {t("wholesaleWhatsAppButton")}

@@ -603,7 +603,7 @@ export default function ProductDetailClient({
           <div className="flex shrink-0 items-center gap-2">
             {product.available ? (
               <a href={whatsappUrl} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 rounded-lg bg-emerald-600 px-3.5 py-2 text-xs font-bold text-white shadow-sm transition-colors hover:bg-emerald-700">
-                <MessageSquare className="h-3.5 w-3.5 fill-current" />
+                <WhatsappIcon className="h-3.5 w-3.5 fill-current" />
                 <span>{t("enquireShort")}</span>
               </a>
             ) : (
@@ -665,7 +665,7 @@ export default function ProductDetailClient({
             <div className="mb-5 flex items-start justify-between gap-4 border-b border-slate-100 pb-4">
               <div>
                 <h2 className="text-lg font-bold text-slate-900">
-                  {t("requestWholesaleQuotation")}
+                  {t("requestWholesaleQuote")}
                 </h2>
                 <p className="mt-1 text-xs text-slate-500">
                   {t("productLabel")}: {product.name}
