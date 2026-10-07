@@ -2,6 +2,8 @@
 
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { Link } from "@/lib/navigation";
+import WhatsappIcon from "@mui/icons-material/WhatsApp";
+
 import {
   Sparkles,
   Bot,
@@ -253,26 +255,26 @@ export const AIAssistantModal: React.FC = () => {
         const recommendedProducts: RecommendedProduct[] =
           Array.isArray(data.recommendedProducts)
             ? data.recommendedProducts
-                .filter(
-                  (product: unknown): product is RecommendedProduct => {
-                    if (
-                      !product ||
-                      typeof product !== "object"
-                    ) {
-                      return false;
-                    }
-
-                    const item =
-                      product as Partial<RecommendedProduct>;
-
-                    return (
-                      typeof item.id === "string" &&
-                      typeof item.name === "string" &&
-                      typeof item.slug === "string"
-                    );
+              .filter(
+                (product: unknown): product is RecommendedProduct => {
+                  if (
+                    !product ||
+                    typeof product !== "object"
+                  ) {
+                    return false;
                   }
-                )
-                .slice(0, 3)
+
+                  const item =
+                    product as Partial<RecommendedProduct>;
+
+                  return (
+                    typeof item.id === "string" &&
+                    typeof item.name === "string" &&
+                    typeof item.slug === "string"
+                  );
+                }
+              )
+              .slice(0, 3)
             : [];
 
         const botReply: Message = {
@@ -518,14 +520,14 @@ export const AIAssistantModal: React.FC = () => {
           onClick={() => openAssistant()}
           className="
             fixed
-            bottom-24 right-4
+            bottom-20 right-4
             sm:bottom-6 sm:right-6
             z-[2147483645]
             flex items-center gap-1
             bg-[#091a32]
             hover:bg-[#0c2344]
             text-white
-            px-2 py-2
+            px-1 py-1
             rounded-full
             shadow-xl
             border border-slate-700/50
@@ -547,13 +549,14 @@ export const AIAssistantModal: React.FC = () => {
           </div>
 
           <div className="text-left pr-1">
-            <div className="flex items-center gap-1.5">
+            <div className="flex items-center gap-1">
               <span className="text-xs font-bold tracking-tight">
                 {t("launcher.title")}
               </span>
 
               <span className="bg-[#e31e24] text-[9px] font-extrabold uppercase px-1.5 py-0.5 rounded-full text-white">
-                {t("launcher.badge")}
+                <Sparkles className="w-3.5 h-3.5 text-amber-400 group-hover:rotate-12 transition-transform shrink-0" />
+
               </span>
             </div>
 
@@ -562,7 +565,6 @@ export const AIAssistantModal: React.FC = () => {
             </p>
           </div>
 
-          <Sparkles className="w-3.5 h-3.5 text-amber-400 group-hover:rotate-12 transition-transform shrink-0" />
         </button>
       )}
 
@@ -575,6 +577,7 @@ export const AIAssistantModal: React.FC = () => {
           <div
             className="
               w-full
+              z-[2147483646]
               sm:w-[380px]
               sm:max-w-[380px]
               h-[85vh]
@@ -583,6 +586,8 @@ export const AIAssistantModal: React.FC = () => {
               bg-white
               rounded-t-2xl
               sm:rounded-2xl
+              mb-12
+              lg:mb-0
               shadow-2xl
               border border-slate-200
               flex flex-col
@@ -696,11 +701,10 @@ export const AIAssistantModal: React.FC = () => {
                 return (
                   <div
                     key={message.id}
-                    className={`flex flex-col ${
-                      isUser
+                    className={`flex flex-col ${isUser
                         ? "items-end"
                         : "items-start"
-                    }`}
+                      }`}
                   >
                     <div className="flex items-start gap-2 max-w-[88%]">
                       {!isUser && (
@@ -710,11 +714,10 @@ export const AIAssistantModal: React.FC = () => {
                       )}
 
                       <div
-                        className={`rounded-2xl px-3.5 py-2.5 shadow-xs ${
-                          isUser
+                        className={`rounded-2xl px-3.5 py-2.5 shadow-xs ${isUser
                             ? "bg-[#091a32] text-white rounded-tr-xs"
                             : "bg-white text-slate-800 border border-slate-200/80 rounded-tl-xs"
-                        }`}
+                          }`}
                       >
                         {isUser ? (
                           <p className="text-xs sm:text-[13px] whitespace-pre-wrap">
@@ -958,7 +961,7 @@ export const AIAssistantModal: React.FC = () => {
                   rel="noopener noreferrer"
                   className="font-semibold text-emerald-700 hover:text-emerald-800 flex items-center gap-1"
                 >
-                  <MessageSquare className="w-3 h-3" />
+                  <WhatsappIcon sx={{ fontSize: 16 }} />
 
                   <span>
                     {t("humanAssistance.whatsapp")}

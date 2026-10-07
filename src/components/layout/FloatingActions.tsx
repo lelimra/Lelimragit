@@ -27,7 +27,7 @@ export default function FloatingActions() {
           fixed
           bottom-40 right-4
           sm:bottom-24 sm:right-6
-          z-[2147483646]
+          z-[2147483640
           group
           flex items-center gap-1
           rounded-full

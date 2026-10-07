@@ -1,6 +1,7 @@
 "use client";
 import React, { useState, useEffect, useCallback, useRef } from "react";
 import { Link } from "@/lib/navigation";
+import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { useTranslations } from "next-intl";
 import type { Product } from "@/types/product";
@@ -409,11 +410,13 @@ export const HeroCarousel: React.FC<{ products: Product[] }> = ({ products }) =>
                     {/* Primary Image View */}
                     <div className="relative aspect-[4/3] rounded-xl overflow-hidden bg-slate-50 border border-slate-100 group">
                       {currentSlide.image ? (
-                        <img
+                        <Image
                           src={currentSlide.image}
                           alt={currentSlide.title}
-                          referrerPolicy="no-referrer"
-                          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                          fill
+                          priority={currentSlideIndex === 0}
+                          sizes="(max-width: 1024px) 100vw, 42vw"
+                          className="object-cover transition-transform duration-700 group-hover:scale-105"
                         />
                       ) : (
                         <div className="flex h-full w-full items-center justify-center bg-slate-50">

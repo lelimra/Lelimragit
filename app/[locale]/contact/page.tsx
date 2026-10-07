@@ -447,7 +447,6 @@ export default function ContactPage() {
                     height="100%"
                     style={{ border: 0 }}
                     allowFullScreen
-                    loading="lazy"
                     referrerPolicy="strict-origin-when-cross-origin"
                     title={t("location.mapTitle")}
                     className="relative z-10"

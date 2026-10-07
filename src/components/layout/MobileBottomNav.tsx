@@ -61,7 +61,7 @@ export default function MobileBottomNav() {
 
           {/* Dropdown */}
           <div className="fixed inset-x-4 bottom-[76px] z-[100] mx-auto max-w-lg overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-2xl lg:hidden">
-            <div className="flex items-center justify-between border-b border-slate-100 px-4 py-3">
+            <div className="flex items-center justify-between border-b border-slate-100 px-2 py-3">
               <div>
                 <p className="text-sm font-bold text-slate-900">
                   Applications & Enquiries
@@ -128,12 +128,11 @@ export default function MobileBottomNav() {
       {/* Bottom Navigation */}
       <nav
         aria-label="Mobile navigation"
-        className="fixed inset-x-0 bottom-0 z-[90] border-t border-slate-200 bg-white/95 text-slate-800 shadow-xl backdrop-blur-md lg:hidden"
-        style={{
+className="fixed inset-x-0 bottom-0 z-[90] border-t border-slate-200 bg-white/80 text-slate-800 font-bold shadow-xl backdrop-blur-lg lg:hidden"        style={{
           paddingBottom: "env(safe-area-inset-bottom, 0px)",
         }}
       >
-        <div className="mx-auto grid h-16 max-w-lg grid-cols-5">
+        <div className="mx-auto grid h-12 max-w-lg grid-cols-5">
           {/* Home / Fans / Freight */}
           {navItems.map((item) => {
             const targetPath = item.path ? `/${item.path}` : "/";
