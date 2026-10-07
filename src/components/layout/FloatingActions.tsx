@@ -25,9 +25,10 @@ export default function FloatingActions() {
         aria-label="WhatsApp LIMRA INDUSTRY"
         className="
           fixed
-          bottom-40 right-4
+          lg:bottom-25 lg:right-6
+          bottom-35 right-4
           sm:bottom-24 sm:right-6
-          z-[2147483640
+          z-[21474836]
           group
           flex items-center gap-1
           rounded-full
