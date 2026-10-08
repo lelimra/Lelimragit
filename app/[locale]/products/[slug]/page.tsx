@@ -6,6 +6,7 @@ import {
 } from "@/lib/products";
 
 import ProductDetailClient from "@/components/products/ProductDetailsClient";
+import ProductViewTracker from "@/components/analytics/ProductViewTracker";
 
 type Props = {
   params: Promise<{
@@ -32,9 +33,14 @@ export default async function ProductDetailPage({
   );
 
   return (
+<>
+    <ProductViewTracker productId={product.id} />
     <ProductDetailClient
       product={product}
       relatedProducts={relatedProducts}
     />
+
+    </>
+
   );
 }

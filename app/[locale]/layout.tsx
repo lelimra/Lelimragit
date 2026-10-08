@@ -7,6 +7,7 @@ import Footer from "@/components/layout/Footer";
 import MobileBottomNav from "@/components/layout/MobileBottomNav";
 import { AIAssistantProvider } from "@/context/AiAssistantContext";
 import FloatingActions from "@/components/layout/FloatingActions";
+import AnalyticsTracker from "@/components/analytics/AnalyticsTracker";
 
 const locales = ["en", "hi", "te", "mr", "ur"] as const;
 
@@ -36,7 +37,7 @@ export default async function LocaleLayout({
 
       <AIAssistantProvider>
 
-
+        <AnalyticsTracker />
         <Navbar />
         {children}
         <MobileBottomNav />
