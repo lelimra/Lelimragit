@@ -35,7 +35,7 @@ type PageAnalytics = {
 
 type ProductAnalytics = {
     productId: string;
-    productName?: string;
+    name?: string;
     views: number;
     uniqueVisitors: number;
 };
@@ -690,11 +690,42 @@ export default function AnalyticsDashboard() {
                     )
                 );
 
-                setConversions(
-                    normalizeConversions(
-                        eventData.conversions
-                    )
-                );
+
+                const rawConversions = eventData.conversions as
+                    | Record<string, number>
+                    | undefined;
+
+                const rawRates = (
+                    eventsJson?.data?.conversionRates ?? {}
+                ) as Record<string, number>;
+
+                setConversions([
+                    {
+                        name: "enquiry_submitted",
+                        events: Number(rawConversions?.enquiries ?? 0),
+                        uniqueVisitors: 0,
+                        conversionRate: Number(rawRates.enquiryRate ?? 0),
+                    },
+                    {
+                        name: "contact_submitted",
+                        events: Number(rawConversions?.contacts ?? 0),
+                        uniqueVisitors: 0,
+                        conversionRate: Number(rawRates.contactRate ?? 0),
+                    },
+                    {
+                        name: "whatsapp_click",
+                        events: Number(rawConversions?.whatsapp ?? 0),
+                        uniqueVisitors: 0,
+                        conversionRate: Number(rawRates.whatsappRate ?? 0),
+                    },
+                    {
+                        name: "catalogue_download",
+                        events: Number(rawConversions?.catalogueDownloads ?? 0),
+                        uniqueVisitors: 0,
+                        conversionRate: Number(rawRates.catalogueRate ?? 0),
+                    },
+                ]);
+
             } catch (fetchError) {
                 if (cancelled) {
                     return;
@@ -1098,10 +1129,10 @@ export default function AnalyticsDashboard() {
                                     {topProducts.map(
                                         (product, index) => {
                                             const productName =
-                                                typeof product?.productName ===
+                                                typeof product?.name ===
                                                     "string" &&
-                                                    product.productName.trim()
-                                                    ? product.productName
+                                                    product.name.trim()
+                                                    ? product.name
                                                     : product?.productId ||
                                                     "Unknown Product";
 

@@ -20,65 +20,55 @@ export type LiveVisitor = {
 };
 
 export function useLiveVisitors() {
-  const [visitors, setVisitors] = useState<
-    LiveVisitor[]
-  >([]);
+  const [visitors, setVisitors] = useState<LiveVisitor[]>([]);
+  const [activeVisitors, setActiveVisitors] = useState(0);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-  const [loading, setLoading] =
-    useState(true);
+  const fetchLiveVisitors = useCallback(async () => {
+    try {
+      const response = await fetch("/api/admin/analytics/live", {
+        cache: "no-store",
+      });
 
-  const [error, setError] =
-    useState<string | null>(null);
-
-  const fetchLiveVisitors = useCallback(
-    async () => {
-      try {
-        const response = await fetch(
-          "/api/admin/analytics/live",
-          {
-            cache: "no-store",
-          }
+      if (!response.ok) {
+        throw new Error(
+          `Live analytics request failed: ${response.status}`
         );
-
-        if (!response.ok) {
-          throw new Error(
-            `Live analytics request failed: ${response.status}`
-          );
-        }
-
-        const json = await response.json();
-
-        const data = Array.isArray(json?.data)
-          ? json.data
-          : [];
-
-        setVisitors(data);
-        setError(null);
-      } catch (fetchError) {
-        console.error(
-          "Live visitors error:",
-          fetchError
-        );
-
-        setError(
-          fetchError instanceof Error
-            ? fetchError.message
-            : "Failed to load live visitors."
-        );
-      } finally {
-        setLoading(false);
       }
-    },
-    []
-  );
+
+      const json = await response.json();
+
+      if (!json?.success || !json?.data) {
+        throw new Error("Invalid live analytics response.");
+      }
+
+      const visitorList = Array.isArray(json.data.visitors)
+        ? json.data.visitors
+        : [];
+
+      setVisitors(visitorList);
+      setActiveVisitors(
+        Number(json.data.activeVisitors ?? visitorList.length)
+      );
+      setError(null);
+    } catch (fetchError) {
+      console.error("Live visitors error:", fetchError);
+
+      setError(
+        fetchError instanceof Error
+          ? fetchError.message
+          : "Failed to load live visitors."
+      );
+    } finally {
+      setLoading(false);
+    }
+  }, []);
 
   useEffect(() => {
     fetchLiveVisitors();
 
-    const interval = window.setInterval(
-      fetchLiveVisitors,
-      15000
-    );
+    const interval = window.setInterval(fetchLiveVisitors, 15000);
 
     return () => {
       window.clearInterval(interval);
@@ -87,6 +77,7 @@ export function useLiveVisitors() {
 
   return {
     visitors,
+    activeVisitors,
     loading,
     error,
     refresh: fetchLiveVisitors,
